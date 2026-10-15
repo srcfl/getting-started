@@ -8,7 +8,7 @@ English: [README.md](README.md)
 | --- | --- | --- | --- |
 | **Zap** | Läser elmätarens P1/HAN-port och skickar mätardata till Sourceful Energy-appen | [zap/](zap/README.sv.md) | [SV](zap/zap-one-pager-sv.pdf) · [EN](zap/zap-one-pager-en.pdf) |
 | **Blixt** | Industri-gateway som styr batterier, växelriktare, mätare och laddboxar på kommersiella och industriella anläggningar | [blixt/](blixt/README.sv.md) | [SV](blixt/blixt-one-pager-sv.pdf) · [EN](blixt/blixt-one-pager-en.pdf) |
-| **Blixt X** | Sourcefuls gateway-programvara på en gateway byggd på Raspberry Pi 4, som sätts upp i appen som en Zap | [blixt-x/](blixt-x/README.sv.md) | [SV](blixt-x/blixt-x-one-pager-sv.pdf) · [EN](blixt-x/blixt-x-one-pager-en.pdf) |
+| **Blixt X** | Sourcefuls gateway-programvara på RAK Hotspot V2 (de gamla dual-minrarna), som sätts upp i appen som en Zap | [blixt-x/](blixt-x/README.sv.md) | [SV](blixt-x/blixt-x-one-pager-sv.pdf) · [EN](blixt-x/blixt-x-one-pager-en.pdf) |
 
 | | | |
 | --- | --- | --- |

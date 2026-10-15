@@ -79,10 +79,10 @@ Zap tar ström från mätaren. Mata med USB-C (5 V, minst 1 A) när:
 
 På samma nät som Zap:
 
-- `http://zap.local/` visar Zappens status, bland annat wifi-signalen.
-- `http://zap.local/api/data/p1/obis` visar mätardatan direkt från mätaren.
+- `http://zap.local/api/network` visar `"internetConnected": true` och `"mqttConnected": true` när Zap når Sourceful, och wifi-signalen som `rssi`.
+- `http://zap.local/api/devices` listar mätaren. Dess `sn` börjar med `p1m-`. `http://zap.local/api/devices/<sn>/data/json` visar mätarvärdena just nu.
 
-Svarar inte `zap.local`: leta upp Zappen i routerns enhetslista (`esp32c3-…`) och använd IP-adressen.
+`zap.local` svarar för en Zap per nät. Varje Zap svarar också på `zap-<serienummer>.local`, och syns i routern som `zap-<serienummer>`. Kontrollerat på Zappar med firmware 2.3.13 och 2.3.25.
 
 ## Lägga till en växelriktare
 
@@ -143,7 +143,7 @@ Appen har ingen omstartsknapp. Använd knappen.
 | Blå blinkar en gång vid start och sedan aldrig | Zap når inte det sparade wifi-nätet: ny router eller nytt lösenord, router med bara 5 GHz, MAC-filter, fullt DHCP, eller ett plåtskåp | Håll knappen 5–10 s. Fast blått betyder att det gick. Gör om wifi på ett 2,4 GHz-nät. |
 | Appen hittar inte Zap | Blå lyser inte fast, eller telefonen är för långt bort | Slå på Bluetooth, stå nära. Har Zap varit uppsatt förut: håll knappen 5–10 s. |
 | Ingen grön lampa i P1 IN | Ingen ström från mätaren | Kolla kabeln. Mata med USB-C. |
-| Data på `zap.local` men inte i appen | Inget internet, eller Zap behöver startas om | Kolla internetanslutningen. Dra ur Zap i 10 sekunder. |
+| Mätardata på `zap.local/api/devices` men inte i appen | `"mqttConnected": false` på `/api/network`: inget internet, eller Zap behöver startas om | Kolla internetanslutningen. Dra ur Zap i 10 sekunder. |
 | Zap verkar hängd | | Håll knappen 2–5 s och släpp. |
 | Zap är varm, luktar bränt eller är missfärgad | Fel port eller en skada | Koppla bort den från mätaren och USB direkt. Koppla inte in den igen. Skicka bilder till Sourcefuls support. |
 
@@ -173,12 +173,14 @@ Här säger källorna emot varandra. Stegen ovan följer appen och firmware.
 - Supportartiklarna anger både 5 s och 10 s för återställning. Firmware gör båda: 5 s rensar wifi, 10 s är en fullständig fabriksåterställning.
 - Plinten på UT-sidan heter **RS485 Input** på produktbilderna. Referensmanualen säger att den är reserverad för framtida sensorer och inte aktiv, medan vissa märkesguider kopplar växelriktare till den.
 - "Zap bortom P1-mätare" anger firmware 1.2.1 och 1.6.20. Firmware-repot har använt 2.x sedan november 2025.
+- Artikeln "ingen data i appen" pekar på `http://zap.local/api/data/p1/obis` och ett namn som `esp32c3-…` i routern. På firmware 2.3.13 och 2.3.25 ger den adressen 404, och routern visar `zap-<serienummer>`. Statussidan på `http://zap.local/` finns bara i testnet-versionerna (2.3.24 och senare), inte i stabila 2.3.17.
 - SAJ finns inte på supportsajten. Avsnittet kommer från Sourcefuls interna installationsunderlag.
 
 ## Källor
 
 - Supportartiklar på support.sourceful.energy, alla uppdaterade 2026-06-02: [referensmanual](https://support.sourceful.energy/sv/zap-referensmanual), [anslut Zap till elmätaren](https://support.sourceful.energy/sv/hur-du-ansluter-till-din-zap-till-elmataren), [anslut din växelriktare](https://support.sourceful.energy/sv/sa-har-ansluter-du-din-vaxelriktare), [kompatibla elmätare](https://support.sourceful.energy/sv/vilka-elmatare-ar-kompatibla-med-zap), [kompatibla växelriktare](https://support.sourceful.energy/sv/vilka-vaxelriktare-ar-kompatibla-med-sourceful-energy), [Modbus TCP i växelriktaren](https://support.sourceful.energy/sv/hur-vet-jag-om-modbus-tcp-ar-aktiverat-pa-min-vaxelriktare), [konfigurera om wifi](https://support.sourceful.energy/sv/zap-konfigurera-om-wifi-firmware-v2-2-0), [ingen data i appen](https://support.sourceful.energy/sv/felsokning-zap-ar-ansluten-men-ingen-data-i-appen), [blå LED blinkar en gång](https://support.sourceful.energy/sv/felsokning-blae-status-led-blinkar-en-gang-vid-start-och-stangs-sedan-av), [överhettning eller fel port](https://support.sourceful.energy/sv/felsokning-zap-overhettas-eller-ar-ansluten-till-fel-port), [säkerhetsinformation](https://support.sourceful.energy/sv/zap-sakerhetsinformation)
 - Knapptider: `srcfl/srcful-zap-x-firmware`, `fw_controller/main/main_loop.cpp` på `main` (6da453f9)
+- Lokala adresser och namn: `srcfl/srcful-zap-x-firmware`, `fw_controller/API.md` och `components/wifi/wifi_manager.cpp`; läsande kontroller på två Zappar (firmware 2.3.13 och 2.3.25), 2026-10-15
 - Appens flöden och knappnamn: `srcfl/srcful-flutter-app` vid 9800165 (appen 2.7.9), `lib/screens/zap_onboard_screen.dart`, `zap_wifi_setup_screen.dart`, `zap_detail/zap_detail_screen.dart`, `device_onboard/`, `lib/l10n/app_sv.arb`
 - Produktbilder: `srcfl/srcful-marketing-website`, `public/assets/images/zap/`, och `srcfl/srcful-flutter-app`, `assets/images/explanations/zapled-sv.jpg`
 - SAJ: Sourcefuls interna installationsunderlag, 2026-10-14

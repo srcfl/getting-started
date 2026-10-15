@@ -1,10 +1,10 @@
 # Blixt X: kom igång
 
-> **Gäller:** Blixt X gateway-programvara 2.0.1 (versionen som körs i fält i oktober 2026), Sourceful Energy-appen 2.7.9 på mainnet
+> **Gäller:** Blixt X gateway-programvara 2.0.1 (versionen som körs i fält i oktober 2026) på RAK Hotspot V2, Sourceful Energy-appen 2.7.9 på mainnet
 > **Senast verifierad:** 2026-10-15, mot `srcful-blixt-x-firmware` vid d501e798 (2.0.1) och `srcful-flutter-app` vid 9800165 (2.7.9)
 > **För:** ägaren eller installatören som sätter upp en Blixt X
 
-Blixt X är Sourcefuls gateway-programvara på en gateway byggd på Raspberry Pi 4. Precis som en Zap kopplar den växelriktare, batterier, mätare och laddboxar till Sourceful över internet. Appen sätter upp den med Zap-flödet, och varje skärm i det flödet säger "Zap".
+Blixt X är Sourcefuls gateway-programvara på RAK Hotspot V2, gatewayen som Sourceful sålde som dual-miner (RAKs "Sourceful ENERGY edition"). Precis som en Zap kopplar den växelriktare, batterier och laddboxar på nätet till Sourceful över internet. Appen sätter upp den med Zap-flödet, och varje skärm i det flödet säger "Zap".
 
 Blixt X är inte samma produkt som [Blixt](../blixt/README.sv.md), industri-gatewayen för kommersiella anläggningar.
 
@@ -12,19 +12,36 @@ Blixt X är inte samma produkt som [Blixt](../blixt/README.sv.md), industri-gate
 
 [![Blixt X-one-pagern](images/one-pager-sv.png)](blixt-x-one-pager-sv.pdf)
 
+## Gatewayen
+
+En svart aluminiumlåda med kylflänsar på ovansidan, 92 × 68 × 57 mm.
+
+| Sida | Det här sitter där |
+| --- | --- |
+| Långsidan | **USB-C**-ström (5 V, 2,4 A) och den runda **pairing-knappen** |
+| Framsidan | **Antennkontakten** (RP-SMA), TF-kortplatsen och två **lampor**: röd och grön |
+| Baksidan | **Gigabit Ethernet** |
+
+Det finns ingen RS-485-, P1- eller annan serieport.
+
 ## Innan du börjar
 
 - [ ] **Nätverk:** Ethernet eller wifi, med internet.
+- [ ] **Strömadaptern:** USB-C, 5 V, 2,4 A, som den som följde med gatewayen.
 - [ ] **Sourceful Energy-appen**, inloggad, med en profil och en anläggning.
 - [ ] **Bluetooth på** i telefonen.
 - [ ] **En enhetslista:** modell, IP-adress, port och unit-id för varje växelriktare, batteri och mätare.
 
 ## 1. Starta
 
-1. Slå på strömmen.
-2. Ethernet: koppla in kabeln. Wifi: ställs in i appen i steg 4.
+1. Skruva fast antennen på framsidan. RAK avråder från att starta gatewayen utan den.
+2. Ethernet: koppla in kabeln på baksidan. Wifi: ställs in i appen i steg 4.
+3. Sätt strömadaptern i USB-C-porten på långsidan.
 
-Blixt X har inga statuslampor att läsa av. Kontrollen görs i steg 6.
+- **Röd lampa, fast:** gatewayen har ström.
+- **Grön lampa, blinkar:** systemet arbetar, till exempel under uppstarten.
+
+Lamporna visar inte om gatewayen är uppkopplad. Det kontrollerar du i steg 6.
 
 ## 2. Bluetooth-fönstret
 
@@ -32,13 +49,12 @@ Efter start syns gatewayen via Bluetooth som **blixt-&lt;serienummer&gt;** i **3
 
 Har du missat det:
 
-- Håll knappen i 3 sekunder, eller dubbelklicka. Då öppnas 3 minuter till.
+- Håll **pairing-knappen** på långsidan i 3 sekunder, eller dubbelklicka. Då öppnas 3 minuter till.
 - Eller bryt strömmen och starta gatewayen igen.
 
 ## 3. Koppla enheterna
 
-- **Modbus TCP-enheter:** på samma nät som gatewayen, med fast IP-adress eller en DHCP-reservation.
-- **Modbus RTU-enheter:** på gatewayens RS-485-port.
+Enheterna kopplas över nätet: Modbus TCP på samma nät som gatewayen, med fast IP-adress eller en DHCP-reservation. RAK-gatewayen har ingen RS-485- eller P1-port, så serieenheter och elmätarens P1-port kan inte kopplas till den. Använd en Zap för mätaren.
 
 En enhet kan bara ha en Modbus-master. Stäng andra system som läser samma enhet.
 
@@ -77,27 +93,30 @@ Använder en annan enhet redan namnet heter gatewayen `blixt-<suffix>.local` i s
 
 | Det du ser | Troligen | Gör så här |
 | --- | --- | --- |
-| Appen hittar inte gatewayen | Bluetooth-fönstret på 3 minuter har stängt | Håll knappen 3 s eller dubbelklicka, eller starta om gatewayen. Stå nära. |
+| Appen hittar inte gatewayen | Bluetooth-fönstret på 3 minuter har stängt | Håll pairing-knappen 3 s eller dubbelklicka, eller starta om gatewayen. Stå nära. |
+| Den röda lampan blinkar | Strömförsörjningen räcker inte | Använd en USB-C-adapter på 5 V, 2,4 A. |
 | `blixt.local` svarar inte | Flera gatewayar på nätet, eller datorn sitter på ett annat nät | Leta efter `blixt-…local`, eller använd gatewayens IP-adress från routern. |
 | `"mqttConnected": false` | Ingen internetåtkomst | Kontrollera nätet, kabeln eller wifin, och brandväggen. |
 | En enhet svarar inte | Fel IP, port eller unit-id, Modbus TCP avstängt i enheten, eller en annan Modbus-master | Kontrollera inställningarna i enheten och i appen. Stäng den andra mastern. |
 
 ## Det här ändras i 3.0.0
 
-Blixt X 3.0.0 finns på `main` men är inte ute i fält än. I 3.0.0 läggs enheter till med en drivrutin och version från Sourcefuls drivrutinsregister i stället för en inbyggd profil, serieenheter går via en USB-serieadapter, och gatewayen rapporterar Ethernet till appen. Guiden uppdateras när 3.0.0 släpps.
+Blixt X 3.0.0 finns på `main` men är inte ute i fält än. I 3.0.0 läggs enheter till med en drivrutin och version från Sourcefuls drivrutinsregister i stället för en inbyggd profil, och gatewayen rapporterar Ethernet till appen. Guiden uppdateras när 3.0.0 släpps.
 
 ## Öppna frågor
 
-- Vilken hårdvara och vilket hölje har Blixt X-enheterna i dag? Strömförsörjning, var knappen sitter och vilken plint RS-485-porten använder är inte dokumenterat.
 - Kan en installation med bara Ethernet gå igenom onboardingen utan wifi på 2.0.1?
 - När kommer 3.0.0 ut i fält? Appen 2.7.9 lägger till enheter med en profil, vilket 3.0.0 avvisar, så appen behöver uppdateras först.
 - Namnet: firmware-README:n kallar gatewayen "Blixt", samma namn som den kommersiella Blixt.
 
 ## Källor
 
-Repona är interna. Sökvägarna gäller de commits som står överst.
+- RAK Hotspot V2: [datablad](https://docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/datasheet) (mått, portar, USB-C 5 V / 2,4 A, lampor), [felsökning](https://docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/troubleshooting) (vad lamporna betyder), [installationsguide](https://docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/installation-guide) (antennen före strömmen)
+
+Repona nedan är interna. Sökvägarna gäller de commits som står överst.
 
 - `srcfl/srcful-blixt-x-firmware` vid d501e798 (2.0.1): `bluetooth/ble_service.py` och `bluetooth/gpioButton.py` (namn, 3-minutersfönster, knapp), `server/network/network_utils.py` (`blixt.local`), `server/core/api_server.py` (`/api/network`), `server/core/device_factory.py` (RS-485 som standard), `server/app/app.py` (version 2.0.1)
+- Fältflottans målrelease, kontrollerad med bara läsning 2026-10-15: byggd 2026-03-26, samma som d501e798 (2.0.1). Ingen nyare release är pinnad.
 - `srcfl/srcful-blixt-x-firmware` på `main` (156134dd): `api.md`, `server/core/serial_ports.py`, `server/api/system.py` (det som ändras i 3.0.0)
 - `srcfl/srcful-flutter-app` vid 9800165 (appen 2.7.9): `lib/screens/zap_onboard_screen.dart` (sökningen hittar `blixt-…`), `zap_wifi_setup_screen.dart` och `lib/services/zap_ble_client.dart` (Ethernet), `lib/services/zap_proxy_client.dart` (enheter läggs till med en profil), `lib/l10n/app_sv.arb`
 - One-pagern byggs från [onepagers/blixt_x.py](../onepagers/blixt_x.py)

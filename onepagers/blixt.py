@@ -11,27 +11,27 @@ from common import (BOLT, CREAM, IC_FUSE, IC_LAPTOP, IC_LIST, IC_SHIELD, INK, LO
 T = {
     "sv": {
         "title": "Driftsätt en Blixt",
-        "rail": "Driftsättning &middot; Blixt &middot; IPC3630",
-        "lede": "För installatören på en kommersiell eller industriell anläggning. Från montering till första batteritestet.",
+        "rail": "Driftsättning &middot; Blixt &middot; IPC3630 / IPC2210",
+        "lede": "För installatören på en kommersiell eller industriell anläggning. Från DIN-skenan till första batteritestet.",
         "before": "Innan du åker",
-        "prep_t": "Förberedd av Sourceful", "prep_d": "Programvara, identitet och serieportar klara.",
+        "prep_t": "Förberedd av Sourceful", "prep_d": "Programvara, identitet, serieportar. Terminering överenskommen.",
         "site_t": "Anläggningens data", "site_d": "Säkring, antal faser, spänning.",
         "dev_t": "Enhetslista", "dev_d": "Modell, IP, port, unit-id. Drivrutin finns.",
         "kit_t": "Laptop och kabel", "kit_d": "Laptop på nätet, partvinnad kabel, 9–36 V DC.",
-        "blixt": "BLIXT", "model": "IPC3630", "power": "9–36 V DC", "pins_power": "1 GND · 2 VIN+",
-        "lan": "ANLÄGGNINGENS NÄT", "dhcp": "DHCP", "tcp_dev": "Växelriktare", "tcp_sub": "MODBUS TCP · 502",
-        "laptop": "Laptop", "url": "blixt-&lt;serie&gt;.local",
-        "bus": "RS-485 · COM2 ELLER COM4", "bus_sub": "A–A · B–B · GND",
-        "dev1": "Batteriväxelriktare", "dev2": "Anläggningsmätare", "rtu": "MODBUS RTU",
-        "term": "120 Ω",
+        "leds": "LAMPOR", "leds_sub": "PWR röd · ACT grön", "leds_sub2": "PWR röd · ACT grön",
+        "power": "9–36 V DC", "power_sub": "VIN+ överst · GND under",
+        "rs485": "RS-485", "rs485_sub": "undre plinten",
+        "eth0": "anläggningens nät", "eth2210": "vilken: fråga Sourceful", "no_serial": "ingen serieport",
+        "zoom": "UNDRE PLINTEN, IPC3630", "device": "Enhet",
+        "zoom_note1": "A till A, B till B, IGND till GND.",
+        "zoom_note2": "Inte den övre plinten (COM1, COM3).",
+        "zoom_note3": "120 Ω i bussens båda ändar.",
         "s1_h": "Montera och anslut",
-        "s1_p": "Antenner på <b>4G</b> och <b>WiFi/BT</b>. Ethernet till nätet (DHCP). Ström 9–36 V DC: <b>stift 1 GND</b>, <b>stift 2 VIN+</b>. Kontrollera polariteten.",
-        "s1_q": "Första starten hämtar ~1,6 GB, 10–20 min. Bryt inte strömmen. Rör inte <b>PROGRAMMING</b>.",
+        "s1_p": "På DIN-skenan, antennerna uppåt. Ethernet i <b>1000M</b> (IPC3630). Ström 9–36 V DC i den gröna pluggen: <b>VIN+</b> överst, <b>GND</b> under.",
+        "s1_q": "<b>PWR</b> röd fast: ström. Blinkar: dålig matning, bryt strömmen. Första starten tar 10–20 min.",
         "s2_h": "Koppla RS-485",
-        "s2_warn": "Bara <b>COM2</b> eller <b>COM4</b>. COM1 och COM3 tappar Modbus-ramar.",
-        "s2_rows": [("COM2", "1", "3", "<code>ttyAMA4</code>", "J22"), ("COM4", "2", "4", "<code>ttyAMA3</code>", "J24")],
-        "s2_cols": ("Port", "B", "A", "Enhet", "120 Ω"),
-        "s2_p": "GND på stift 5 eller 6. Terminera bara bussens ändar. En Modbus-master per enhet.",
+        "s2_p": "Bara IPC3630: den undre plinten, <b>COM2</b> till vänster eller <b>COM4</b> till höger. COM-lampan blinkar när Modbus-trafik går.",
+        "s2_q": "Blixtens 120 Ω-byglar sitter inuti höljet. Bestäm i förväg vem som terminerar. IPC2210 har ingen serieport.",
         "s3_h": "Öppna dashboarden",
         "s3_p": "Från laptopen: <b>http://blixt-&lt;serie&gt;.local/</b>. Bara <code>blixt.local</code> blir fel med flera Blixt. Svarar inte på 4G.",
         "s3_q": "Den som når dashboarden kan styra batteriet. Skyddat nät, aldrig mot internet.",
@@ -45,7 +45,7 @@ T = {
         "s5_list": [
             "<b>Devices → Add device</b>. Drivrutin och <b>version</b> ur registret. Lås versionen.",
             "<b>TCP:</b> IP, port (oftast 502), unit-id.",
-            "<b>RTU:</b> <code>/dev/ttyAMA4</code> (COM2) eller <code>/dev/ttyAMA3</code> (COM4), hastighet, paritet, unit-id. Förifyllda <code>ttyAMA0</code> är COM3: byt.",
+            "<b>RTU:</b> <code>/dev/ttyAMA4</code> (COM2) eller <code>/dev/ttyAMA3</code> (COM4). Förifyllda <code>ttyAMA0</code> är fel: byt.",
         ],
         "s6_h": "Klart när",
         "seen": "Det här syns",
@@ -53,38 +53,38 @@ T = {
         "ok2_q": "Flow", "ok2": "Effekt, laddnivå och frekvens inom några sekunder.",
         "ok3_q": "Batteritest", "ok3": "<b>Manual</b>, ~10 % av märkeffekten. Plus laddar, minus laddar ur. <b>FAULT</b> släckt.",
         "ifnot": "Om inte",
-        "f1_q": "RTU-enhet: <code>timeout</code>", "f1": "Fel port, A/B förväxlade, fel hastighet eller unit-id, ingen terminering.",
-        "f2_q": "Skräpdata oavsett hastighet", "f2": "Serieportarna är inte aktiverade. Kontakta Sourceful.",
+        "f1_q": "RTU-enhet: <code>timeout</code>", "f1": "Fel plint eller port, A/B förväxlade, fel hastighet eller unit-id, ingen terminering.",
+        "f2_q": "PWR-lampan blinkar", "f2": "Matningen räcker inte eller är fel. Bryt strömmen och kontrollera den.",
         "f3_q": "Gråa reglage", "f3": "En aggregator styr. Det är avsiktligt.",
         "card_k": "SvK", "card_m": "Stödtjänster",
         "card1": "<b>Är anläggningen med på Svenska kraftnäts stödtjänstmarknad?</b> Ändra, starta om eller dra ur ingenting utan Sourcefuls godkännande för just det.",
         "card2": "Kopplingen till en <b>aggregator</b> gör Sourceful. Medan den styr är de lokala reglagen låsta.",
-        "foot1": "blixt-gateway main 491197b &middot; verifierad 2026-10-15",
-        "foot2": "Topologi, inte frontpanelen",
+        "foot1": "blixt-gateway 491197b &middot; EDATECs manualer &middot; verifierad 2026-10-15",
+        "foot2": "Ritad efter EDATEC, med Sourcefuls etikett",
     },
     "en": {
         "title": "Commission a Blixt",
-        "rail": "Commissioning &middot; Blixt &middot; IPC3630",
-        "lede": "For the installer on a commercial or industrial site. From mounting to the first battery test.",
+        "rail": "Commissioning &middot; Blixt &middot; IPC3630 / IPC2210",
+        "lede": "For the installer on a commercial or industrial site. From the DIN rail to the first battery test.",
         "before": "Before you go",
-        "prep_t": "Prepared by Sourceful", "prep_d": "Software, identity and serial ports ready.",
+        "prep_t": "Prepared by Sourceful", "prep_d": "Software, identity, serial ports. Termination agreed.",
         "site_t": "Site data", "site_d": "Fuse size, phases, voltage.",
         "dev_t": "Device list", "dev_d": "Model, IP, port, unit ID. A driver exists.",
         "kit_t": "Laptop and cable", "kit_d": "Laptop on the network, twisted pair, 9–36 V DC.",
-        "blixt": "BLIXT", "model": "IPC3630", "power": "9–36 V DC", "pins_power": "1 GND · 2 VIN+",
-        "lan": "SITE NETWORK", "dhcp": "DHCP", "tcp_dev": "Inverter", "tcp_sub": "MODBUS TCP · 502",
-        "laptop": "Laptop", "url": "blixt-&lt;serial&gt;.local",
-        "bus": "RS-485 · COM2 OR COM4", "bus_sub": "A–A · B–B · GND",
-        "dev1": "Battery inverter", "dev2": "Site meter", "rtu": "MODBUS RTU",
-        "term": "120 Ω",
+        "leds": "LIGHTS", "leds_sub": "PWR red · ACT green", "leds_sub2": "PWR red · ACT green",
+        "power": "9–36 V DC", "power_sub": "VIN+ top · GND below",
+        "rs485": "RS-485", "rs485_sub": "the lower plug",
+        "eth0": "site network", "eth2210": "which one: ask Sourceful", "no_serial": "no serial port",
+        "zoom": "THE LOWER PLUG, IPC3630", "device": "Device",
+        "zoom_note1": "A to A, B to B, IGND to GND.",
+        "zoom_note2": "Not the upper plug (COM1, COM3).",
+        "zoom_note3": "120 Ω at both ends of the bus.",
         "s1_h": "Mount and connect",
-        "s1_p": "Antennas on <b>4G</b> and <b>WiFi/BT</b>. Ethernet to the network (DHCP). Power 9–36 V DC: <b>pin 1 GND</b>, <b>pin 2 VIN+</b>. Check the polarity.",
-        "s1_q": "The first start downloads ~1.6 GB, 10–20 min. Keep the power on. Leave <b>PROGRAMMING</b> alone.",
+        "s1_p": "On the DIN rail, antennas up. Ethernet in <b>1000M</b> (IPC3630). Power 9–36 V DC in the green plug: <b>VIN+</b> on top, <b>GND</b> below.",
+        "s1_q": "<b>PWR</b> red, solid: power. Blinking: bad supply, cut the power. The first start takes 10–20 min.",
         "s2_h": "Wire RS-485",
-        "s2_warn": "Only <b>COM2</b> or <b>COM4</b>. COM1 and COM3 drop Modbus frames.",
-        "s2_rows": [("COM2", "1", "3", "<code>ttyAMA4</code>", "J22"), ("COM4", "2", "4", "<code>ttyAMA3</code>", "J24")],
-        "s2_cols": ("Port", "B", "A", "Device", "120 Ω"),
-        "s2_p": "GND on pin 5 or 6. Terminate only the ends of the bus. One Modbus master per device.",
+        "s2_p": "IPC3630 only: the lower plug, <b>COM2</b> on the left or <b>COM4</b> on the right. The COM light blinks when Modbus traffic flows.",
+        "s2_q": "The Blixt's 120 Ω jumpers are inside the case. Agree beforehand who terminates. The IPC2210 has no serial port.",
         "s3_h": "Open the dashboard",
         "s3_p": "From the laptop: <b>http://blixt-&lt;serial&gt;.local/</b>. Plain <code>blixt.local</code> goes wrong with several Blixts. No answer over 4G.",
         "s3_q": "Whoever reaches the dashboard can control the battery. Protected network, never the internet.",
@@ -98,7 +98,7 @@ T = {
         "s5_list": [
             "<b>Devices → Add device</b>. Driver and <b>version</b> from the registry. Pin the version.",
             "<b>TCP:</b> IP, port (usually 502), unit ID.",
-            "<b>RTU:</b> <code>/dev/ttyAMA4</code> (COM2) or <code>/dev/ttyAMA3</code> (COM4), baud, parity, unit ID. The pre-filled <code>/dev/ttyAMA0</code> is COM3: change it.",
+            "<b>RTU:</b> <code>/dev/ttyAMA4</code> (COM2) or <code>/dev/ttyAMA3</code> (COM4). The pre-filled <code>ttyAMA0</code> is wrong: change it.",
         ],
         "s6_h": "Done when",
         "seen": "You see this",
@@ -106,14 +106,14 @@ T = {
         "ok2_q": "Flow", "ok2": "Power, state of charge and frequency within seconds.",
         "ok3_q": "Battery test", "ok3": "<b>Manual</b>, ~10 % of rated power. Plus charges, minus discharges. <b>FAULT</b> off.",
         "ifnot": "If not",
-        "f1_q": "RTU device: <code>timeout</code>", "f1": "Wrong port, A/B swapped, wrong baud or unit ID, no termination.",
-        "f2_q": "Garbage at every baud rate", "f2": "The serial ports are not enabled. Contact Sourceful.",
+        "f1_q": "RTU device: <code>timeout</code>", "f1": "Wrong plug or port, A/B swapped, wrong baud or unit ID, no termination.",
+        "f2_q": "The PWR light blinks", "f2": "The supply is too weak or wrong. Cut the power and check it.",
         "f3_q": "Controls greyed out", "f3": "An aggregator is in control. That is intended.",
         "card_k": "SvK", "card_m": "Reserve market",
         "card1": "<b>Does the site take part in Svenska kraftnät's reserve market?</b> Change nothing, do not restart and do not unplug anything without Sourceful's approval for that exact action.",
         "card2": "Sourceful connects the <b>aggregator</b>. While it is in control, the local controls are locked.",
-        "foot1": "blixt-gateway main 491197b &middot; verified 2026-10-15",
-        "foot2": "Topology, not the front panel",
+        "foot1": "blixt-gateway 491197b &middot; EDATEC manuals &middot; verified 2026-10-15",
+        "foot2": "Drawn after EDATEC, with Sourceful's label",
     },
 }
 
@@ -126,7 +126,7 @@ EXTRA_CSS = """
 code{font-family:'JetBrains Mono',monospace;font-size:0.88em;}
 .cols2{display:flex;gap:6mm;}
 .cols2 > section, .cols2 > div{flex:none;width:90mm;}
-.hero.blixt{height:52mm;}
+.hero.blixt{height:64mm;}
 h1{font-size:31pt;}
 .saj p{flex:1.4;}
 .olist{list-style:none;counter-reset:n;}
@@ -138,70 +138,131 @@ h1{font-size:31pt;}
 
 
 def hero(t):
-    W, H = 186, 52
+    """IPC3630 and IPC2210 as mounted on the DIN rail, white-labelled, plus the RS-485 plug.
+
+    Front-panel layout from EDATEC's drawings (edatec.cn/docs/ipc3630/um/1-hardware/,
+    edatec.cn/docs/ipc2200/um/1-hardware/). Real fronts are 55 x 143 mm (IPC3630) and
+    34 x 143 mm (IPC2210); drawn at 0.3. The vendor label is replaced by Sourceful's.
+    """
+    W, H = 186, 64
+    k = 0.3
     o = [f'<svg class="hero blixt" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Satoshi">']
     o.append(f'<rect x="0" y="0" width="{W}" height="{H}" rx="4" fill="{CREAM}"/>')
-    line = lambda d, w=1.0, c=INK: o.append(
+    line = lambda d, w=0.25, c=MUTED: o.append(
         f'<path d="{d}" fill="none" stroke="{c}" stroke-width="{w}" stroke-linecap="round" stroke-linejoin="round"/>')
-    label = lambda x, y, s, size=2.1, c=MUTED, anchor="start", weight="400": o.append(
-        f'<text x="{x}" y="{y}" {MONO} font-size="{size}" letter-spacing="0.3" fill="{c}" '
+    label = lambda x, y, s, size=1.8, c=INK, anchor="start", weight="700": o.append(
+        f'<text x="{x}" y="{y}" {MONO} font-size="{size}" letter-spacing="0.2" fill="{c}" '
         f'text-anchor="{anchor}" font-weight="{weight}">{s}</text>')
-    box = lambda x, y, w, h: o.append(
-        f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="2.5" fill="#FFFFFF" stroke="{INK}" stroke-width="0.4"/>')
+    SIDE, RIB, FRONT, PLUG = "#2B2B2A", "#3A3A38", "#ECEAE4", "#1E1F21"
+    GOLD, RED, GRN, BLUEP = "#B8892E", "#C8372D", "#15803D", "#2F5DA8"
+    top, fh = 11, 143 * k
 
-    # Blixt with antennas and the power terminal
-    bx, by, bw, bh = 10, 13, 40, 25
-    for ax, name in ((bx + 8, "4G"), (bx + bw - 10, "WiFi/BT")):
-        line(f"M{ax} {by} V{by - 7}", 0.8)
-        o.append(f'<circle cx="{ax}" cy="{by - 7.6}" r="1.1" fill="{INK}"/>')
-        label(ax + 2, by - 5.6, name, 2)
-    o.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="4.5" fill="{INK}"/>')
-    s = 0.2
-    o.append(f'<path d="{BOLT}" fill="{CREAM}" transform="translate({bx + 6 - 22.8 * s:.2f},{by + 7 - 23.3 * s:.2f}) scale({s})"/>')
-    label(bx + 10, by + 8.1, t["blixt"], 3.2, "#FAFAF7", weight="700")
-    label(bx + 10, by + 12, t["model"], 2, "#B9B6AA")
-    for py, name in ((by + 7, "ETH0"), (by + 18, "COM2")):
-        o.append(f'<rect x="{bx + bw - 1}" y="{py - 1.6}" width="3" height="3.2" rx="0.6" fill="#55534F"/>')
-        label(bx + bw - 3, py + 0.8, name, 2, "#B9B6AA", "end")
-    line(f"M{bx + 12} {by + bh} V{by + bh + 3.5}", 0.8)
-    o.append(f'<rect x="{bx + 9}" y="{by + bh + 3.5}" width="6" height="3" rx="0.5" fill="#5E8F66"/>')
-    label(bx + 17, by + bh + 5.9, t["power"], 2.2, INK, weight="700")
-    label(bx + 17, by + bh + 9, t["pins_power"], 1.9)
+    def body(x, side_w, front_w):
+        for ax in (x + side_w * 0.35, x + side_w * 0.8):            # SMA antennas on the top end
+            o.append(f'<rect x="{ax - 0.9:.2f}" y="{top - 2}" width="1.8" height="2" fill="{GOLD}"/>')
+            o.append(f'<rect x="{ax - 0.8:.2f}" y="{top - 8.5}" width="1.6" height="6.6" rx="0.8" fill="{INK}"/>')
+        o.append(f'<rect x="{x}" y="{top}" width="{side_w}" height="{fh}" rx="0.8" fill="{SIDE}"/>')
+        n = int(side_w / 0.9)
+        for i in range(1, n):
+            o.append(f'<rect x="{x + i * 0.9:.2f}" y="{top + 0.6}" width="0.3" height="{fh - 1.2:.2f}" fill="{RIB}"/>')
+        sx = x + side_w * 0.2                                         # Sourceful label band
+        o.append(f'<rect x="{sx:.2f}" y="{top + 1.5}" width="{side_w * 0.3:.2f}" height="{fh - 3:.2f}" fill="{SIGNAL}"/>')
+        s = 0.07
+        o.append(f'<path d="{BOLT}" fill="#FFFFFF" transform="translate({sx + side_w * 0.15 - 22.8 * s:.2f},{top + 4 - 23.3 * s:.2f}) scale({s})"/>')
+        o.append(f'<text transform="translate({sx + side_w * 0.15 + 0.7:.2f},{top + fh - 3}) rotate(-90)" '
+                 f'{MONO} font-size="1.8" letter-spacing="0.4" fill="#FFFFFF" font-weight="700">BLIXT</text>')
+        fx = x + side_w
+        o.append(f'<rect x="{fx}" y="{top}" width="{front_w}" height="{fh}" rx="0.6" fill="{FRONT}" stroke="#C9C6BD" stroke-width="0.2"/>')
+        return fx
 
-    # Ethernet: site network -> TCP inverter and laptop
-    sx, sy = 70, 12
-    line(f"M{bx + bw + 2} {by + 7} H{sx}", 1.0)
-    box(sx, sy, 30, 14)
-    label(sx + 15, sy + 6.2, t["lan"], 2, INK, "middle", "700")
-    label(sx + 15, sy + 10, t["dhcp"], 1.9, MUTED, "middle")
-    tx = sx + 44
-    line(f"M{sx + 30} {sy + 4.5} H{sx + 37} V{sy - 3} H{tx}", 0.8)
-    line(f"M{sx + 30} {sy + 9.5} H{sx + 37} V{sy + 17} H{tx}", 0.8)
-    box(tx, sy - 9, 36, 12)
-    o.append(f'<text x="{tx + 3}" y="{sy - 3.6}" font-size="3" font-weight="500" fill="{INK}">{t["tcp_dev"]}</text>')
-    label(tx + 3, sy - 0.2, t["tcp_sub"], 1.8)
-    box(tx, sy + 11, 36, 12)
-    o.append(f'<text x="{tx + 3}" y="{sy + 16.4}" font-size="3" font-weight="500" fill="{INK}">{t["laptop"]}</text>')
-    label(tx + 3, sy + 19.8, t["url"], 1.8, SIGNAL)
+    Y = lambda r: top + r * fh                                        # relative height on the front
 
-    # RS-485 bus from COM2, terminated at both ends
-    busy = 41
-    cx = bx + bw + 2
-    line(f"M{cx} {by + 18} H{cx + 6} V{busy} H178", 1.0)
-    label(cx + 10, busy - 2, t["bus"], 2, INK, weight="700")
-    label(cx + 10, busy - 5, t["bus_sub"], 1.8)
-    for dx, name in ((110, t["dev1"]), (146, t["dev2"])):
-        line(f"M{dx} {busy} V{busy + 2.5}", 1.0)
-        box(dx - 15, busy + 2.5, 30, 8.6)
-        o.append(f'<text x="{dx}" y="{busy + 6.4}" text-anchor="middle" font-size="2.6" font-weight="500" fill="{INK}">{name}</text>')
-        label(dx, busy + 9.3, t["rtu"], 1.6, MUTED, "middle")
-    for rx in (cx + 14, 178):
-        line(f"M{rx} {busy} V{busy + 1.6}", 0.45, SIGNAL)
-        o.append(f'<rect x="{rx - 1.2}" y="{busy + 1.6}" width="2.4" height="4.6" rx="0.4" fill="#FFFFFF" stroke="{SIGNAL}" stroke-width="0.45"/>')
-        label(rx, busy + 9, t["term"], 1.9, SIGNAL, "middle", "700")
+    def callout(x0, y0, x1, text, sub=""):
+        line(f"M{x0} {y0} H{x1 - 0.8}")
+        label(x1, y0 + 0.6, text)
+        if sub:
+            label(x1, y0 + 2.9, sub, 1.55, MUTED, weight="400")
 
-    for n, (mx, my) in enumerate(((bx + 4, by + bh + 5), (cx + 6, busy - 7.5), (tx + 36, sy + 11)), 1):
-        o.append(marker(n, mx, my))
+    # ---------------- IPC3630 ----------------
+    fx = body(8, 9, 55 * k)
+    fw = 55 * k
+    for r in range(4):                                                 # ACT|PWR, USER|4G, COM1|COM3, COM2|COM4
+        cy = Y(0.10 + r * 0.025)
+        o.append(f'<circle cx="{fx + 2.8}" cy="{cy:.2f}" r="0.45" fill="{GRN if r == 0 else "#9C9A92"}"/>')
+        o.append(f'<circle cx="{fx + 4.4}" cy="{cy:.2f}" r="0.45" fill="{RED if r == 0 else "#9C9A92"}"/>')
+    for r in range(9):                                                 # DI / CAN / DO LEDs, not used
+        cy = Y(0.10 + r * 0.025)
+        for cx in (fx + 10.8, fx + 12.4):
+            o.append(f'<circle cx="{cx}" cy="{cy:.2f}" r="0.4" fill="#C4C1B8"/>')
+    o.append(f'<rect x="{fx + 2}" y="{Y(0.23):.2f}" width="3" height="{0.11 * fh:.2f}" rx="0.3" fill="{GRN}"/>')   # power
+    for py in (0.49, 0.575):                                          # serial plugs, upper then lower
+        o.append(f'<rect x="{fx + 2}" y="{Y(py):.2f}" width="6" height="{0.075 * fh:.2f}" rx="0.3" fill="{PLUG}"/>')
+    o.append(f'<rect x="{fx + 2}" y="{Y(0.575):.2f}" width="6" height="{0.075 * fh:.2f}" rx="0.3" fill="none" stroke="{SIGNAL}" stroke-width="0.45"/>')
+    for py in (0.49, 0.68, 0.80):                                      # DI, CAN, DO plugs, not used
+        o.append(f'<rect x="{fx + 10}" y="{Y(py):.2f}" width="5.2" height="{0.1 * fh:.2f}" rx="0.3" fill="#B9B6AD"/>')
+    for py in (0.68, 0.81):                                            # 1000M, 100M
+        o.append(f'<rect x="{fx + 2.4}" y="{Y(py):.2f}" width="5.4" height="{0.095 * fh:.2f}" rx="0.3" fill="#8F8D86"/>')
+        o.append(f'<rect x="{fx + 3.3}" y="{Y(py) + 1.2:.2f}" width="3.6" height="2" fill="{PLUG}"/>')
+    cx = fx + fw + 2.5
+    callout(fx + 5, Y(0.11), cx, t["leds"], t["leds_sub"])
+    callout(fx + 5, Y(0.285), cx, t["power"], t["power_sub"])
+    callout(fx + 8, Y(0.61), cx, t["rs485"], t["rs485_sub"])
+    callout(fx + 7.8, Y(0.725), cx, "1000M", t["eth0"])
+    label(8 + (9 + fw) / 2, top + fh + 4.6, "IPC3630", 2.2, INK, "middle")
+
+    # ---------------- IPC2210 ----------------
+    x2 = 62
+    fx2 = body(x2, 7, 34 * k)
+    fw2 = 34 * k
+    for r in range(2):                                                 # ACT|PWR, USER|4G
+        cy = Y(0.08 + r * 0.03)
+        o.append(f'<circle cx="{fx2 + 3.5}" cy="{cy:.2f}" r="0.45" fill="{GRN if r == 0 else "#9C9A92"}"/>')
+        o.append(f'<circle cx="{fx2 + 6.5}" cy="{cy:.2f}" r="0.45" fill="{RED if r == 0 else "#9C9A92"}"/>')
+    o.append(f'<rect x="{fx2 + 3.6}" y="{Y(0.19):.2f}" width="3" height="{0.11 * fh:.2f}" rx="0.3" fill="{GRN}"/>')
+    for py in (0.49, 0.62, 0.75):                                      # ETH0, ETH1, ETH2
+        o.append(f'<rect x="{fx2 + 2.4}" y="{Y(py):.2f}" width="5.4" height="{0.105 * fh:.2f}" rx="0.3" fill="#8F8D86"/>')
+        o.append(f'<rect x="{fx2 + 3.3}" y="{Y(py) + 1.4:.2f}" width="3.6" height="2" fill="{PLUG}"/>')
+    o.append(f'<rect x="{fx2 + 3.4}" y="{Y(0.89):.2f}" width="3.4" height="{0.05 * fh:.2f}" rx="0.3" fill="{BLUEP}"/>')
+    cx2 = fx2 + fw2 + 2.5
+    callout(fx2 + 7, Y(0.095), cx2, t["leds"], t["leds_sub2"])
+    callout(fx2 + 6.6, Y(0.245), cx2, t["power"], t["power_sub"])
+    callout(fx2 + 7.8, Y(0.62), cx2, "ETH0–ETH2", t["eth2210"])
+    callout(fx2 + 6.8, Y(0.9), cx2, "USB", t["no_serial"])
+    label(x2 + (7 + fw2) / 2, top + fh + 4.6, "IPC2210", 2.2, INK, "middle")
+
+    # ---------------- the RS-485 plug, close up ----------------
+    zx, zy, zw, zh = 118, 6, 64, 52
+    o.append(f'<rect x="{zx}" y="{zy}" width="{zw}" height="{zh}" rx="3" fill="#FFFFFF" stroke="{INK}" stroke-width="0.4"/>')
+    label(zx + 3, zy + 4.4, t["zoom"], 1.9, MUTED, weight="400")
+    # the device on the left, the plug on the right: COM2 is the left column, so its wires leave left
+    o.append(f'<rect x="{zx + 4}" y="{zy + 10}" width="15" height="19" rx="2" fill="#FFFFFF" stroke="{INK}" stroke-width="0.4"/>')
+    o.append(f'<text x="{zx + 11.5}" y="{zy + 18.5}" text-anchor="middle" font-size="2.5" font-weight="500" fill="{INK}">{t["device"]}</text>')
+    label(zx + 11.5, zy + 22, "MODBUS RTU", 1.4, MUTED, "middle", "400")
+    px, py0, cw, rh = zx + 38, zy + 11, 8, 5.6
+    o.append(f'<rect x="{px}" y="{py0}" width="{cw * 2 + 3}" height="{rh * 3 + 2}" rx="0.8" fill="{PLUG}"/>')
+    names = (("IGND", "A2", "B2"), ("IGND", "A4", "B4"))
+    for c in range(2):
+        for r in range(3):
+            cx0 = px + 1 + c * (cw + 1)
+            o.append(f'<rect x="{cx0:.2f}" y="{py0 + 1 + r * rh:.2f}" width="{cw}" height="{rh - 0.8}" rx="0.4" fill="#3A3B3E"/>')
+            o.append(f'<circle cx="{cx0 + 1.6:.2f}" cy="{py0 + 1 + r * rh + (rh - 0.8) / 2:.2f}" r="0.9" fill="#8F8D86"/>')
+            label(cx0 + 3, py0 + 1 + r * rh + 3.2, names[c][r], 1.6, "#FAFAF7")
+    label(px + 1 + cw / 2, py0 - 1.4, "COM2", 2, SIGNAL, "middle")
+    label(px + 2 + cw * 1.5, py0 - 1.4, "COM4", 2, SIGNAL, "middle")
+    label(px + 1 + cw / 2, py0 + rh * 3 + 5.4, "ttyAMA4", 1.45, MUTED, "middle", "400")
+    label(px + 2 + cw * 1.5, py0 + rh * 3 + 5.4, "ttyAMA3", 1.45, MUTED, "middle", "400")
+    for r, (name, colr) in enumerate((("GND", INK), ("A", SIGNAL), ("B", "#1D4ED8"))):
+        yy = py0 + 1 + r * rh + (rh - 0.8) / 2
+        dy = zy + 13.5 + r * 5
+        line(f"M{px + 2.6:.2f} {yy:.2f} C{px - 6} {yy:.2f} {zx + 26} {dy:.2f} {zx + 19} {dy:.2f}", 0.7, colr)
+        label(zx + 21, dy - 0.9, name, 1.7, colr)
+    label(zx + 3, zy + zh - 7.2, t["zoom_note1"], 1.75, INK, weight="400")
+    label(zx + 3, zy + zh - 4.2, t["zoom_note2"], 1.75, INK, weight="400")
+    label(zx + 3, zy + zh - 1.4, t["zoom_note3"], 1.75, SIGNAL, weight="700")
+
+    o.append(marker(1, 8 + 4.5, top + 3.5))
+    o.append(marker(2, zx + zw - 4, zy + 4))
+    o.append(marker(3, fx + 1.2, Y(0.725)))
     o.append('</svg>')
     return "".join(o)
 
@@ -234,9 +295,8 @@ BODY = """
     </section>
     <section>
       <div class="head"><span class="num">2</span><span class="h">{{s2_h}}</span></div>
-      <p class="warn">{{s2_warn}}</p>
-      {{PINS}}
-      <p class="quiet">{{s2_p}}</p>
+      <p>{{s2_p}}</p>
+      <p class="quiet">{{s2_q}}</p>
     </section>
     <section>
       <div class="head"><span class="num">3</span><span class="h">{{s3_h}}</span></div>
@@ -294,13 +354,10 @@ BODY = """
 
 def build(lang):
     t = T[lang]
-    cols = "".join(f"<th>{c}</th>" for c in t["s2_cols"])
-    rows = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in t["s2_rows"])
     values = {k: v for k, v in t.items() if isinstance(v, str)}
     values.update({
         "LOGO": LOGO_LIGHT, "IC_SHIELD": IC_SHIELD, "IC_FUSE": IC_FUSE, "IC_LIST": IC_LIST,
         "IC_LAPTOP": IC_LAPTOP, "HERO": hero(t), "TICK": TICK,
-        "PINS": f'<table class="pins"><tr>{cols}</tr>{rows}</table>',
         "S4": "".join(f"<li><span>{x}</span></li>" for x in t["s4_list"]),
         "S5": "".join(f"<li><span>{x}</span></li>" for x in t["s5_list"]),
     })

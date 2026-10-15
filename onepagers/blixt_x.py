@@ -1,43 +1,47 @@
 """Blixt X one-pager: set up a Blixt X (gateway software 2.0.1, the release in the field).
 
-Facts from srcfl/srcful-blixt-x-firmware at d501e798 (2.0.1) and the Sourceful Energy app
-2.7.9 (srcfl/srcful-flutter-app 9800165):
-- BLE name blixt-<serial> (fallback BLIXT-<wlan MAC>), advertising 3 min after start;
-  button (GPIO 7) held 3 s or double-clicked reopens 3 min (bluetooth/ble_service.py,
-  gpioButton.py).
-- Local API on port 80, mDNS blixt.local, blixt-<suffix>.local on a name clash
-  (server/network/network_utils.py). /api/network has internetConnected and mqttConnected.
-- 2.0.1 does not report Ethernet in /api/network, so the app never offers Skip WiFi setup.
-- Modbus RTU defaults to /dev/ttyS0, the Pi 4 RS-485 UART (server/core/device_factory.py).
-- The app onboards it with the Zap flow and labels; every screen says "Zap".
+Hardware: the RAK Hotspot V2 (Sourceful ENERGY edition, the former dual miners), drawn from
+RAK's datasheet (docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/datasheet):
+92 x 68.3 x 57.2 mm, black aluminium with heat-sink fins. Long side: USB-C power (5 V / 2.4 A)
+and the pairing button. Front: LoRa RP-SMA antenna, TF card slot, red (power) and green
+(activity) LEDs. Back: Gigabit Ethernet. No RS-485 or P1 port.
+
+Software facts from srcfl/srcful-blixt-x-firmware at d501e798 (2.0.1) and the app 2.7.9:
+- BLE name blixt-<serial>, advertising 3 min after start; the button (GPIO 7, RAK's
+  pairing button) held 3 s or double-clicked reopens 3 min.
+- Local API on port 80 at blixt.local (blixt-<suffix>.local on a clash);
+  /api/network has internetConnected and mqttConnected.
+- 2.0.1 does not report Ethernet, so the app never offers Skip WiFi setup.
+- The app onboards it with the Zap flow; every screen says "Zap".
 """
 from common import (BLUE, BOLT, CREAM, IC_LIST, IC_PHONE, IC_WIFI, INK, LOGO_LIGHT, MONO,
                     MUTED, SIGNAL, TICK, fill, icon, marker, page)
 
+IC_PLUG = icon('<path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v4"/>')
 IC_NET = icon('<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>')
 
 T = {
     "sv": {
         "title": "Sätt upp en Blixt X",
-        "rail": "Kom igång &middot; Blixt X 2.0.1 &middot; Mainnet",
-        "lede": "För ägaren eller installatören. Blixt X kopplar växelriktare, batterier och mätare till Sourceful, och sätts upp i appen som en Zap.",
+        "rail": "Kom igång &middot; Blixt X 2.0.1 &middot; RAK Hotspot V2",
+        "lede": "För ägaren eller installatören. Blixt X är vår programvara på RAK-gatewayen, de gamla dual-minrarna. Den sätts upp i appen som en Zap.",
         "before": "Innan du börjar",
         "net_t": "Nätverk", "net_d": "Ethernet eller wifi med internet.",
         "app_t": "Appen, inloggad", "app_d": "Med profil och anläggning.",
         "dev_t": "Enhetslista", "dev_d": "Modell, IP, port, unit-id.",
-        "bt_t": "Bluetooth på", "bt_d": "Stå nära gatewayen.",
-        "gw": "BLIXT X", "gw_sub": "RASPBERRY PI 4", "bt_win": "BLUETOOTH · 3 MIN", "bt_name": "blixt-&lt;serie&gt;",
-        "phone": "Appen", "net": "ETHERNET ELLER WIFI", "cloud": "Sourceful", "cloud_sub": "MAINNET",
-        "tcp": "Växelriktare", "tcp_sub": "MODBUS TCP", "rtu": "Mätare / batteri", "rtu_sub": "RS-485 · RTU",
-        "laptop": "Kontroll", "laptop_sub": "blixt.local/api/network",
+        "bt_t": "Strömadaptern", "bt_d": "USB-C, 5 V, 2,4 A.",
+        "phone": "Appen", "v_side": "SIDAN", "v_front": "FRAMSIDAN", "v_back": "BAKSIDAN",
+        "usbc": "USB-C 5 V", "pair": "PAIRING-KNAPP", "leds": "LAMPOR", "leds_sub": "röd ström · grön aktivitet",
+        "eth": "ETHERNET", "cloud": "Sourceful", "cloud_sub": "MAINNET",
+        "tcp": "Växelriktare", "tcp_sub": "MODBUS TCP",
         "s1_h": "Starta",
-        "s1_p": "Ström på. Ethernet: koppla in kabeln. Wifi: ställs in i appen i steg 4.",
-        "s1_q": "Blixt X har inga statuslampor att läsa av. Kontrollen görs i steg 5.",
+        "s1_p": "Antennen på. Ethernet i baksidan, eller wifi i steg 4. Ström i USB-C på sidan.",
+        "s1_q": "Röd lampa fast: ström. Grön blinkar när systemet arbetar.",
         "s2_h": "Bluetooth-fönstret",
         "s2_p": "Efter start syns den som <b>blixt-&lt;serie&gt;</b> i <b>3 minuter</b>.",
-        "s2_q": "Missat fönstret: håll knappen 3&nbsp;s eller dubbelklicka. Eller bryt strömmen och starta om.",
+        "s2_q": "Missat fönstret: håll <b>pairing-knappen</b> 3&nbsp;s eller dubbelklicka, eller starta om.",
         "s3_h": "Koppla enheterna",
-        "s3_p": "TCP-enheter på samma nät, med fast IP. RTU-enheter på gatewayens RS-485-port.",
+        "s3_p": "Modbus TCP på samma nät, med fast IP. RAK-gatewayen har ingen RS-485- eller P1-port.",
         "s3_q": "En Modbus-master per enhet. Stäng andra system som läser den.",
         "s4_h": "I appen", "s4_micro": "Samma flöde som Zap",
         "app_steps": [
@@ -54,42 +58,41 @@ T = {
         "ok2_q": "<code>/api/devices</code>", "ok2": "Listar enheterna du lade till.",
         "ok3_q": "Appen", "ok3": "Visar data från enheterna.",
         "ifnot": "Om inte",
-        "f1_q": "Syns inte i appen", "f1": "Bluetooth-fönstret har stängt. Knappen eller en omstart öppnar det.",
-        "f2_q": "<code>blixt.local</code> svarar inte", "f2": "Finns flera på nätet heter den <code>blixt-…local</code>. Eller använd IP-adressen.",
+        "f1_q": "Syns inte i appen", "f1": "Bluetooth-fönstret har stängt. Tryck pairing-knappen, eller starta om.",
+        "f2_q": "Röd lampa blinkar", "f2": "Strömförsörjningen räcker inte. Använd en adapter på 5 V, 2,4 A.",
         "f3_q": "<code>mqttConnected: false</code>", "f3": "Ingen internetåtkomst. Kontrollera nätet och brandväggen.",
         "f4_q": "En enhet svarar inte", "f4": "Fel IP, port eller unit-id, Modbus TCP avstängt, eller en annan master.",
         "know_h": "Bra att veta",
         "k1_q": "Appen säger Zap", "k1": "Varje skärm säger Zap. Det är rätt flöde.",
-        "k2_q": "Inga statuslampor", "k2": "Läs status på <b>blixt.local/api/network</b> i stället.",
         "k3_q": "Bara Ethernet?", "k3": "Appen ser inte Ethernet på 2.0.1 och visar wifi-steget ändå. Fråga Sourceful.",
         "card_k": "3.0.0", "card_m": "Nästa version",
         "card1": "<b>Den här sidan gäller 2.0.1</b>, versionen som körs i fält i oktober 2026.",
         "card2": "I 3.0.0 läggs enheter till med drivrutiner från Sourcefuls register. Sidan uppdateras när den släpps.",
-        "foot1": "srcful-blixt-x-firmware d501e798 &middot; appen 2.7.9 &middot; verifierad 2026-10-15",
-        "foot2": "Schematisk bild",
+        "foot1": "blixt-x 2.0.1 d501e798 &middot; appen 2.7.9 &middot; RAK datablad &middot; verifierad 2026-10-15",
+        "foot2": "Skala 0,4 &middot; portarna enligt RAK",
     },
     "en": {
         "title": "Set up a Blixt X",
-        "rail": "Getting started &middot; Blixt X 2.0.1 &middot; Mainnet",
-        "lede": "For the owner or installer. Blixt X connects inverters, batteries and meters to Sourceful, and is set up in the app like a Zap.",
+        "rail": "Getting started &middot; Blixt X 2.0.1 &middot; RAK Hotspot V2",
+        "lede": "For the owner or installer. Blixt X is our software on the RAK gateway, the former dual miners. It is set up in the app like a Zap.",
         "before": "Before you start",
         "net_t": "Network", "net_d": "Ethernet or Wi-Fi with internet.",
         "app_t": "The app, signed in", "app_d": "With a profile and a site.",
         "dev_t": "Device list", "dev_d": "Model, IP, port, unit ID.",
-        "bt_t": "Bluetooth on", "bt_d": "Stand close to the gateway.",
-        "gw": "BLIXT X", "gw_sub": "RASPBERRY PI 4", "bt_win": "BLUETOOTH · 3 MIN", "bt_name": "blixt-&lt;serial&gt;",
-        "phone": "The app", "net": "ETHERNET OR WI-FI", "cloud": "Sourceful", "cloud_sub": "MAINNET",
-        "tcp": "Inverter", "tcp_sub": "MODBUS TCP", "rtu": "Meter / battery", "rtu_sub": "RS-485 · RTU",
-        "laptop": "Check", "laptop_sub": "blixt.local/api/network",
+        "bt_t": "The power adapter", "bt_d": "USB-C, 5 V, 2.4 A.",
+        "phone": "The app", "v_side": "SIDE", "v_front": "FRONT", "v_back": "BACK",
+        "usbc": "USB-C 5 V", "pair": "PAIRING BUTTON", "leds": "LIGHTS", "leds_sub": "red power · green activity",
+        "eth": "ETHERNET", "cloud": "Sourceful", "cloud_sub": "MAINNET",
+        "tcp": "Inverter", "tcp_sub": "MODBUS TCP",
         "s1_h": "Start",
-        "s1_p": "Power on. Ethernet: plug in the cable. Wi-Fi: set in the app in step 4.",
-        "s1_q": "Blixt X has no status lights to read. The check is step 5.",
+        "s1_p": "Antenna on. Ethernet in the back, or Wi-Fi in step 4. Power in the USB-C on the side.",
+        "s1_q": "Red light solid: power. Green blinks while the system works.",
         "s2_h": "The Bluetooth window",
         "s2_p": "After start it shows up as <b>blixt-&lt;serial&gt;</b> for <b>3 minutes</b>.",
-        "s2_q": "Missed it: hold the button 3&nbsp;s or double-click. Or cut the power and start again.",
+        "s2_q": "Missed it: hold the <b>pairing button</b> 3&nbsp;s or double-click, or restart it.",
         "s3_h": "Connect the devices",
-        "s3_p": "TCP devices on the same network, with a fixed IP. RTU devices on the gateway's RS-485 port.",
-        "s3_q": "One Modbus master per device. Stop other systems that read the same device.",
+        "s3_p": "Modbus TCP on the same network, with a fixed IP. The RAK gateway has no RS-485 or P1 port.",
+        "s3_q": "One Modbus master per device. Stop other systems that read it.",
         "s4_h": "In the app", "s4_micro": "Same flow as Zap",
         "app_steps": [
             ("<b>Onboard a new Zap</b>", "Under <b>Get started</b>, or <b>More → My Zaps</b>. The app says Zap."),
@@ -105,19 +108,18 @@ T = {
         "ok2_q": "<code>/api/devices</code>", "ok2": "Lists the devices you added.",
         "ok3_q": "The app", "ok3": "Shows data from the devices.",
         "ifnot": "If not",
-        "f1_q": "Not in the app", "f1": "The Bluetooth window has closed. The button or a restart opens it again.",
-        "f2_q": "<code>blixt.local</code> does not answer", "f2": "With several on the network it is <code>blixt-…local</code>. Or use its IP address.",
+        "f1_q": "Not in the app", "f1": "The Bluetooth window closed. Press the pairing button, or restart.",
+        "f2_q": "Red light blinks", "f2": "The power supply is too weak. Use a 5 V, 2.4 A adapter.",
         "f3_q": "<code>mqttConnected: false</code>", "f3": "No internet access. Check the network and the firewall.",
         "f4_q": "A device does not answer", "f4": "Wrong IP, port or unit ID, Modbus TCP off, or another master.",
         "know_h": "Good to know",
-        "k1_q": "The app says Zap", "k1": "Every screen in the flow says Zap. It is the right flow for Blixt X.",
-        "k2_q": "No status lights", "k2": "Read the status at <b>blixt.local/api/network</b> instead.",
+        "k1_q": "The app says Zap", "k1": "Every screen says Zap. It is the right flow.",
         "k3_q": "Ethernet only?", "k3": "On 2.0.1 the app does not see Ethernet and shows the Wi-Fi step anyway. Ask Sourceful.",
         "card_k": "3.0.0", "card_m": "Next version",
         "card1": "<b>This page covers 2.0.1</b>, the version running in the field in October 2026.",
         "card2": "In 3.0.0, devices are added with drivers from Sourceful's registry. This page changes when it ships.",
-        "foot1": "srcful-blixt-x-firmware d501e798 &middot; app 2.7.9 &middot; verified 2026-10-15",
-        "foot2": "Schematic",
+        "foot1": "blixt-x 2.0.1 d501e798 &middot; app 2.7.9 &middot; RAK datasheet &middot; verified 2026-10-15",
+        "foot2": "Scale 0.4 &middot; ports as in RAK's datasheet",
     },
 }
 
@@ -138,49 +140,86 @@ def hero(t):
     line = lambda d, w=1.0, c=INK, dash="": o.append(
         f'<path d="{d}" fill="none" stroke="{c}" stroke-width="{w}" stroke-linecap="round" '
         f'stroke-linejoin="round"{f" stroke-dasharray={chr(34)}{dash}{chr(34)}" if dash else ""}/>')
-    label = lambda x, y, s, size=2.1, c=MUTED, anchor="start", weight="400": o.append(
-        f'<text x="{x}" y="{y}" {MONO} font-size="{size}" letter-spacing="0.3" fill="{c}" '
+    label = lambda x, y, s, size=1.9, c=MUTED, anchor="middle", weight="400": o.append(
+        f'<text x="{x}" y="{y}" {MONO} font-size="{size}" letter-spacing="0.25" fill="{c}" '
         f'text-anchor="{anchor}" font-weight="{weight}">{s}</text>')
-    box = lambda x, y, w, h, title, sub, subc=MUTED: (
-        o.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="2.5" fill="#FFFFFF" stroke="{INK}" stroke-width="0.4"/>'),
-        o.append(f'<text x="{x + 3}" y="{y + 5.2}" font-size="2.9" font-weight="500" fill="{INK}">{title}</text>'),
-        label(x + 3, y + 8.6, sub, 1.8, subc))
+    BODY, PANEL, FIN = "#2B2B2A", "#1C1D1F", "#3A3A38"
+    GOLD, RED, GRN = "#B8892E", "#C8372D", "#15803D"
+    k = 0.4                     # drawing scale, mm per real mm: 92 x 68.3 x 57.2
+    L, D, Hh = 92 * k, 68.3 * k, 57.2 * k
+    y0 = 13
 
-    # phone with the Bluetooth window
-    o.append(f'<rect x="10" y="12" width="15" height="26" rx="3" fill="#FFFFFF" stroke="{INK}" stroke-width="0.5"/>')
-    o.append(f'<rect x="15" y="34.6" width="5" height="0.8" rx="0.4" fill="{INK}"/>')
-    label(17.5, 43, t["phone"], 2.1, INK, "middle", "700")
-    line("M27 25 H52", 0.6, BLUE, "1.2 1.2")
-    label(39.5, 22.6, t["bt_win"], 1.8, BLUE, "middle", "700")
-    label(39.5, 29.4, t["bt_name"], 1.8, MUTED, "middle")
+    def fins(x, w):
+        o.append(f'<rect x="{x}" y="{y0}" width="{w}" height="2.2" fill="{BODY}"/>')
+        n = int(w // 2.6)
+        for i in range(n):
+            o.append(f'<rect x="{x + 0.8 + i * 2.6:.2f}" y="{y0 - 1.4}" width="1.3" height="1.6" fill="{BODY}"/>')
 
-    # the gateway
-    gx, gy, gw, gh = 54, 13, 34, 24
-    o.append(f'<rect x="{gx}" y="{gy}" width="{gw}" height="{gh}" rx="4" fill="{INK}"/>')
-    s = 0.2
-    o.append(f'<path d="{BOLT}" fill="{CREAM}" transform="translate({gx + 6 - 22.8 * s:.2f},{gy + 8 - 23.3 * s:.2f}) scale({s})"/>')
-    label(gx + 10, gy + 9, t["gw"], 3, "#FAFAF7", weight="700")
-    label(gx + 10, gy + 12.8, t["gw_sub"], 1.7, "#B9B6AA")
+    # phone and the Bluetooth link
+    o.append(f'<rect x="6" y="{y0}" width="12" height="21" rx="2.6" fill="#FFFFFF" stroke="{INK}" stroke-width="0.5"/>')
+    o.append(f'<rect x="10" y="{y0 + 18}" width="4" height="0.7" rx="0.35" fill="{INK}"/>')
+    label(12, y0 + 26, t["phone"], 2, INK, weight="700")
 
-    # network up to Sourceful
-    line(f"M{gx + gw} {gy + 6} H122", 1.0)
-    label(105, gy + 4, t["net"], 1.8, INK, "middle", "700")
-    box(122, 8, 30, 12, t["cloud"], t["cloud_sub"])
-    # TCP device on the LAN
-    line(f"M{gx + gw} {gy + 13} H100 V31 H122", 0.8)
-    box(122, 24, 30, 12, t["tcp"], t["tcp_sub"])
-    # RTU device on RS-485
-    line(f"M{gx + gw / 2} {gy + gh} V44 H122", 0.8)
-    box(122, 38.5, 30, 10.5, t["rtu"], t["rtu_sub"])
-    # local check
-    o.append(f'<rect x="155" y="24" width="28" height="12" rx="2.5" fill="#FFFFFF" stroke="{INK}" stroke-width="0.4"/>')
-    o.append(f'<text x="158" y="29.2" font-size="2.9" font-weight="500" fill="{INK}">{t["laptop"]}</text>')
-    o.append(f'<text x="158" y="32.8" {MONO} font-size="1.55" fill="{SIGNAL}">{t["laptop_sub"]}</text>')
-    line("M152 30 H155", 0.5, MUTED, "0.8 0.8")
+    # side: USB-C and the pairing button, antenna on the left end
+    sx = 30
+    label(sx + L / 2, y0 - 4, t["v_side"], 1.9, MUTED)
+    o.append(f'<rect x="{sx - 2.6}" y="{y0 + 4}" width="2.8" height="2.2" rx="0.3" fill="{GOLD}"/>')
+    fins(sx, L)
+    o.append(f'<rect x="{sx}" y="{y0 + 1.6}" width="{L}" height="{Hh - 1.6}" rx="1.2" fill="{BODY}"/>')
+    o.append(f'<rect x="{sx + 1.6}" y="{y0 + 3.4}" width="{L * 0.72:.2f}" height="{Hh - 6:.2f}" rx="0.6" fill="{PANEL}"/>')
+    bx, by = sx + 10.5, y0 + 10.5
+    o.append(f'<circle cx="{bx}" cy="{by}" r="1.7" fill="#2F3134" stroke="#55575B" stroke-width="0.3"/>')
+    ux, uy = sx + 4.2, y0 + 15.6
+    o.append(f'<rect x="{ux - 1.8}" y="{uy - 0.6}" width="3.6" height="1.3" rx="0.65" fill="none" stroke="#8C8A80" stroke-width="0.3"/>')
+    line(f"M{ux} {uy + 1} V{y0 + Hh + 3}", 0.25, MUTED)
+    label(ux, y0 + Hh + 5.2, t["usbc"], 1.8, INK, weight="700")
+    line(f"M{bx} {by + 2} V{y0 + Hh + 7}", 0.25, MUTED)
+    label(bx + 1, y0 + Hh + 9.2, t["pair"], 1.8, INK, weight="700")
+    line(f"M18 {y0 + 9} H{bx - 2.4}", 0.6, BLUE, "1.2 1.2")
+    label(22.5, y0 + 6.8, "BLE", 1.8, BLUE, weight="700")
 
-    for n, (mx, my) in enumerate(((gx, gy), (39.5, 25), (gx + gw / 2, 44)), 1):
+    # front: antenna, TF slot, LEDs
+    fx = sx + L + 9
+    label(fx + D / 2, y0 - 4, t["v_front"], 1.9, MUTED)
+    fins(fx, D)
+    o.append(f'<rect x="{fx}" y="{y0 + 1.6}" width="{D}" height="{Hh - 1.6}" rx="1.2" fill="{BODY}"/>')
+    o.append(f'<circle cx="{fx + 5}" cy="{y0 + 6}" r="1.7" fill="{GOLD}"/><circle cx="{fx + 5}" cy="{y0 + 6}" r="0.6" fill="#7A5A1E"/>')
+    for cx, cy in ((fx + D - 5, y0 + 6), (fx + 5, y0 + 12.4), (fx + D - 5, y0 + 12.4)):
+        o.append(f'<circle cx="{cx}" cy="{cy}" r="1.9" fill="{FIN}"/>')
+    o.append(f'<rect x="{fx + D / 2 - 3.4}" y="{y0 + 15.6}" width="6.8" height="1.8" rx="0.4" fill="{PANEL}" stroke="#55575B" stroke-width="0.25"/>')
+    lx, ly = fx + D - 6.2, y0 + 16.2
+    o.append(f'<circle cx="{lx}" cy="{ly}" r="0.55" fill="{RED}"/><circle cx="{lx + 1.6}" cy="{ly}" r="0.55" fill="{GRN}"/>')
+    line(f"M{lx + 0.8} {ly + 1} V{y0 + Hh + 3}", 0.25, MUTED)
+    label(lx + 0.8, y0 + Hh + 5.2, t["leds"], 1.8, INK, weight="700")
+    label(lx + 0.8, y0 + Hh + 7.6, t["leds_sub"], 1.6)
+
+    # back: Ethernet
+    ex = fx + D + 9
+    label(ex + D / 2, y0 - 4, t["v_back"], 1.9, MUTED)
+    fins(ex, D)
+    o.append(f'<rect x="{ex}" y="{y0 + 1.6}" width="{D}" height="{Hh - 1.6}" rx="1.2" fill="{BODY}"/>')
+    for i in range(2):
+        o.append(f'<rect x="{ex + 3 + i * 6.4}" y="{y0 + 10.5}" width="5" height="5" rx="0.5" fill="{PANEL}" stroke="#44464A" stroke-width="0.2"/>')
+    jx, jy = ex + D - 9.5, y0 + 10.2
+    o.append(f'<rect x="{jx}" y="{jy}" width="6.4" height="5.4" rx="0.3" fill="#9A9890"/>')
+    o.append(f'<path d="M{jx + 1} {jy + 1} H{jx + 5.4} V{jy + 4} H{jx + 4.2} V{jy + 4.8} H{jx + 2.2} V{jy + 4} H{jx + 1} Z" fill="{PANEL}"/>')
+    line(f"M{jx + 3.2} {jy + 5.6} V{y0 + Hh + 3}", 0.25, MUTED)
+    label(jx + 3.2, y0 + Hh + 5.2, t["eth"], 1.8, INK, weight="700")
+
+    # network: Ethernet or Wi-Fi to Sourceful and the inverter
+    nx = ex + D + 5
+    line(f"M{jx + 6.4} {jy + 2.7} H{nx + 3}", 0.9)
+    box = lambda y, a, b: (
+        o.append(f'<rect x="{nx + 3}" y="{y}" width="{W - nx - 7}" height="11" rx="2.2" fill="#FFFFFF" stroke="{INK}" stroke-width="0.4"/>'),
+        o.append(f'<text x="{nx + 5.5}" y="{y + 4.8}" font-size="2.7" font-weight="500" fill="{INK}">{a}</text>'),
+        label(nx + 5.5, y + 8.2, b, 1.6, MUTED, "start"))
+    line(f"M{nx + 1} {jy + 2.7} V{y0 + 1} H{nx + 3}", 0.9)
+    line(f"M{nx + 1} {jy + 2.7} V{y0 + 22} H{nx + 3}", 0.9)
+    box(y0 - 4.5, t["cloud"], t["cloud_sub"])
+    box(y0 + 16.5, t["tcp"], t["tcp_sub"])
+
+    for n, (mx, my) in enumerate(((sx + L - 1.5, y0 + Hh - 1.5), (bx + 3.2, by - 3), (nx + 1, jy + 2.7)), 1):
         o.append(marker(n, mx, my))
-    o.append(marker(5, 182.5, 24))
     o.append('</svg>')
     return "".join(o)
 
@@ -198,7 +237,7 @@ BODY = """
         <div><span class="chip">{{IC_NET}}</span><div><div class="t">{{net_t}}</div><div class="d">{{net_d}}</div></div></div>
         <div><span class="chip">{{IC_PHONE}}</span><div><div class="t">{{app_t}}</div><div class="d">{{app_d}}</div></div></div>
         <div><span class="chip">{{IC_LIST}}</span><div><div class="t">{{dev_t}}</div><div class="d">{{dev_d}}</div></div></div>
-        <div><span class="chip">{{IC_WIFI}}</span><div><div class="t">{{bt_t}}</div><div class="d">{{bt_d}}</div></div></div>
+        <div><span class="chip">{{IC_PLUG}}</span><div><div class="t">{{bt_t}}</div><div class="d">{{bt_d}}</div></div></div>
       </div>
     </div>
   </div>
@@ -281,6 +320,6 @@ def build(lang):
     values = {k: v for k, v in t.items() if isinstance(v, str)}
     values.update({
         "LOGO": LOGO_LIGHT, "IC_NET": IC_NET, "IC_PHONE": IC_PHONE, "IC_LIST": IC_LIST,
-        "IC_WIFI": IC_WIFI, "HERO": hero(t), "APP_TRACK": track, "TICK": TICK,
+        "IC_PLUG": IC_PLUG, "HERO": hero(t), "APP_TRACK": track, "TICK": TICK,
     })
     return page(lang, t["title"], fill(BODY, values), EXTRA_CSS)

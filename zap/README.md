@@ -77,10 +77,10 @@ The meter powers the Zap. Add USB-C power (5 V, at least 1 A) when:
 
 On the same network as the Zap:
 
-- `http://zap.local/` shows the Zap's status, including Wi-Fi signal strength.
-- `http://zap.local/api/data/p1/obis` shows the raw meter data.
+- `http://zap.local/api/network` shows `"internetConnected": true` and `"mqttConnected": true` when the Zap reaches Sourceful, and the Wi-Fi signal as `rssi`.
+- `http://zap.local/api/devices` lists the meter; its `sn` starts with `p1m-`. `http://zap.local/api/devices/<sn>/data/json` shows the live meter values.
 
-If `zap.local` does not answer, find the Zap in the router's device list (`esp32c3-…`) and use its IP address.
+`zap.local` answers for one Zap per network. Every Zap also answers on `zap-<serial>.local`, and the router lists it as `zap-<serial>`. Checked on Zaps with firmware 2.3.13 and 2.3.25.
 
 ## Add an inverter
 
@@ -141,7 +141,7 @@ The app has no restart button. Use the button.
 | Blue blinks once at start and never again | The Zap cannot reach the saved Wi-Fi: new router or password, a 5 GHz-only router, MAC filtering, a full DHCP pool, or a metal cabinet | Hold the button 5–10 s; solid blue means it worked. Set up Wi-Fi again on a 2.4 GHz network. |
 | The app does not find the Zap | Blue is not solid, or the phone is too far away | Turn Bluetooth on, stand close. If the Zap was set up before, hold the button 5–10 s. |
 | No green light in P1 IN | No power from the meter | Check the cable. Power the Zap with USB-C. |
-| Data at `zap.local` but not in the app | No internet, or the Zap needs a restart | Check the internet connection. Unplug the Zap for 10 seconds. |
+| Meter data at `zap.local/api/devices` but not in the app | `"mqttConnected": false` at `/api/network`: no internet, or the Zap needs a restart | Check the internet connection. Unplug the Zap for 10 seconds. |
 | The Zap seems stuck | | Hold the button 2–5 s and let go. |
 | The Zap is hot, smells burnt or is discoloured | Wrong port or damage | Unplug it from the meter and USB at once. Do not reconnect it. Send photos to Sourceful support. |
 
@@ -171,12 +171,14 @@ These are places where the sources disagree. The steps above follow the app and 
 - The support articles give 5 s and 10 s for a reset. The firmware does both: 5 s clears Wi-Fi, 10 s is a full factory reset.
 - The terminal on the OUT side is called **RS485 Input** in the product images. The reference manual says it is reserved for future sensors and not active, while some brand guides wire inverters to it.
 - "Zap beyond P1 meters" names firmware 1.2.1 and 1.6.20. The firmware repository has used 2.x since November 2025.
+- The "no data in the app" article points to `http://zap.local/api/data/p1/obis` and an `esp32c3-…` name in the router. On firmware 2.3.13 and 2.3.25 that address returns 404 and the router shows `zap-<serial>`. The local status page at `http://zap.local/` is only in the testnet builds (2.3.24 and later), not in the stable 2.3.17.
 - SAJ is not on the support site. That section comes from Sourceful's internal installation brief.
 
 ## Sources
 
 - Support articles on support.sourceful.energy, all updated 2026-06-02: [reference manual](https://support.sourceful.energy/en/zap-reference-manual), [connect Zap to the meter](https://support.sourceful.energy/en/how-to-connect-zap-to-your-electricity-meter), [connect Zap to an inverter](https://support.sourceful.energy/en/how-to-connect-zap-to-your-inverter), [compatible meters](https://support.sourceful.energy/en/which-electricity-meters-are-compatible-with-sourceful-energy), [compatible inverters](https://support.sourceful.energy/en/which-inverters-are-compatible-with-sourceful-energy), [Modbus TCP on the inverter](https://support.sourceful.energy/en/how-do-i-know-if-modbus-tcp-is-activated-on-my-inverter), [reconfigure Wi-Fi](https://support.sourceful.energy/en/zap-reconfigure-wifi-firmware-v2-2-0), [no data in the app](https://support.sourceful.energy/en/troubleshooting-zap-connected-but-no-data-in-app), [blue LED blinks then turns off](https://support.sourceful.energy/en/troubleshooting-blue-status-led-blinking-then-turning-off), [overheating or wrong port](https://support.sourceful.energy/en/troubleshooting-zap-overheating-or-connected-to-wrong-port), [safety information](https://support.sourceful.energy/en/zap-safety-information)
 - Button timings: `srcfl/srcful-zap-x-firmware`, `fw_controller/main/main_loop.cpp` on `main` (6da453f9)
+- Local endpoints and names: `srcfl/srcful-zap-x-firmware`, `fw_controller/API.md` and `components/wifi/wifi_manager.cpp`; read-only checks on two Zaps (firmware 2.3.13 and 2.3.25), 2026-10-15
 - App flows and labels: `srcfl/srcful-flutter-app` at 9800165 (app 2.7.9), `lib/screens/zap_onboard_screen.dart`, `zap_wifi_setup_screen.dart`, `zap_detail/zap_detail_screen.dart`, `device_onboard/`, `lib/l10n/app_en_US.arb`
 - Product images: `srcfl/srcful-marketing-website`, `public/assets/images/zap/`
 - SAJ: Sourceful's internal installation brief, 2026-10-14

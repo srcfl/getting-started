@@ -1,62 +1,87 @@
 # Blixt: kom igång
 
-> **Gäller:** Blixt-gatewayen på EDATEC ED-IPC3630 (Pi CM5), dashboard 3.x. ED-IPC1100 där det står.
-> **Senast verifierad:** 2026-10-15, mot `blixt-gateway` på `main` (491197b)
+> **Gäller:** Blixt-gatewayen på EDATEC ED-IPC3630 (IPC3600-serien) eller ED-IPC2210, dashboard 3.x
+> **Senast verifierad:** 2026-10-15, mot `blixt-gateway` på `main` (491197b) och EDATECs manualer
 > **För:** installatören som driftsätter en Blixt på en anläggning
 
-Blixt är en industri-PC som styr batterier, hybridväxelriktare, mätare och laddboxar på kommersiella och industriella anläggningar. Den läser och styr enheterna över Modbus RTU eller TCP, håller anläggningens säkring och exportgräns, och skickar mätvärden till Sourceful. Allt ställs in i Blixts lokala dashboard.
+Blixt är en industri-gateway som styr batterier, hybridväxelriktare, mätare och laddboxar på kommersiella och industriella anläggningar. Den läser och styr enheterna över Modbus RTU eller TCP, håller anläggningens säkring och exportgräns, och skickar mätvärden till Sourceful. Allt ställs in i Blixts lokala dashboard.
 
 **Ska du ut på plats?** Skriv ut one-pagern: [Svenska](blixt-one-pager-sv.pdf) · [English](blixt-one-pager-en.pdf). English: [README.md](README.md).
 
 [![Blixt-one-pagern](images/one-pager-sv.png)](blixt-one-pager-sv.pdf)
+
+## De två modellerna
+
+Båda sitter upprätt på en DIN-skena, med antennerna upptill och alla kontakter på den smala framsidan.
+
+| | IPC3630 | IPC2210 |
+| --- | --- | --- |
+| Storlek (front × höjd × djup) | 55 × 143 × 100 mm | 34 × 143 × 100 mm |
+| Ström | 9–36 V DC, grön 2-polig plugg, **VIN+** överst, **GND** under | Samma |
+| Ethernet | **1000M** (anläggningens nät) och **100M** | **ETH0**, **ETH1**, **ETH2**, alla gigabit |
+| RS-485 | **COM2** och **COM4** på den undre 6-poliga plinten | Ingen |
+| Lampor | **PWR** röd, **ACT** grön, **COM1–COM4**, plus lampor för in- och utgångar som Blixt inte använder | **PWR** röd, **ACT** grön |
+| Antenner | WiFi/BT och 4G upptill, om enheten är beställd med dem | Samma |
+
+IPC3630:s front uppifrån och ned: lamporna, strömpluggen, den övre serieplinten (COM1 och COM3), den undre serieplinten (COM2 och COM4), sedan Ethernet-portarna 1000M och 100M. Plintarna till höger om dem (ingångar, CAN, utgångar) används inte av Blixt.
 
 ## Det här gör Sourceful innan du åker
 
 Du ska få en enhet som är förberedd. Fråga Sourceful om något av det här är oklart innan du åker:
 
 - Enheten har rätt programvara och är kopplad till rätt miljö hos Sourceful.
-- Enhetens identitet är registrerad hos Sourceful. Annars kommer inga mätvärden fram.
+- Enhetens identitet är registrerad hos Sourceful. Annars kommer inga mätvärden fram. Det gör Sourceful, det finns inget steg för installatören.
 - På IPC3630: serieportarna är aktiverade för enheten.
+- Vem som terminerar RS-485-bussen. Blixtens egna 120 Ω-byglar sitter på kretskortet inuti höljet och är öppna från fabrik.
 - Du vet vilka växelriktare, batterier och mätare som ska kopplas in, och att det finns en drivrutin för varje modell.
 
 > **Varning:** Är anläggningen med på Svenska kraftnäts stödtjänstmarknad: ändra ingenting i dashboarden, starta inte om och dra inte ur något utan att Sourceful har godkänt just det.
 
 ## Ta med
 
-- [ ] Blixt med antenner (4G och WiFi/BT)
-- [ ] Strömförsörjning 9–36 V DC (IPC3630)
+- [ ] Blixt, med antenner om den har det
+- [ ] Strömförsörjning 9–36 V DC
 - [ ] Ethernetkabel till anläggningens nät, med DHCP
-- [ ] Partvinnad kabel för RS-485 om någon enhet ska kopplas seriellt
+- [ ] Partvinnad kabel för RS-485 om någon enhet ska kopplas seriellt (bara IPC3630)
 - [ ] Modell, IP-adress, port och unit-id för varje växelriktare, batteri och mätare
 - [ ] Säkringsstorlek, antal faser och spänning för anläggningen
-- [ ] En dator på samma nät som Blixt
+- [ ] En laptop på samma nät som Blixt
 
 ## 1. Montera och anslut
 
-1. Skruva fast antennerna: **4G** och **WiFi/BT**.
-2. Anslut Ethernet till anläggningens nät. Blixt hämtar adress via DHCP. 4G är reservförbindelse.
-3. Anslut strömmen. IPC3630: 2-polig plint, **stift 1 = GND**, **stift 2 = VIN+**, 9–36 V DC. Kontrollera polariteten innan du slår på.
+1. Snäpp fast Blixt på DIN-skenan, upprätt, med antennerna uppåt. Skruva fast antennerna: **WiFi/BT** och **4G**.
+2. Anslut Ethernet till anläggningens nät. IPC3630: porten **1000M**. IPC2210: fråga Sourceful vilken av ETH0–ETH2 som ska användas. Blixt hämtar adress via DHCP. 4G är reservförbindelse.
+3. Anslut strömmen i den gröna pluggen: **VIN+** överst, **GND** under, 9–36 V DC. Kontrollera polariteten innan du slår på.
 
-Använd inte **PROGRAMMING**-porten. Den är bara till för att avbilda enheten.
+Använd inte **PROGRAMMING**-porten (Micro-USB, under DIN-fästet). Den är bara till för att avbilda enheten.
+
+- **PWR röd, fast:** enheten har ström. **PWR blinkar:** matningen är dålig. Bryt strömmen och kontrollera den.
+- **ACT grön:** blinkar när lagringen arbetar.
 
 Enheten är uppkopplad efter ungefär en minut. Första gången hämtar den sin programvara, ungefär 1,6 GB. Det tar 10–20 minuter, längre på 4G. Dra inte ur strömmen under tiden.
 
-## 2. Koppla RS-485 (IPC3630)
+## 2. Koppla RS-485 (bara IPC3630)
 
-> **Varning:** Använd bara **COM2** eller **COM4** för Modbus. COM1 och COM3 tappar korta Modbus-ramar.
+Använd den **undre** serieplinten. Den vänstra kolumnen är COM2, den högra COM4. Etiketterna står tryckta bredvid plinten.
 
-| Port | B | A | GND | Enhet i dashboarden | Terminering |
-| --- | --- | --- | --- | --- | --- |
-| COM2 | stift 1 | stift 3 | stift 5 eller 6 | `/dev/ttyAMA4` | bygel J22 |
-| COM4 | stift 2 | stift 4 | stift 5 eller 6 | `/dev/ttyAMA3` | bygel J24 |
+| Port | Etiketter uppifrån och ned | Enhet i dashboarden |
+| --- | --- | --- |
+| COM2 | **IGND**, **A2**, **B2** (vänster kolumn) | `/dev/ttyAMA4` |
+| COM4 | **IGND**, **A4**, **B4** (höger kolumn) | `/dev/ttyAMA3` |
 
-1. Koppla A till A, B till B och GND till GND. Portarna är isolerade, så GND ska med.
-2. Terminera bara bussens två ändar med 120 Ω. Är Blixt i ena änden: sätt bygeln för porten. Byglarna sitter öppna från fabrik.
+1. Koppla A till A, B till B och IGND till enhetens GND. Portarna är isolerade, så GND ska med.
+2. Terminera bara bussens två ändar med 120 Ω. Är Blixt i ena änden måste dess bygel sitta i, inuti höljet (J22 för COM2, J24 för COM4). Kom överens om det med Sourceful innan du åker.
 3. En enhet kan bara ha en Modbus-master. Behöver något annat system läsa samma enhet: använd **Gateway → Modbus proxy** i dashboarden i stället för en andra master.
+
+Lampan **COM2** eller **COM4** blinkar när det går trafik på linjen. Det är en snabb kontroll av kablaget.
+
+> **Varning:** Använd inte den övre plinten (COM1 och COM3) för Modbus. De är inte verifierade för det, och på vissa varianter är de RS-232.
+
+IPC2210 har ingen serieport. Koppla dess enheter över nätet (Modbus TCP).
 
 ## 3. Öppna dashboarden
 
-Från en dator på samma nät: `http://blixt-<serienummer>.local/`.
+Från en laptop på samma nät: `http://blixt-<serienummer>.local/`.
 
 Använd serienumret i adressen. Bara `blixt.local` blir fel när det finns fler än en Blixt på nätet. Dashboarden svarar inte på 4G-adressen.
 
@@ -79,9 +104,9 @@ För varje växelriktare, batteri och mätare:
 3. Lås alltid en version. En enhet utan låst version följer senaste versionen och kan ändra beteende utan att någon märker det.
 4. Välj anslutning:
    - **TCP:** IP-adress, port (oftast 502) och unit-id.
-   - **RTU:** serieport (`/dev/ttyAMA4` för COM2, `/dev/ttyAMA3` för COM4), hastighet, paritet och unit-id.
+   - **RTU** (IPC3630): serieport (`/dev/ttyAMA4` för COM2, `/dev/ttyAMA3` för COM4), hastighet, paritet och unit-id.
 
-> **Varning:** I RTU-formuläret är `/dev/ttyAMA0` förifyllt. Det är COM3. Byt till COM2 eller COM4.
+> **Varning:** I RTU-formuläret är `/dev/ttyAMA0` förifyllt. På IPC3630 är det COM3. Byt till COM2 eller COM4.
 
 ## 6. Klart när
 
@@ -95,31 +120,38 @@ Kopplingen till en aggregator görs av Sourceful och inte på plats. Medan en ag
 
 | Det du ser | Troligen | Gör så här |
 | --- | --- | --- |
-| En RTU-enhet visar `timeout` eller `no data` | Fel port (COM1, COM3 eller förifyllda `/dev/ttyAMA0`), A och B förväxlade, fel hastighet eller unit-id, ingen terminering | Använd COM2 eller COM4. Kontrollera A/B, inställningarna och termineringen. |
-| Samma skräpdata oavsett hastighet, på IPC3630 | Serieportarna är inte aktiverade för enheten | Kontakta Sourceful. |
+| En RTU-enhet visar `timeout` eller `no data` | Fel plint eller port (den övre plinten, eller förifyllda `/dev/ttyAMA0`), A och B förväxlade, fel hastighet eller unit-id, ingen terminering | Använd COM2 eller COM4 på den undre plinten. Kontrollera A/B, inställningarna och termineringen. |
+| COM-lampan blinkar inte | Ingen trafik på linjen | Kontrollera att enheten har samma port i dashboarden som kabeln sitter i. |
+| Samma skräpdata oavsett hastighet | Serieportarna är inte aktiverade för enheten | Kontakta Sourceful. |
 | Fel på serieporten efter att du bytt port och startat om styrningen | Den gamla porten hänger kvar | Kontakta Sourceful för en omstart av styrtjänsten. |
-| Dashboarden öppnas inte | Fel adress, eller flera Blixt med samma namn | Använd `blixt-<serienummer>.local` från en dator på samma nät. |
+| PWR blinkar | Matningen räcker inte eller är fel | Bryt strömmen och kontrollera matningen: 9–36 V DC, VIN+ överst. |
+| Dashboarden öppnas inte | Fel adress, eller flera Blixt med samma namn | Använd `blixt-<serienummer>.local` från en laptop på samma nät. |
 | Reglagen är gråa | En aggregator styr | Det är avsiktligt. Kontakta Sourceful om du behöver styra lokalt. |
 | Batteriet laddar men laddar inte ur | Växelriktarens skydd mot export (anti-backflow) är på | Kontrollera inställningen i växelriktaren. |
 | Effekten stannar strax under börvärdet | Säkringsgränsen begränsar | Kontrollera **Site configuration**. |
-| Enheten dyker aldrig upp hos Sourceful | Antenn saknas (IPC1100), första uppdateringen pågår, eller identiteten är inte registrerad | Kontrollera antennen, vänta 20 minuter, kontakta sedan Sourceful. |
+| Enheten dyker aldrig upp hos Sourceful | Första uppdateringen pågår, eller identiteten är inte registrerad | Vänta 20 minuter, kontakta sedan Sourceful. |
 
 ## Öppna frågor
 
-- Vilken hårdvara är produkten för nya installationer, IPC3630 eller IPC1100? Den här guiden beskriver IPC3630, för den är bäst dokumenterad.
-- IPC1100: strömområde, RS-485-plint och terminering saknar dokumentation.
-- Vem registrerar enhetens identitet, och finns det ett steg för installatören?
+- Vilken modell är produkten för nya kundinstallationer, IPC3630 eller IPC2210? Ingen av dem körs på en kundanläggning utanför stödtjänstmarknaden i dag.
+- IPC2210: vilken av ETH0–ETH2 anläggningens nät ska sitta i är inte dokumenterat.
+- IPC2210: serieenheter skulle kräva en USB-till-RS-485-adapter. Det är varken dokumenterat eller testat för Blixt.
+- Hur termineringsbyglarna inuti IPC3630 sätts, och av vem, är inte dokumenterat.
 - Är serienumret på enheten samma som det som används i `blixt-<serienummer>.local`?
 - Den befintliga snabbstarten i `blixt-gateway` säger att Blixt drivs med USB-C 5 V. Det stämmer inte med någon av modellerna.
 
 ## Källor
 
+- EDATEC: [IPC3630 användarmanual](https://edatec.cn/docs/ipc3630/um/1-hardware/) och [datablad](https://edatec.cn/docs/ipc3630/ds/) (frontpanel, strömplugg, serieplintar och stift, termineringsbyglar, lampor, portar), [IPC2200 användarmanual](https://edatec.cn/docs/ipc2200/um/1-hardware/) och [datablad](https://edatec.cn/docs/ipc2200/ds/) (IPC2210:s frontpanel, ström, Ethernet)
+
 Repot `srcfl/blixt-gateway` är internt. Sökvägarna gäller `main` vid 491197b.
 
-- `README.md`: vad Blixt är, provisionering, första uppstart, drivrutiner från registret
-- `docs/specs/ipc-3600-specs.md`: ström, portar, COM-portar, terminering, isolering
+- `README.md`: vad Blixt är, provisionering och registrering av identiteten (görs av Sourceful med en admin-nyckel), första uppstart, drivrutiner från registret
+- `docs/specs/ipc-3600-specs.md`: COM-portarna och deras Linux-enheter, vilka portar som används för Modbus, lamporna under balenaOS
 - `docs/gateway/DASHBOARD-ACCESS.md`: adress till dashboarden och nätskydd
 - `services/dashboard/README.md`: Devices-statusar, aggregatorlås, drivrutinsval och versionslåsning
 - `docs/specs/site-limits.md`: säkring, faser och krav på anläggningens mätare
 - `docs/gateway/Sourceful-Gateway-Battery-and-SvK-Tests.html`: batteritestet i Manual-läge
 - `services/dashboard/web/src/.../DeviceForm.tsx`: förifyllda `/dev/ttyAMA0` och anslutningstyper
+- Flottor och enheter, listade med bara läsning 2026-10-15
+- One-pagern byggs från [onepagers/blixt.py](../onepagers/blixt.py)
