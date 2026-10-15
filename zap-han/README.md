@@ -118,7 +118,9 @@ Meter data can take up to two minutes to appear.
 | The app does not find the Zap | Blue is not solid, or the phone is too far away | Stand close. If the Zap was set up before, hold the button 5–10 s. |
 | Meter added, but no data after a few minutes | Encrypted meter, or a brand that has not been checked | Contact Sourceful. |
 
-## Open questions
+## Differences from the support site
+
+The steps above follow the firmware and the app. The support site should be corrected here:
 
 - The support site disagrees about HAN: the English pages call RJ45 HAN ports incompatible and say they give 24–36 V, the Swedish meter page lists HAN as a label for RJ12 ports, and one page says HAN ports give no power.
 

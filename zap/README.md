@@ -176,9 +176,9 @@ SAJ is not in the mainnet app. Do not add an SAJ as another inverter.
 
 For the SAJ integration, the Zap needs internet and must be on the same network as the SAJ, or connected to it by serial. Sourceful does the integration, not the installer. It takes about half a day once that is in place.
 
-## Open questions
+## Differences from the support site
 
-These are places where the sources disagree. The steps above follow the app and the firmware.
+The support articles on support.sourceful.energy say otherwise in these places. The steps above follow the app 2.7.9 and the firmware, which is what you see on site. The articles should be corrected.
 
 - The support articles say **Connect a Zap** or **Register a Zap**. App 2.7.9 has no such button; it says **Onboard a new Zap** or **Add a new Zap**.
 - The Wi-Fi article lists **Reconfigure Wi-Fi → Connect → Configure Network**. In the app the order is **Reconfigure WiFi**, pick the Zap, **Configure network**, then **Connect**.

@@ -118,7 +118,9 @@ Det kan ta upp till två minuter innan mätvärden visas.
 | Appen hittar inte Zap | Blå lyser inte fast, eller telefonen är för långt bort | Stå nära. Har Zap varit uppsatt förut: håll knappen 5–10 s. |
 | Mätaren är tillagd men ingen data efter några minuter | Krypterad mätare, eller ett märke som inte är kontrollerat | Kontakta Sourceful. |
 
-## Öppna frågor
+## Skillnader mot supportsajten
+
+Stegen ovan följer firmware och appen. Supportsajten bör rättas här:
 
 - Supportsajten säger emot sig själv om HAN: de engelska sidorna kallar RJ45 HAN inkompatibelt och säger att det ger 24–36 V, den svenska mätarsidan räknar HAN som en etikett på RJ12-uttag, och en sida säger att HAN-portar inte ger någon ström.
 

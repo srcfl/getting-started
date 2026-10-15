@@ -178,9 +178,9 @@ SAJ finns inte i mainnet-appen. Lägg inte till en SAJ som en annan växelriktar
 
 För SAJ-integrationen ska Zap ha internet och sitta på samma nät som SAJ, eller vara seriellt kopplad till den. Integrationen gör Sourceful, inte installatören. Den tar ungefär en halv dag när det är på plats.
 
-## Öppna frågor
+## Skillnader mot supportsajten
 
-Här säger källorna emot varandra. Stegen ovan följer appen och firmware.
+Supportartiklarna på support.sourceful.energy säger något annat på de här punkterna. Stegen ovan följer appen 2.7.9 och firmware, alltså det du ser på plats. Artiklarna bör rättas.
 
 - Supportartiklarna säger **Connect a Zap** eller **Register a Zap**. Appen 2.7.9 har ingen sådan knapp. Den säger **Lägg till en ny Zap** (på engelska **Onboard a new Zap** eller **Add a new Zap**).
 - Wifi-artikeln anger **Reconfigure Wi-Fi → Connect → Configure Network**. I appen är ordningen **Konfigurera om WiFi**, välj Zappen, **Konfigurera Nätverk**, sedan **Anslut**.
