@@ -38,6 +38,7 @@ Du ska få en enhet som är förberedd. Fråga Sourceful om något av det här �
 - På IPC3630: serieportarna är aktiverade för enheten.
 - Vem som terminerar RS-485-bussen. Blixt har ingen terminering från fabrik: dess 120 Ω-byglar sitter på kretskortet inuti höljet och är öppna.
 - Du vet vilka växelriktare, batterier och mätare som ska kopplas in, och att det finns en drivrutin för varje modell.
+- Du har enhetens dashboard-adress, `http://blixt-<serienummer>.local/`.
 
 > **Varning:** Är anläggningen med på Svenska kraftnäts stödtjänstmarknad: ändra ingenting i dashboarden, starta inte om och dra inte ur något utan att Sourceful har godkänt just det.
 
@@ -85,9 +86,9 @@ IPC2210 har ingen serieport. Koppla dess enheter över nätet (Modbus TCP).
 
 ## 3. Öppna dashboarden
 
-Från en laptop på samma nät: `http://blixt-<serienummer>.local/`.
+Från en laptop på samma nät: `http://blixt-<serienummer>.local/`. Sourceful ger dig det exakta namnet innan du åker; det står inte på enheten. Du kan också använda Blixtens IP-adress från anläggningens router.
 
-Använd serienumret i adressen. Bara `blixt.local` blir fel när det finns fler än en Blixt på nätet. Dashboarden svarar inte på 4G-adressen.
+Bara `blixt.local` blir fel när det finns fler än en Blixt på nätet. Dashboarden svarar inte på 4G-adressen.
 
 > **Varning:** Den som når dashboarden kan styra batteriet. Ha Blixt på ett skyddat nät, och öppna den aldrig mot internet.
 
@@ -139,7 +140,6 @@ Kopplingen till en aggregator görs av Sourceful och inte på plats. Medan en ag
 
 - IPC2210: serieenheter skulle kräva en USB-till-RS-485-adapter. Det är varken dokumenterat eller testat för Blixt.
 - När Blixt sitter i en buss-ände: sätter Sourceful bygeln före leverans, eller sätter installatören ett motstånd vid plinten? EDATEC beskriver inte hur höljet öppnas.
-- Är serienumret på enheten samma som det som används i `blixt-<serienummer>.local`?
 - Den befintliga snabbstarten i `blixt-gateway` säger att Blixt drivs med USB-C 5 V. Det stämmer inte med någon av modellerna.
 
 ## Källor

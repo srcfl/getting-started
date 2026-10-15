@@ -38,6 +38,7 @@ You should receive a prepared unit. Ask Sourceful before you leave if any of thi
 - On the IPC3630: the serial ports are enabled for the unit.
 - Who terminates the RS-485 bus. The Blixt has no termination from the factory: its 120 Ω jumpers sit on the circuit board inside the case and are open.
 - You know which inverters, batteries and meters to connect, and there is a driver for each model.
+- You have the unit's dashboard address, `http://blixt-<serial>.local/`.
 
 > **Warning:** If the site takes part in Svenska kraftnät's reserve market: change nothing in the dashboard, do not restart and do not unplug anything without Sourceful's approval for that exact action.
 
@@ -85,9 +86,9 @@ The IPC2210 has no serial port. Connect its devices over the network (Modbus TCP
 
 ## 3. Open the dashboard
 
-From a laptop on the same network: `http://blixt-<serial>.local/`.
+From a laptop on the same network: `http://blixt-<serial>.local/`. Sourceful gives you the exact name before you go; it is not printed on the unit. You can also use the Blixt's IP address from the site router.
 
-Use the serial in the address. Plain `blixt.local` goes wrong when there is more than one Blixt on the network. The dashboard does not answer on the 4G address.
+Plain `blixt.local` goes wrong when there is more than one Blixt on the network. The dashboard does not answer on the 4G address.
 
 > **Warning:** Whoever reaches the dashboard can control the battery. Keep the Blixt on a protected network, and never open it to the internet.
 
@@ -139,7 +140,6 @@ Sourceful connects the Blixt to an aggregator, not the installer. While an aggre
 
 - IPC2210: serial devices would need a USB-to-RS-485 adapter. That is not documented or tested for Blixt.
 - When the Blixt sits at a bus end: does Sourceful fit the jumper before delivery, or does the installer add a resistor at the plug? EDATEC gives no procedure for opening the case.
-- Is the serial printed on the unit the same one used in `blixt-<serial>.local`?
 - The existing quick start in `blixt-gateway` says Blixt runs on USB-C 5 V. That matches neither model.
 
 ## Sources

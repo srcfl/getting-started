@@ -33,7 +33,7 @@ T = {
         "s2_p": "Bara IPC3630: den undre plinten, <b>COM2</b> till vänster eller <b>COM4</b> till höger. COM-lampan blinkar när Modbus-trafik går.",
         "s2_q": "Inte terminerad från fabrik. I en buss-ände: bestäm vem som sätter 120 Ω. IPC2210 har ingen serieport.",
         "s3_h": "Öppna dashboarden",
-        "s3_p": "Från laptopen: <b>http://blixt-&lt;serie&gt;.local/</b>. Bara <code>blixt.local</code> blir fel med flera Blixt. Svarar inte på 4G.",
+        "s3_p": "Från laptopen: <b>http://blixt-&lt;serie&gt;.local/</b>, namnet får du av Sourceful. Eller IP-adressen från routern. Svarar inte på 4G.",
         "s3_q": "Den som når dashboarden kan styra batteriet. Skyddat nät, aldrig mot internet.",
         "s4_h": "Ställ in anläggningen", "s4_micro": "Före all styrning",
         "s4_list": [
@@ -86,7 +86,7 @@ T = {
         "s2_p": "IPC3630 only: the lower plug, <b>COM2</b> on the left or <b>COM4</b> on the right. The COM light blinks when Modbus traffic flows.",
         "s2_q": "Not terminated from the factory. At a bus end, agree who fits 120 Ω. The IPC2210 has no serial port.",
         "s3_h": "Open the dashboard",
-        "s3_p": "From the laptop: <b>http://blixt-&lt;serial&gt;.local/</b>. Plain <code>blixt.local</code> goes wrong with several Blixts. No answer over 4G.",
+        "s3_p": "From the laptop: <b>http://blixt-&lt;serial&gt;.local/</b>; Sourceful gives you the name. Or the IP from the router. No answer over 4G.",
         "s3_q": "Whoever reaches the dashboard can control the battery. Protected network, never the internet.",
         "s4_h": "Set up the site", "s4_micro": "Before any control",
         "s4_list": [
