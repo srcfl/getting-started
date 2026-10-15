@@ -8,15 +8,15 @@ and srcful-flutter-app) and the reference manual on support.sourceful.energy:
 Button timings come from srcful-zap-x-firmware fw_controller/main/main_loop.cpp:
   >2 s slow blink -> restart, >5 s fast blink -> clear Wi-Fi, >10 s solid -> factory reset.
 """
-from common import (BLUE, BOLT, CREAM, GREEN, IC_CABLE, IC_METER, IC_PHONE, IC_WIFI, INK,
+from common import (crop, BLUE, BOLT, CREAM, GREEN, IC_CABLE, IC_METER, IC_PHONE, IC_WIFI, INK,
                     LOGO_LIGHT, MONO, MUTED, PLASTIC, TICK, fill, jack_g, marker, page,
                     pattern, pattern_svg)
 
 T = {
     "sv": {
         "title": "Koppla en Zap",
-        "rail": "Installationsguide &middot; Zap &middot; Mainnet",
-        "lede": "För installatören, på plats. Från mätarens P1/HAN-port till mätardata i Sourceful Energy-appen på <b>mainnet</b>.",
+        "rail": "Installationsguide &middot; Zap P1 &middot; Mainnet",
+        "lede": "För installatören, på plats, med Sourceful Energy-appen. Har mätaren bara ett RJ45 HAN-uttag: använd <b>Zap HAN</b>.",
         "before": "Innan du åker",
         "p1_t": "P1/HAN påslagen", "p1_d": "Hos elnätsbolaget, före besöket.",
         "wifi_t": "Wifi, bara 2,4&nbsp;GHz", "wifi_d": "Nätnamn och lösenord.",
@@ -48,17 +48,17 @@ T = {
             ("<b>Lägg till en ny Zap</b>", "Under <b>Kom igång</b>, eller <b>Mer → Mina Zappar</b>."),
             ("Välj Zappen", "Blå ska lysa fast. Stå nära, välj den med flest staplar."),
             ("<b>Registrera &amp; konfigurera nätverk</b>", "Zappen hamnar i profilen du har vald."),
-            ("Wifi, 2,4&nbsp;GHz", "Nät, lösenord, <b>Anslut</b>. Dolt nät: <b>Ange manuellt</b>."),
-            ("<b>Klar</b>", "Namnge Zappen om du vill. Zap går över till wifi."),
+            ("Wifi, 2,4&nbsp;GHz", "Nät, lösenord, <b>Anslut</b>, sedan <b>Klar</b>. Dolt nät: <b>Ange manuellt</b>."),
+            ("Mätaren", "<b>Elmätare → P1 / HAN-mätare → Identifiera mätare</b>."),
         ],
         "s5_h": "Klart när",
         "seen": "Det här syns",
-        "ok_data_q": "Grön i UT", "ok_data": "Blinkar ungefär var tionde sekund. Mätaren svarar.",
+        "ok_data_q": "Grön i UT", "ok_data": "Blinkar ungefär var 10:e s när mätaren är tillagd.",
         "ok_wifi_q": "Blå dubbelblink", "ok_wifi": "En stund efter start. Wifi är uppe.",
-        "ok_app": "Appen visar elmätardata",
+        "ok_app": "Appen visar mätardata inom 2 min",
         "ifnot": "Om inte",
-        "nd_q": "Ingen data-blink efter en minut",
-        "nd": "Oftast är porten inte påslagen, eller så sitter kabeln fel. Be elnätsbolaget slå på den.",
+        "nd_q": "Ingen data-blink",
+        "nd": "Är mätaren tillagd (4.6)? Då är porten oftast inte påslagen, eller så sitter kabeln fel.",
         "nw_q": "Blå en gång, sen tyst", "nw": "Wifi nås inte. Bättre täckning, eller gör om wifi.",
         "hang_q": "Verkar hängd", "hang": "Håll knappen 2–5&nbsp;s, släpp. Zap startar om.",
         "wifi_h": "Byta wifi",
@@ -75,8 +75,8 @@ T = {
     },
     "en": {
         "title": "Connect a Zap",
-        "rail": "Installation guide &middot; Zap &middot; Mainnet",
-        "lede": "For the installer, on site. From the meter's P1/HAN port to meter data in the Sourceful Energy app on <b>mainnet</b>.",
+        "rail": "Installation guide &middot; Zap P1 &middot; Mainnet",
+        "lede": "For the installer, on site, with the Sourceful Energy app. Meter with only an RJ45 HAN port: use <b>Zap HAN</b>.",
         "before": "Before you go",
         "p1_t": "P1/HAN port enabled", "p1_d": "By the grid operator, beforehand.",
         "wifi_t": "Wi-Fi, 2.4&nbsp;GHz only", "wifi_d": "Network name and password.",
@@ -108,17 +108,17 @@ T = {
             ("<b>Onboard a new Zap</b>", "Under <b>Get started</b>, or <b>More → My Zaps</b>."),
             ("Pick the Zap", "Blue must be solid. Stand close, pick the one with most bars."),
             ("<b>Claim &amp; Configure network</b>", "The Zap joins the profile you have selected."),
-            ("Wi-Fi, 2.4&nbsp;GHz", "Network, password, <b>Connect</b>. Hidden: <b>Enter manually</b>."),
-            ("<b>Done</b>", "Name the Zap if you like. It switches to Wi-Fi."),
+            ("Wi-Fi, 2.4&nbsp;GHz", "Network, password, <b>Connect</b>, then <b>Done</b>. Hidden: <b>Enter manually</b>."),
+            ("The meter", "<b>Energy Meters → P1 / HAN meter → Detect meter</b>."),
         ],
         "s5_h": "Done when",
         "seen": "You see this",
-        "ok_data_q": "Green in OUT", "ok_data": "Blinks about every ten seconds. The meter is answering.",
+        "ok_data_q": "Green in OUT", "ok_data": "Blinks about every 10 s once the meter is added.",
         "ok_wifi_q": "Blue double blink", "ok_wifi": "Shortly after start. Wi-Fi is up.",
-        "ok_app": "The app shows meter data",
+        "ok_app": "Meter data in the app within 2 min",
         "ifnot": "If not",
-        "nd_q": "No data blink after a minute",
-        "nd": "Usually the port is not enabled, or the cable is wrong. Ask the grid operator to enable it.",
+        "nd_q": "No data blink",
+        "nd": "Is the meter added (4.6)? Then the port is usually not enabled, or the cable is wrong.",
         "nw_q": "Blue once, then nothing", "nw": "No Wi-Fi. Better coverage, or redo the Wi-Fi.",
         "hang_q": "Seems stuck", "hang": "Hold the button 2–5&nbsp;s, let go. The Zap restarts.",
         "wifi_h": "Change Wi-Fi",
@@ -136,10 +136,11 @@ T = {
 }
 
 
-def hero(t):
+def hero(t, export=False):
     W, H = 186, 64.5
     o = [f'<svg class="hero" viewBox="0 0 {W} {H}" style="height:{H}mm" xmlns="http://www.w3.org/2000/svg" font-family="Satoshi">']
-    o.append(f'<rect x="0" y="0" width="{W}" height="{H}" rx="4" fill="{CREAM}"/>')
+    if not export:
+        o.append(f'<rect x="0" y="0" width="{W}" height="{H}" rx="4" fill="{CREAM}"/>')
 
     # meter
     o.append(f'<rect x="8" y="7" width="38" height="52" rx="3.2" fill="#FFFFFF" stroke="{INK}" stroke-width="0.4"/>')
@@ -222,7 +223,8 @@ def hero(t):
         y += 8.4
 
     for n, (cx, cy) in enumerate(((50.6, 9.4), (62, 61.8), (lx + 1.6, 11.9)), 1):
-        o.append(marker(n, cx, cy))
+        if not export:
+            o.append(marker(n, cx, cy))
     o.append('</svg>')
     return "".join(o)
 
@@ -336,3 +338,11 @@ def build(lang):
         "PAT_NONE": pattern_svg("once", BLUE), "PAT_RESTART": pattern_svg("slow", BLUE),
     })
     return page(lang, t["title"], fill(BODY, values), EXTRA_CSS)
+
+
+# Standalone drawings for assets/devices/, cut out of the hero (English labels).
+DEVICES = {"zap-p1": (84, 1, 64, 62)}
+
+
+def devices():
+    return {name: crop(hero(T["en"], export=True), box) for name, box in DEVICES.items()}

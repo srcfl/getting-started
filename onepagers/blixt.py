@@ -5,7 +5,7 @@ docs/specs/ipc-3600-specs.md, docs/gateway/DASHBOARD-ACCESS.md,
 services/dashboard/README.md, docs/specs/site-limits.md, DeviceForm.tsx.
 The drawing is a topology, not the physical front panel.
 """
-from common import (BOLT, CREAM, IC_FUSE, IC_LAPTOP, IC_LIST, IC_SHIELD, INK, LOGO_LIGHT, MONO,
+from common import (crop, BOLT, CREAM, IC_FUSE, IC_LAPTOP, IC_LIST, IC_SHIELD, INK, LOGO_LIGHT, MONO,
                     MUTED, SIGNAL, TICK, fill, marker, page)
 
 T = {
@@ -21,17 +21,17 @@ T = {
         "leds": "LAMPOR", "leds_sub": "PWR röd · ACT grön", "leds_sub2": "PWR röd · ACT grön",
         "power": "9–36 V DC", "power_sub": "VIN+ överst · GND under",
         "rs485": "RS-485", "rs485_sub": "undre plinten",
-        "eth0": "anläggningens nät", "eth2210": "vilken: fråga Sourceful", "no_serial": "ingen serieport",
+        "eth0": "anläggningens nät", "eth2210": "ETH0: anläggningens nät", "no_serial": "ingen serieport",
         "zoom": "UNDRE PLINTEN, IPC3630", "device": "Enhet",
         "zoom_note1": "A till A, B till B, IGND till GND.",
         "zoom_note2": "Inte den övre plinten (COM1, COM3).",
         "zoom_note3": "120 Ω i bussens båda ändar.",
         "s1_h": "Montera och anslut",
-        "s1_p": "På DIN-skenan, antennerna uppåt. Ethernet i <b>1000M</b> (IPC3630). Ström 9–36 V DC i den gröna pluggen: <b>VIN+</b> överst, <b>GND</b> under.",
-        "s1_q": "<b>PWR</b> röd fast: ström. Blinkar: dålig matning, bryt strömmen. Första starten tar 10–20 min.",
+        "s1_p": "På DIN-skenan, antennerna uppåt. Ethernet i <b>1000M</b> (IPC3630) eller <b>ETH0</b> (IPC2210). Ström 9–36 V DC i gröna pluggen: <b>VIN+</b> överst, <b>GND</b> under.",
+        "s1_q": "<b>PWR</b> röd fast: ström. Blinkar: dålig matning, bryt den. Första start: 10–20 min.",
         "s2_h": "Koppla RS-485",
         "s2_p": "Bara IPC3630: den undre plinten, <b>COM2</b> till vänster eller <b>COM4</b> till höger. COM-lampan blinkar när Modbus-trafik går.",
-        "s2_q": "Blixtens 120 Ω-byglar sitter inuti höljet. Bestäm i förväg vem som terminerar. IPC2210 har ingen serieport.",
+        "s2_q": "Inte terminerad från fabrik. I en buss-ände: bestäm vem som sätter 120 Ω. IPC2210 har ingen serieport.",
         "s3_h": "Öppna dashboarden",
         "s3_p": "Från laptopen: <b>http://blixt-&lt;serie&gt;.local/</b>. Bara <code>blixt.local</code> blir fel med flera Blixt. Svarar inte på 4G.",
         "s3_q": "Den som når dashboarden kan styra batteriet. Skyddat nät, aldrig mot internet.",
@@ -74,17 +74,17 @@ T = {
         "leds": "LIGHTS", "leds_sub": "PWR red · ACT green", "leds_sub2": "PWR red · ACT green",
         "power": "9–36 V DC", "power_sub": "VIN+ top · GND below",
         "rs485": "RS-485", "rs485_sub": "the lower plug",
-        "eth0": "site network", "eth2210": "which one: ask Sourceful", "no_serial": "no serial port",
+        "eth0": "site network", "eth2210": "ETH0: the site network", "no_serial": "no serial port",
         "zoom": "THE LOWER PLUG, IPC3630", "device": "Device",
         "zoom_note1": "A to A, B to B, IGND to GND.",
         "zoom_note2": "Not the upper plug (COM1, COM3).",
         "zoom_note3": "120 Ω at both ends of the bus.",
         "s1_h": "Mount and connect",
-        "s1_p": "On the DIN rail, antennas up. Ethernet in <b>1000M</b> (IPC3630). Power 9–36 V DC in the green plug: <b>VIN+</b> on top, <b>GND</b> below.",
-        "s1_q": "<b>PWR</b> red, solid: power. Blinking: bad supply, cut the power. The first start takes 10–20 min.",
+        "s1_p": "On the DIN rail, antennas up. Ethernet in <b>1000M</b> (IPC3630) or <b>ETH0</b> (IPC2210). Power 9–36 V DC in the green plug: <b>VIN+</b> on top, <b>GND</b> below.",
+        "s1_q": "<b>PWR</b> red, solid: power. Blinking: bad supply, cut it. First start: 10–20 min.",
         "s2_h": "Wire RS-485",
         "s2_p": "IPC3630 only: the lower plug, <b>COM2</b> on the left or <b>COM4</b> on the right. The COM light blinks when Modbus traffic flows.",
-        "s2_q": "The Blixt's 120 Ω jumpers are inside the case. Agree beforehand who terminates. The IPC2210 has no serial port.",
+        "s2_q": "Not terminated from the factory. At a bus end, agree who fits 120 Ω. The IPC2210 has no serial port.",
         "s3_h": "Open the dashboard",
         "s3_p": "From the laptop: <b>http://blixt-&lt;serial&gt;.local/</b>. Plain <code>blixt.local</code> goes wrong with several Blixts. No answer over 4G.",
         "s3_q": "Whoever reaches the dashboard can control the battery. Protected network, never the internet.",
@@ -137,7 +137,7 @@ h1{font-size:31pt;}
 """
 
 
-def hero(t):
+def hero(t, export=False):
     """IPC3630 and IPC2210 as mounted on the DIN rail, white-labelled, plus the RS-485 plug.
 
     Front-panel layout from EDATEC's drawings (edatec.cn/docs/ipc3630/um/1-hardware/,
@@ -147,7 +147,8 @@ def hero(t):
     W, H = 186, 64
     k = 0.3
     o = [f'<svg class="hero blixt" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Satoshi">']
-    o.append(f'<rect x="0" y="0" width="{W}" height="{H}" rx="4" fill="{CREAM}"/>')
+    if not export:
+        o.append(f'<rect x="0" y="0" width="{W}" height="{H}" rx="4" fill="{CREAM}"/>')
     line = lambda d, w=0.25, c=MUTED: o.append(
         f'<path d="{d}" fill="none" stroke="{c}" stroke-width="{w}" stroke-linecap="round" stroke-linejoin="round"/>')
     label = lambda x, y, s, size=1.8, c=INK, anchor="start", weight="700": o.append(
@@ -260,9 +261,10 @@ def hero(t):
     label(zx + 3, zy + zh - 4.2, t["zoom_note2"], 1.75, INK, weight="400")
     label(zx + 3, zy + zh - 1.4, t["zoom_note3"], 1.75, SIGNAL, weight="700")
 
-    o.append(marker(1, 8 + 4.5, top + 3.5))
-    o.append(marker(2, zx + zw - 4, zy + 4))
-    o.append(marker(3, fx + 1.2, Y(0.725)))
+    if not export:
+        o.append(marker(1, 8 + 4.5, top + 3.5))
+        o.append(marker(2, zx + zw - 4, zy + 4))
+        o.append(marker(3, fx + 1.2, Y(0.725)))
     o.append('</svg>')
     return "".join(o)
 
@@ -362,3 +364,11 @@ def build(lang):
         "S5": "".join(f"<li><span>{x}</span></li>" for x in t["s5_list"]),
     })
     return page(lang, t["title"], fill(BODY, values), EXTRA_CSS)
+
+
+# Standalone drawings for assets/devices/, cut out of the hero (English labels).
+DEVICES = {"blixt-ipc3630": (4, 0, 56, 64), "blixt-ipc2210": (60.5, 0, 55.5, 64)}
+
+
+def devices():
+    return {name: crop(hero(T["en"], export=True), box) for name, box in DEVICES.items()}

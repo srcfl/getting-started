@@ -14,6 +14,8 @@ Blixt X är inte samma produkt som [Blixt](../blixt/README.sv.md), industri-gate
 
 ## Gatewayen
 
+![RAK Hotspot V2 från sidan, framsidan och baksidan](../assets/devices/blixt-x-rak-hotspot-v2.svg)
+
 En svart aluminiumlåda med kylflänsar på ovansidan, 92 × 68 × 57 mm.
 
 | Sida | Det här sitter där |
@@ -26,7 +28,7 @@ Det finns ingen RS-485-, P1- eller annan serieport.
 
 ## Innan du börjar
 
-- [ ] **Nätverk:** Ethernet eller wifi, med internet.
+- [ ] **Nätverk:** Ethernet med internet. Wifi fungerar men är valfritt och inte rekommenderat.
 - [ ] **Strömadaptern:** USB-C, 5 V, 2,4 A, som den som följde med gatewayen.
 - [ ] **Sourceful Energy-appen**, inloggad, med en profil och en anläggning.
 - [ ] **Bluetooth på** i telefonen.
@@ -35,7 +37,7 @@ Det finns ingen RS-485-, P1- eller annan serieport.
 ## 1. Starta
 
 1. Skruva fast antennen på framsidan. RAK avråder från att starta gatewayen utan den.
-2. Ethernet: koppla in kabeln på baksidan. Wifi: ställs in i appen i steg 4.
+2. Koppla in Ethernetkabeln på baksidan. Använd wifi bara om det inte går att dra kabel; det ställs i så fall in i appen i steg 4.
 3. Sätt strömadaptern i USB-C-porten på långsidan.
 
 - **Röd lampa, fast:** gatewayen har ström.
@@ -66,10 +68,9 @@ Flödet är Zap-flödet. Där appen säger "Zap" menas Blixt X.
 2. Tryck **Lägg till en ny Zap** under **Kom igång**. Eller gå till **Mer → Mina Zappar → Lägg till en ny Zap**.
 3. Välj **blixt-…** i listan, inom 3 minuter efter att gatewayen startat. Ser du flera: välj den med flest signalstaplar.
 4. Tryck **Registrera & konfigurera nätverk**. Gatewayen hamnar i den profil du har vald.
-5. Under **WiFi-inställningar**: välj nät, skriv lösenordet och tryck **Anslut**. Dolt nät: **Ange manuellt**.
-6. **WiFi anslutet**: namnge gatewayen om du vill, tryck **Klar**.
+5. **WiFi-inställningar** öppnas. Med Ethernet: tryck tillbaka. Gatewayen är redan registrerad och wifi behövs inte. Bara utan kabel: välj nät, skriv lösenordet och tryck **Anslut** (dolt nät: **Ange manuellt**), namnge gatewayen och tryck **Klar**.
 
-> **Bara Ethernet?** På 2.0.1 ser appen inte Ethernet-anslutningen. Den visar därför wifi-steget ändå och erbjuder inte **Hoppa över WiFi-konfiguration**. Fråga Sourceful innan du räknar med enbart Ethernet.
+> **Varför wifi-steget syns med Ethernet:** på 2.0.1 rapporterar gatewayen inte sin Ethernet-anslutning till appen, så appen erbjuder aldrig **Hoppa över WiFi-konfiguration**. Registreringen skedde redan när du tryckte **Registrera & konfigurera nätverk**.
 
 ## 5. Lägg till enheterna i appen
 
@@ -105,7 +106,6 @@ Blixt X 3.0.0 finns på `main` men är inte ute i fält än. I 3.0.0 läggs enhe
 
 ## Öppna frågor
 
-- Kan en installation med bara Ethernet gå igenom onboardingen utan wifi på 2.0.1?
 - När kommer 3.0.0 ut i fält? Appen 2.7.9 lägger till enheter med en profil, vilket 3.0.0 avvisar, så appen behöver uppdateras först.
 - Namnet: firmware-README:n kallar gatewayen "Blixt", samma namn som den kommersiella Blixt.
 
@@ -118,5 +118,5 @@ Repona nedan är interna. Sökvägarna gäller de commits som står överst.
 - `srcfl/srcful-blixt-x-firmware` vid d501e798 (2.0.1): `bluetooth/ble_service.py` och `bluetooth/gpioButton.py` (namn, 3-minutersfönster, knapp), `server/network/network_utils.py` (`blixt.local`), `server/core/api_server.py` (`/api/network`), `server/core/device_factory.py` (RS-485 som standard), `server/app/app.py` (version 2.0.1)
 - Fältflottans målrelease, kontrollerad med bara läsning 2026-10-15: byggd 2026-03-26, samma som d501e798 (2.0.1). Ingen nyare release är pinnad.
 - `srcfl/srcful-blixt-x-firmware` på `main` (156134dd): `api.md`, `server/core/serial_ports.py`, `server/api/system.py` (det som ändras i 3.0.0)
-- `srcfl/srcful-flutter-app` vid 9800165 (appen 2.7.9): `lib/screens/zap_onboard_screen.dart` (sökningen hittar `blixt-…`), `zap_wifi_setup_screen.dart` och `lib/services/zap_ble_client.dart` (Ethernet), `lib/services/zap_proxy_client.dart` (enheter läggs till med en profil), `lib/l10n/app_sv.arb`
+- `srcfl/srcful-flutter-app` vid 9800165 (appen 2.7.9): `lib/screens/zap_onboard_screen.dart` (sökningen hittar `blixt-…`; gatewayen registreras innan wifi-skärmen öppnas), `lib/components/src_app_shell.dart` (tillbaka på underskärmar), `zap_wifi_setup_screen.dart` och `lib/services/zap_ble_client.dart` (Ethernet), `lib/services/zap_proxy_client.dart` (enheter läggs till med en profil), `lib/l10n/app_sv.arb`
 - One-pagern byggs från [onepagers/blixt_x.py](../onepagers/blixt_x.py)

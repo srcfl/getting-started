@@ -16,7 +16,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-GUIDES = ["zap", "blixt", "blixt-x"]
+GUIDES = ["zap", "zap-han", "blixt", "blixt-x"]
 
 FORBIDDEN = [
     (re.compile(r"\b10\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"), "private IP address (10.x)"),

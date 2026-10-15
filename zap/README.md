@@ -1,10 +1,12 @@
-# Zap: getting started
+# Zap P1: getting started
 
-> **Applies to:** Zap with a P1/HAN input, current firmware (2.3.x), the Sourceful Energy app 2.7.9 on mainnet
+> **Applies to:** Zap P1 (for meters with an RJ12 P1 port), current firmware (2.3.x), the Sourceful Energy app 2.7.9 on mainnet
 > **Last verified:** 2026-10-15, against the sources at the bottom
 > **For:** the installer on site, and anyone setting up their own Zap
 
-The Zap plugs into the electricity meter's P1/HAN port. It reads the meter and sends the data over Wi-Fi to the Sourceful Energy app. It can also read, and for some models control, an inverter on the same network.
+The Zap P1 plugs into the electricity meter's P1 port (RJ12). It reads the meter and sends the data over Wi-Fi to the Sourceful Energy app. It can also read, and for some models control, an inverter on the same network.
+
+Does the meter only have an RJ45 HAN port? Then you need the [Zap HAN](../zap-han/README.md), not this one.
 
 **Going on site?** Print the one-pager: [English](zap-one-pager-en.pdf) · [Svenska](zap-one-pager-sv.pdf). Svenska: [README.sv.md](README.sv.md).
 
@@ -37,7 +39,7 @@ The ports sit on the two long sides.
 
 The small socket, like an old telephone jack: RJ12, six pins, about 9.5 mm wide. It is labelled **P1**, **Customer**, **User** or **RJ12**, sometimes **HAN**. It often sits behind a small cover.
 
-> **Warning:** A wider socket with eight pins (RJ45, about 11.5 mm) is the wrong one, even if it says HAN. It can carry 24–36 V where the Zap expects 5 V, and that destroys the Zap. Never use an RJ45-to-RJ12 adapter. If the cable sits loose or meets resistance, do not force it.
+> **Warning:** A wider socket with eight pins (RJ45, about 11.5 mm) is the wrong one for the Zap P1, even if it says HAN. It can carry 24–36 V where the Zap P1 expects 5 V, and that destroys it. Never use an RJ45-to-RJ12 adapter. If the cable sits loose or meets resistance, do not force it. A meter with only an RJ45 HAN port needs the [Zap HAN](../zap-han/README.md) and its own cable.
 
 ## 2. Plug in
 
@@ -67,11 +69,22 @@ The meter powers the Zap. Add USB-C power (5 V, at least 1 A) when:
 5. Under **WiFi Setup**, pick the 2.4 GHz network, enter the password and tap **Connect**. Hidden network: **Enter manually** and type the network name. It can take up to 30 seconds.
 6. **WiFi Connected**: name the Zap if you like, then tap **Done**.
 
-## 5. Done when
+## 5. Add the meter
+
+The Zap does not start reading the meter until the meter is added in the app.
+
+1. On the home screen, tap **Connect your meter, inverter or charger**. Or go to **More**, open the site, then **Energy devices → Add Energy Device**.
+2. Tap **Onboard New Device**, then **Energy Meters** and **P1 / HAN meter**.
+3. Tap **Detect meter**. The Zap finds the meter and its serial settings by itself.
+4. **Meter added** appears. Tap **Done**.
+
+Meter data can take up to two minutes to appear.
+
+## 6. Done when
 
 - **Green in P1 OUT** blinks about every ten seconds. The meter is answering.
-- **Blue** double-blinks shortly after start, usually within 30 seconds, then goes off. Wi-Fi is up.
-- **The app** shows meter data, and suggests **Now connect an energy device**.
+- **Blue** double-blinked shortly after start, usually within 30 seconds, and is off now. Wi-Fi is up.
+- **The app** shows meter data.
 
 ### Check it from a laptop (optional)
 
@@ -137,7 +150,8 @@ The app has no restart button. Use the button.
 
 | What you see | Probably | Do this |
 | --- | --- | --- |
-| No data blink after a minute | The P1 port is not enabled, or the cable is not fully in | Push the cable in at both ends. Ask the grid operator to enable the port. |
+| No data blink | The meter is not added in the app, the P1 port is not enabled, or the cable is not fully in | Add the meter (step 5). Push the cable in at both ends. Ask the grid operator to enable the port. |
+| **The meter was not detected** in the app | The cable, or the port is not enabled | Check the cable and the port, then tap **Detect meter** again. |
 | Blue blinks once at start and never again | The Zap cannot reach the saved Wi-Fi: new router or password, a 5 GHz-only router, MAC filtering, a full DHCP pool, or a metal cabinet | Hold the button 5–10 s; solid blue means it worked. Set up Wi-Fi again on a 2.4 GHz network. |
 | The app does not find the Zap | Blue is not solid, or the phone is too far away | Turn Bluetooth on, stand close. If the Zap was set up before, hold the button 5–10 s. |
 | No green light in P1 IN | No power from the meter | Check the cable. Power the Zap with USB-C. |
@@ -168,6 +182,7 @@ These are places where the sources disagree. The steps above follow the app and 
 - The Wi-Fi article lists **Reconfigure Wi-Fi → Connect → Configure Network**. In the app the order is **Reconfigure WiFi**, pick the Zap, **Configure network**, then **Connect**.
 - The support articles describe green, orange and red signal colours. The app shows orange signal bars.
 - The support articles say the app can scan the network for inverters. App 2.7.9 has no scan; you type the IP.
+- The support articles say the green data light blinks as soon as the Zap is on Wi-Fi. On firmware 2.3.x the Zap only reads the meter, and the light only blinks, after the meter is added in the app (step 5).
 - The support articles give 5 s and 10 s for a reset. The firmware does both: 5 s clears Wi-Fi, 10 s is a full factory reset.
 - The terminal on the OUT side is called **RS485 Input** in the product images. The reference manual says it is reserved for future sensors and not active, while some brand guides wire inverters to it.
 - "Zap beyond P1 meters" names firmware 1.2.1 and 1.6.20. The firmware repository has used 2.x since November 2025.
@@ -178,6 +193,8 @@ These are places where the sources disagree. The steps above follow the app and 
 
 - Support articles on support.sourceful.energy, all updated 2026-06-02: [reference manual](https://support.sourceful.energy/en/zap-reference-manual), [connect Zap to the meter](https://support.sourceful.energy/en/how-to-connect-zap-to-your-electricity-meter), [connect Zap to an inverter](https://support.sourceful.energy/en/how-to-connect-zap-to-your-inverter), [compatible meters](https://support.sourceful.energy/en/which-electricity-meters-are-compatible-with-sourceful-energy), [compatible inverters](https://support.sourceful.energy/en/which-inverters-are-compatible-with-sourceful-energy), [Modbus TCP on the inverter](https://support.sourceful.energy/en/how-do-i-know-if-modbus-tcp-is-activated-on-my-inverter), [reconfigure Wi-Fi](https://support.sourceful.energy/en/zap-reconfigure-wifi-firmware-v2-2-0), [no data in the app](https://support.sourceful.energy/en/troubleshooting-zap-connected-but-no-data-in-app), [blue LED blinks then turns off](https://support.sourceful.energy/en/troubleshooting-blue-status-led-blinking-then-turning-off), [overheating or wrong port](https://support.sourceful.energy/en/troubleshooting-zap-overheating-or-connected-to-wrong-port), [safety information](https://support.sourceful.energy/en/zap-safety-information)
 - Button timings: `srcfl/srcful-zap-x-firmware`, `fw_controller/main/main_loop.cpp` on `main` (6da453f9)
+- The meter is not added automatically: `fw_controller/main/main.cpp` (`MIGRATION_ENABLED 0` on `main`, v2.3.13 and v2.3.17); the data light is driven by the P1 reader: `components/p1_data_reader/p1_meter.cpp`, `components/board/include/boards/zap-p1.h`
+- Adding the meter: `srcfl/srcful-flutter-app` at 9800165, `lib/utils/smart_meter_onboarding_policy.dart`, `lib/screens/device_onboard/onboard_steps.dart`
 - Local endpoints and names: `srcfl/srcful-zap-x-firmware`, `fw_controller/API.md` and `components/wifi/wifi_manager.cpp`; read-only checks on two Zaps (firmware 2.3.13 and 2.3.25), 2026-10-15
 - App flows and labels: `srcfl/srcful-flutter-app` at 9800165 (app 2.7.9), `lib/screens/zap_onboard_screen.dart`, `zap_wifi_setup_screen.dart`, `zap_detail/zap_detail_screen.dart`, `device_onboard/`, `lib/l10n/app_en_US.arb`
 - Product images: `srcfl/srcful-marketing-website`, `public/assets/images/zap/`

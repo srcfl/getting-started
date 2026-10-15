@@ -12,13 +12,17 @@ Blixt is an industrial gateway that controls batteries, hybrid inverters, meters
 
 ## The two models
 
-Both mount upright on a DIN rail, with the antennas on top and every connector on the narrow front.
+| IPC3630 | IPC2210 |
+| --- | --- |
+| ![Blixt on the IPC3630, front and side](../assets/devices/blixt-ipc3630.svg) | ![Blixt on the IPC2210, front and side](../assets/devices/blixt-ipc2210.svg) |
+
+Sourceful installs both. They mount upright on a DIN rail, with the antennas on top and every connector on the narrow front.
 
 | | IPC3630 | IPC2210 |
 | --- | --- | --- |
 | Size (front × height × depth) | 55 × 143 × 100 mm | 34 × 143 × 100 mm |
 | Power | 9–36 V DC, green 2-pin plug, **VIN+** on top, **GND** below | Same |
-| Ethernet | **1000M** (the site network) and **100M** | **ETH0**, **ETH1**, **ETH2**, all gigabit |
+| Ethernet | **1000M** (the site network) and **100M** | **ETH0** (the site network), **ETH1**, **ETH2**, all gigabit |
 | RS-485 | **COM2** and **COM4** on the lower 6-pin plug | None |
 | Lights | **PWR** red, **ACT** green, **COM1–COM4**, plus lights for inputs and outputs Blixt does not use | **PWR** red, **ACT** green |
 | Antennas | WiFi/BT and 4G on the top end, if the unit was ordered with them | Same |
@@ -32,7 +36,7 @@ You should receive a prepared unit. Ask Sourceful before you leave if any of thi
 - The unit has the right software and is connected to the right Sourceful environment.
 - The unit's identity is registered with Sourceful. Without it, no measurements arrive. Sourceful does this; there is no step for the installer.
 - On the IPC3630: the serial ports are enabled for the unit.
-- Who terminates the RS-485 bus. The Blixt's own 120 Ω jumpers sit on the circuit board inside the case and are open from the factory.
+- Who terminates the RS-485 bus. The Blixt has no termination from the factory: its 120 Ω jumpers sit on the circuit board inside the case and are open.
 - You know which inverters, batteries and meters to connect, and there is a driver for each model.
 
 > **Warning:** If the site takes part in Svenska kraftnät's reserve market: change nothing in the dashboard, do not restart and do not unplug anything without Sourceful's approval for that exact action.
@@ -50,7 +54,7 @@ You should receive a prepared unit. Ask Sourceful before you leave if any of thi
 ## 1. Mount and connect
 
 1. Snap the Blixt onto the DIN rail, upright, antennas on top. Screw on the antennas: **WiFi/BT** and **4G**.
-2. Connect Ethernet to the site network. IPC3630: the **1000M** port. IPC2210: ask Sourceful which of ETH0–ETH2 to use. The Blixt gets its address over DHCP. 4G is the backup link.
+2. Connect Ethernet to the site network. IPC3630: the **1000M** port. IPC2210: **ETH0**. The Blixt gets its address over DHCP. 4G is the backup link.
 3. Connect power to the green plug: **VIN+** on top, **GND** below, 9–36 V DC. Check the polarity before you switch on.
 
 Do not use the **PROGRAMMING** port (Micro-USB, under the DIN bracket). It is only for imaging the unit.
@@ -70,7 +74,7 @@ Use the **lower** serial plug. Its left column is COM2, its right column COM4. T
 | COM4 | **IGND**, **A4**, **B4** (right column) | `/dev/ttyAMA3` |
 
 1. Connect A to A, B to B and IGND to the device's GND. The ports are isolated, so GND must be connected.
-2. Terminate only the two ends of the bus with 120 Ω. If the Blixt is at one end, its jumper must be fitted inside the case (J22 for COM2, J24 for COM4); agree this with Sourceful before you go.
+2. Terminate only the two ends of the bus with 120 Ω. The Blixt is not terminated from the factory. If it sits at one end of the bus, that end needs 120 Ω: either its jumper inside the case (J22 for COM2, J24 for COM4) or a resistor across A and B. Agree with Sourceful before you go which it is.
 3. A device can have only one Modbus master. If another system needs to read the same device, use **Gateway → Modbus proxy** in the dashboard instead of a second master.
 
 The **COM2** or **COM4** light blinks when there is traffic on the line. It is a quick wiring check.
@@ -133,10 +137,8 @@ Sourceful connects the Blixt to an aggregator, not the installer. While an aggre
 
 ## Open questions
 
-- Which model is the product for new customer installations, IPC3630 or IPC2210? Neither runs at a customer site outside the reserve market today.
-- IPC2210: which of ETH0–ETH2 the site network goes on is not documented.
 - IPC2210: serial devices would need a USB-to-RS-485 adapter. That is not documented or tested for Blixt.
-- How the termination jumpers inside the IPC3630 are fitted, and by whom, is not documented.
+- When the Blixt sits at a bus end: does Sourceful fit the jumper before delivery, or does the installer add a resistor at the plug? EDATEC gives no procedure for opening the case.
 - Is the serial printed on the unit the same one used in `blixt-<serial>.local`?
 - The existing quick start in `blixt-gateway` says Blixt runs on USB-C 5 V. That matches neither model.
 

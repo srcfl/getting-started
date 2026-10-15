@@ -7,8 +7,8 @@
     python3 onepagers/build.py --html     # HTML only, no WeasyPrint
     python3 onepagers/build.py --thumbs   # also the preview images (needs pdftoppm)
 
-Each PDF lands in <product>/<product>-one-pager-<lang>.pdf. The build fails if a
-one-pager is not exactly one A4 page.
+Each PDF lands in <product>/<product>-one-pager-<lang>.pdf, and each device drawing in
+assets/devices/<name>.svg. The build fails if a one-pager is not exactly one A4 page.
 """
 import importlib
 import shutil
@@ -17,7 +17,7 @@ import sys
 
 from common import ROOT, render
 
-PRODUCTS = {"zap": "zap", "blixt": "blixt", "blixt-x": "blixt_x"}
+PRODUCTS = {"zap": "zap", "zap-han": "zap_han", "blixt": "blixt", "blixt-x": "blixt_x"}
 LANGS = ("en", "sv")
 
 
@@ -31,6 +31,11 @@ def main(argv):
             render(f"{product}-{lang}", module.build(lang), out, pdf=pdf)
             if pdf and "--thumbs" in argv:
                 thumb(out, ROOT / product / "images" / f"one-pager-{lang}")
+        out_dir = ROOT / "assets" / "devices"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        for name, svg in module.devices().items():
+            (out_dir / f"{name}.svg").write_text(svg)
+            print(f"wrote assets/devices/{name}.svg")
 
 
 def thumb(pdf, stem):

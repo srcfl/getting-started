@@ -42,6 +42,7 @@ IC_POWER = icon('<path d="M12 3v8"/><path d="M6.3 7.3a8 8 0 1 0 11.4 0"/>')
 IC_LAPTOP = icon('<rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2.5 19h19"/>')
 IC_LIST = icon('<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>')
 IC_FUSE = icon('<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M12 3v4M12 17v4M9.5 12h5"/>')
+IC_PLUG = icon('<path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v4"/>')
 IC_SHIELD = icon('<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/>')
 
 TICK = ('<svg class="tick" viewBox="0 0 3.4 3"><path d="M0.4 1.6 l1 1 l2 -2.3" fill="none" '
@@ -116,6 +117,16 @@ def fill(template, values):
         i = out.index("{{")
         sys.exit(f"unfilled placeholder: {out[i:i + 40]}")
     return out
+
+
+def crop(svg, box):
+    """Turn a hero SVG into a standalone drawing of the region box = (x, y, w, h), in mm."""
+    x, y, w, h = box
+    head, rest = svg.split(">", 1)
+    fonts = ("<style>text{font-family:Satoshi,'Helvetica Neue',Arial,sans-serif}"
+             "text[font-family='JetBrains Mono']{font-family:'JetBrains Mono',Menlo,monospace}</style>")
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{x} {y} {w} {h}" '
+            f'width="{w}mm" height="{h}mm" font-family="Satoshi">{fonts}{rest}')
 
 
 def page(lang, title, body, extra_css=""):

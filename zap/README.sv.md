@@ -1,10 +1,12 @@
-# Zap: kom igång
+# Zap P1: kom igång
 
-> **Gäller:** Zap med P1/HAN-ingång, aktuell firmware (2.3.x), Sourceful Energy-appen 2.7.9 på mainnet
+> **Gäller:** Zap P1 (för mätare med RJ12 P1-port), aktuell firmware (2.3.x), Sourceful Energy-appen 2.7.9 på mainnet
 > **Senast verifierad:** 2026-10-15, mot källorna längst ner
 > **För:** installatören på plats, och den som sätter upp sin egen Zap
 
-Zap sitter i elmätarens P1/HAN-port. Den läser mätaren och skickar mätardata över wifi till Sourceful Energy-appen. Den kan också läsa, och för vissa modeller styra, en växelriktare på samma nät.
+Zap P1 sitter i elmätarens P1-port (RJ12). Den läser mätaren och skickar mätardata över wifi till Sourceful Energy-appen. Den kan också läsa, och för vissa modeller styra, en växelriktare på samma nät.
+
+Har mätaren bara ett RJ45 HAN-uttag? Då behöver du [Zap HAN](../zap-han/README.sv.md), inte den här.
 
 **Ska du ut på plats?** Skriv ut one-pagern: [Svenska](zap-one-pager-sv.pdf) · [English](zap-one-pager-en.pdf). English: [README.md](README.md).
 
@@ -39,7 +41,7 @@ Portarna sitter på de två långsidorna.
 
 Det lilla uttaget, som ett gammalt telefonjack: RJ12, sex stift, ungefär 9,5 mm brett. Märkt **P1**, **Customer**, **User** eller **RJ12**, ibland **HAN**. Det sitter ofta bakom ett litet lock.
 
-> **Varning:** Ett bredare uttag med åtta stift (RJ45, ungefär 11,5 mm) är fel, även om det står HAN. Det kan ge 24–36 V där Zap förväntar sig 5 V, och då förstörs Zap. Använd aldrig en adapter från RJ45 till RJ12. Sitter kabeln löst eller tar emot: tvinga inte i den.
+> **Varning:** Ett bredare uttag med åtta stift (RJ45, ungefär 11,5 mm) är fel för Zap P1, även om det står HAN. Det kan ge 24–36 V där Zap P1 förväntar sig 5 V, och då förstörs den. Använd aldrig en adapter från RJ45 till RJ12. Sitter kabeln löst eller tar emot: tvinga inte i den. En mätare med bara RJ45 HAN behöver [Zap HAN](../zap-han/README.sv.md) och dess egen kabel.
 
 ## 2. Koppla in
 
@@ -69,11 +71,22 @@ Zap tar ström från mätaren. Mata med USB-C (5 V, minst 1 A) när:
 5. Under **WiFi-inställningar**: välj 2,4 GHz-nätet, skriv lösenordet och tryck **Anslut**. Dolt nät: **Ange manuellt** och skriv nätverksnamnet. Det kan ta upp till 30 sekunder.
 6. **WiFi anslutet**: namnge Zappen om du vill, tryck **Klar**.
 
-## 5. Klart när
+## 5. Lägg till mätaren
+
+Zap börjar inte läsa mätaren förrän mätaren är tillagd i appen.
+
+1. På hemskärmen: tryck **Anslut din elmätare, växelriktare eller laddare**. Eller gå till **Mer**, öppna anläggningen, sedan **Energienheter → Lägg till energienhet**.
+2. Tryck **Lägg till ny enhet**, sedan **Elmätare** och **P1 / HAN-mätare**.
+3. Tryck **Identifiera mätare**. Zap hittar mätaren och dess seriella inställningar själv.
+4. **Mätaren är tillagd** visas. Tryck **Klar**.
+
+Det kan ta upp till två minuter innan mätvärden visas.
+
+## 6. Klart när
 
 - **Grön i P1 UT** blinkar ungefär var tionde sekund. Mätaren svarar.
-- **Blå** dubbelblinkar en stund efter start, oftast inom 30 sekunder, och släcks sedan. Wifi är uppe.
-- **Appen** visar mätardata och föreslår **Anslut en energienhet nu**.
+- **Blå** dubbelblinkade en stund efter start, oftast inom 30 sekunder, och är släckt nu. Wifi är uppe.
+- **Appen** visar mätardata.
 
 ### Kontrollera från en dator (valfritt)
 
@@ -139,7 +152,8 @@ Appen har ingen omstartsknapp. Använd knappen.
 
 | Det du ser | Troligen | Gör så här |
 | --- | --- | --- |
-| Ingen data-blink efter en minut | P1-porten är inte påslagen, eller kabeln sitter inte i helt | Tryck in kabeln i båda ändar. Be elnätsbolaget slå på porten. |
+| Ingen data-blink | Mätaren är inte tillagd i appen, P1-porten är inte påslagen, eller kabeln sitter inte i helt | Lägg till mätaren (steg 5). Tryck in kabeln i båda ändar. Be elnätsbolaget slå på porten. |
+| **Mätaren kunde inte identifieras** i appen | Kabeln, eller porten är inte påslagen | Kontrollera kabeln och porten, tryck **Identifiera mätare** igen. |
 | Blå blinkar en gång vid start och sedan aldrig | Zap når inte det sparade wifi-nätet: ny router eller nytt lösenord, router med bara 5 GHz, MAC-filter, fullt DHCP, eller ett plåtskåp | Håll knappen 5–10 s. Fast blått betyder att det gick. Gör om wifi på ett 2,4 GHz-nät. |
 | Appen hittar inte Zap | Blå lyser inte fast, eller telefonen är för långt bort | Slå på Bluetooth, stå nära. Har Zap varit uppsatt förut: håll knappen 5–10 s. |
 | Ingen grön lampa i P1 IN | Ingen ström från mätaren | Kolla kabeln. Mata med USB-C. |
@@ -170,6 +184,7 @@ Här säger källorna emot varandra. Stegen ovan följer appen och firmware.
 - Wifi-artikeln anger **Reconfigure Wi-Fi → Connect → Configure Network**. I appen är ordningen **Konfigurera om WiFi**, välj Zappen, **Konfigurera Nätverk**, sedan **Anslut**.
 - Supportartiklarna beskriver grön, orange och röd signal. Appen visar orange signalstaplar.
 - Supportartiklarna säger att appen kan söka efter växelriktare på nätet. Appen 2.7.9 har ingen sådan sökning. Du skriver in IP-adressen.
+- Supportartiklarna säger att den gröna datalampan blinkar så fort Zap är på wifi. På firmware 2.3.x läser Zap mätaren, och lampan blinkar, först när mätaren är tillagd i appen (steg 5).
 - Supportartiklarna anger både 5 s och 10 s för återställning. Firmware gör båda: 5 s rensar wifi, 10 s är en fullständig fabriksåterställning.
 - Plinten på UT-sidan heter **RS485 Input** på produktbilderna. Referensmanualen säger att den är reserverad för framtida sensorer och inte aktiv, medan vissa märkesguider kopplar växelriktare till den.
 - "Zap bortom P1-mätare" anger firmware 1.2.1 och 1.6.20. Firmware-repot har använt 2.x sedan november 2025.
@@ -180,6 +195,8 @@ Här säger källorna emot varandra. Stegen ovan följer appen och firmware.
 
 - Supportartiklar på support.sourceful.energy, alla uppdaterade 2026-06-02: [referensmanual](https://support.sourceful.energy/sv/zap-referensmanual), [anslut Zap till elmätaren](https://support.sourceful.energy/sv/hur-du-ansluter-till-din-zap-till-elmataren), [anslut din växelriktare](https://support.sourceful.energy/sv/sa-har-ansluter-du-din-vaxelriktare), [kompatibla elmätare](https://support.sourceful.energy/sv/vilka-elmatare-ar-kompatibla-med-zap), [kompatibla växelriktare](https://support.sourceful.energy/sv/vilka-vaxelriktare-ar-kompatibla-med-sourceful-energy), [Modbus TCP i växelriktaren](https://support.sourceful.energy/sv/hur-vet-jag-om-modbus-tcp-ar-aktiverat-pa-min-vaxelriktare), [konfigurera om wifi](https://support.sourceful.energy/sv/zap-konfigurera-om-wifi-firmware-v2-2-0), [ingen data i appen](https://support.sourceful.energy/sv/felsokning-zap-ar-ansluten-men-ingen-data-i-appen), [blå LED blinkar en gång](https://support.sourceful.energy/sv/felsokning-blae-status-led-blinkar-en-gang-vid-start-och-stangs-sedan-av), [överhettning eller fel port](https://support.sourceful.energy/sv/felsokning-zap-overhettas-eller-ar-ansluten-till-fel-port), [säkerhetsinformation](https://support.sourceful.energy/sv/zap-sakerhetsinformation)
 - Knapptider: `srcfl/srcful-zap-x-firmware`, `fw_controller/main/main_loop.cpp` på `main` (6da453f9)
+- Mätaren läggs inte till automatiskt: `fw_controller/main/main.cpp` (`MIGRATION_ENABLED 0` på `main`, v2.3.13 och v2.3.17); datalampan styrs av P1-läsaren: `components/p1_data_reader/p1_meter.cpp`, `components/board/include/boards/zap-p1.h`
+- Lägga till mätaren: `srcfl/srcful-flutter-app` vid 9800165, `lib/utils/smart_meter_onboarding_policy.dart`, `lib/screens/device_onboard/onboard_steps.dart`
 - Lokala adresser och namn: `srcfl/srcful-zap-x-firmware`, `fw_controller/API.md` och `components/wifi/wifi_manager.cpp`; läsande kontroller på två Zappar (firmware 2.3.13 och 2.3.25), 2026-10-15
 - Appens flöden och knappnamn: `srcfl/srcful-flutter-app` vid 9800165 (appen 2.7.9), `lib/screens/zap_onboard_screen.dart`, `zap_wifi_setup_screen.dart`, `zap_detail/zap_detail_screen.dart`, `device_onboard/`, `lib/l10n/app_sv.arb`
 - Produktbilder: `srcfl/srcful-marketing-website`, `public/assets/images/zap/`, och `srcfl/srcful-flutter-app`, `assets/images/explanations/zapled-sv.jpg`

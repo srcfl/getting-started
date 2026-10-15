@@ -14,7 +14,7 @@ Software facts from srcfl/srcful-blixt-x-firmware at d501e798 (2.0.1) and the ap
 - 2.0.1 does not report Ethernet, so the app never offers Skip WiFi setup.
 - The app onboards it with the Zap flow; every screen says "Zap".
 """
-from common import (BLUE, BOLT, CREAM, IC_LIST, IC_PHONE, IC_WIFI, INK, LOGO_LIGHT, MONO,
+from common import (crop, BLUE, BOLT, CREAM, IC_LIST, IC_PHONE, IC_WIFI, INK, LOGO_LIGHT, MONO,
                     MUTED, SIGNAL, TICK, fill, icon, marker, page)
 
 IC_PLUG = icon('<path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v4"/>')
@@ -26,7 +26,7 @@ T = {
         "rail": "Kom igång &middot; Blixt X 2.0.1 &middot; RAK Hotspot V2",
         "lede": "För ägaren eller installatören. Blixt X är vår programvara på RAK-gatewayen, de gamla dual-minrarna. Den sätts upp i appen som en Zap.",
         "before": "Innan du börjar",
-        "net_t": "Nätverk", "net_d": "Ethernet eller wifi med internet.",
+        "net_t": "Ethernet", "net_d": "Med internet. Wifi är valfritt.",
         "app_t": "Appen, inloggad", "app_d": "Med profil och anläggning.",
         "dev_t": "Enhetslista", "dev_d": "Modell, IP, port, unit-id.",
         "bt_t": "Strömadaptern", "bt_d": "USB-C, 5 V, 2,4 A.",
@@ -35,7 +35,7 @@ T = {
         "eth": "ETHERNET", "cloud": "Sourceful", "cloud_sub": "MAINNET",
         "tcp": "Växelriktare", "tcp_sub": "MODBUS TCP",
         "s1_h": "Starta",
-        "s1_p": "Antennen på. Ethernet i baksidan, eller wifi i steg 4. Ström i USB-C på sidan.",
+        "s1_p": "Antennen på. Ethernet i baksidan. Ström i USB-C på sidan. Wifi är valfritt och inte rekommenderat.",
         "s1_q": "Röd lampa fast: ström. Grön blinkar när systemet arbetar.",
         "s2_h": "Bluetooth-fönstret",
         "s2_p": "Efter start syns den som <b>blixt-&lt;serie&gt;</b> i <b>3 minuter</b>.",
@@ -48,8 +48,8 @@ T = {
             ("<b>Lägg till en ny Zap</b>", "Under <b>Kom igång</b>, eller <b>Mer → Mina Zappar</b>. Appen säger Zap."),
             ("Välj <b>blixt-…</b>", "Inom 3 minuter efter start. Flest staplar om du ser flera."),
             ("<b>Registrera &amp; konfigurera nätverk</b>", "Gatewayen hamnar i profilen du har vald."),
-            ("Wifi", "Nät, lösenord, <b>Anslut</b>. Dolt nät: <b>Ange manuellt</b>."),
-            ("<b>Klar</b>", "Namnge den om du vill."),
+            ("Wifi-steget", "Med Ethernet: tryck tillbaka. Den är redan registrerad."),
+            ("Utan kabel", "Nät, lösenord, <b>Anslut</b>, sedan <b>Klar</b>."),
             ("Enheter", "<b>Mer → Energienheter</b>, sedan typ, modell, IP, port och enhets-ID."),
         ],
         "s5_h": "Klart när",
@@ -64,7 +64,7 @@ T = {
         "f4_q": "En enhet svarar inte", "f4": "Fel IP, port eller unit-id, Modbus TCP avstängt, eller en annan master.",
         "know_h": "Bra att veta",
         "k1_q": "Appen säger Zap", "k1": "Varje skärm säger Zap. Det är rätt flöde.",
-        "k3_q": "Bara Ethernet?", "k3": "Appen ser inte Ethernet på 2.0.1 och visar wifi-steget ändå. Fråga Sourceful.",
+        "k3_q": "Wifi-steget på Ethernet", "k3": "2.0.1 rapporterar inte Ethernet, så appen visar steget ändå. Backa ur det.",
         "card_k": "3.0.0", "card_m": "Nästa version",
         "card1": "<b>Den här sidan gäller 2.0.1</b>, versionen som körs i fält i oktober 2026.",
         "card2": "I 3.0.0 läggs enheter till med drivrutiner från Sourcefuls register. Sidan uppdateras när den släpps.",
@@ -76,7 +76,7 @@ T = {
         "rail": "Getting started &middot; Blixt X 2.0.1 &middot; RAK Hotspot V2",
         "lede": "For the owner or installer. Blixt X is our software on the RAK gateway, the former dual miners. It is set up in the app like a Zap.",
         "before": "Before you start",
-        "net_t": "Network", "net_d": "Ethernet or Wi-Fi with internet.",
+        "net_t": "Ethernet", "net_d": "With internet. Wi-Fi is optional.",
         "app_t": "The app, signed in", "app_d": "With a profile and a site.",
         "dev_t": "Device list", "dev_d": "Model, IP, port, unit ID.",
         "bt_t": "The power adapter", "bt_d": "USB-C, 5 V, 2.4 A.",
@@ -85,7 +85,7 @@ T = {
         "eth": "ETHERNET", "cloud": "Sourceful", "cloud_sub": "MAINNET",
         "tcp": "Inverter", "tcp_sub": "MODBUS TCP",
         "s1_h": "Start",
-        "s1_p": "Antenna on. Ethernet in the back, or Wi-Fi in step 4. Power in the USB-C on the side.",
+        "s1_p": "Antenna on. Ethernet in the back. Power in the USB-C on the side. Wi-Fi is optional and not recommended.",
         "s1_q": "Red light solid: power. Green blinks while the system works.",
         "s2_h": "The Bluetooth window",
         "s2_p": "After start it shows up as <b>blixt-&lt;serial&gt;</b> for <b>3 minutes</b>.",
@@ -98,8 +98,8 @@ T = {
             ("<b>Onboard a new Zap</b>", "Under <b>Get started</b>, or <b>More → My Zaps</b>. The app says Zap."),
             ("Pick <b>blixt-…</b>", "Within 3 minutes of start. Most bars if you see several."),
             ("<b>Claim &amp; Configure network</b>", "The gateway joins the profile you have selected."),
-            ("Wi-Fi", "Network, password, <b>Connect</b>. Hidden: <b>Enter manually</b>."),
-            ("<b>Done</b>", "Name it if you like."),
+            ("The Wi-Fi step", "On Ethernet: tap back. It is already registered."),
+            ("No cable", "Network, password, <b>Connect</b>, then <b>Done</b>."),
             ("Devices", "<b>More → Energy devices</b>, then type, model, IP, port and unit ID."),
         ],
         "s5_h": "Done when",
@@ -114,7 +114,7 @@ T = {
         "f4_q": "A device does not answer", "f4": "Wrong IP, port or unit ID, Modbus TCP off, or another master.",
         "know_h": "Good to know",
         "k1_q": "The app says Zap", "k1": "Every screen says Zap. It is the right flow.",
-        "k3_q": "Ethernet only?", "k3": "On 2.0.1 the app does not see Ethernet and shows the Wi-Fi step anyway. Ask Sourceful.",
+        "k3_q": "The Wi-Fi step on Ethernet", "k3": "2.0.1 does not report Ethernet, so the app shows the step anyway. Back out of it.",
         "card_k": "3.0.0", "card_m": "Next version",
         "card1": "<b>This page covers 2.0.1</b>, the version running in the field in October 2026.",
         "card2": "In 3.0.0, devices are added with drivers from Sourceful's registry. This page changes when it ships.",
@@ -133,10 +133,11 @@ code{font-family:'JetBrains Mono',monospace;font-size:0.88em;}
 """
 
 
-def hero(t):
+def hero(t, export=False):
     W, H = 186, 50
     o = [f'<svg class="hero bx" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Satoshi">']
-    o.append(f'<rect x="0" y="0" width="{W}" height="{H}" rx="4" fill="{CREAM}"/>')
+    if not export:
+        o.append(f'<rect x="0" y="0" width="{W}" height="{H}" rx="4" fill="{CREAM}"/>')
     line = lambda d, w=1.0, c=INK, dash="": o.append(
         f'<path d="{d}" fill="none" stroke="{c}" stroke-width="{w}" stroke-linecap="round" '
         f'stroke-linejoin="round"{f" stroke-dasharray={chr(34)}{dash}{chr(34)}" if dash else ""}/>')
@@ -175,8 +176,9 @@ def hero(t):
     label(ux, y0 + Hh + 5.2, t["usbc"], 1.8, INK, weight="700")
     line(f"M{bx} {by + 2} V{y0 + Hh + 7}", 0.25, MUTED)
     label(bx + 1, y0 + Hh + 9.2, t["pair"], 1.8, INK, weight="700")
-    line(f"M18 {y0 + 9} H{bx - 2.4}", 0.6, BLUE, "1.2 1.2")
-    label(22.5, y0 + 6.8, "BLE", 1.8, BLUE, weight="700")
+    if not export:
+        line(f"M18 {y0 + 9} H{bx - 2.4}", 0.6, BLUE, "1.2 1.2")
+        label(22.5, y0 + 6.8, "BLE", 1.8, BLUE, weight="700")
 
     # front: antenna, TF slot, LEDs
     fx = sx + L + 9
@@ -219,7 +221,8 @@ def hero(t):
     box(y0 + 16.5, t["tcp"], t["tcp_sub"])
 
     for n, (mx, my) in enumerate(((sx + L - 1.5, y0 + Hh - 1.5), (bx + 3.2, by - 3), (nx + 1, jy + 2.7)), 1):
-        o.append(marker(n, mx, my))
+        if not export:
+            o.append(marker(n, mx, my))
     o.append('</svg>')
     return "".join(o)
 
@@ -323,3 +326,11 @@ def build(lang):
         "IC_PLUG": IC_PLUG, "HERO": hero(t), "APP_TRACK": track, "TICK": TICK,
     })
     return page(lang, t["title"], fill(BODY, values), EXTRA_CSS)
+
+
+# Standalone drawings for assets/devices/, cut out of the hero (English labels).
+DEVICES = {"blixt-x-rak-hotspot-v2": (26.5, 3, 114.5, 47)}
+
+
+def devices():
+    return {name: crop(hero(T["en"], export=True), box) for name, box in DEVICES.items()}

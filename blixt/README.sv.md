@@ -12,13 +12,17 @@ Blixt är en industri-gateway som styr batterier, hybridväxelriktare, mätare o
 
 ## De två modellerna
 
-Båda sitter upprätt på en DIN-skena, med antennerna upptill och alla kontakter på den smala framsidan.
+| IPC3630 | IPC2210 |
+| --- | --- |
+| ![Blixt på IPC3630, front och sida](../assets/devices/blixt-ipc3630.svg) | ![Blixt på IPC2210, front och sida](../assets/devices/blixt-ipc2210.svg) |
+
+Sourceful installerar båda. De sitter upprätt på en DIN-skena, med antennerna upptill och alla kontakter på den smala framsidan.
 
 | | IPC3630 | IPC2210 |
 | --- | --- | --- |
 | Storlek (front × höjd × djup) | 55 × 143 × 100 mm | 34 × 143 × 100 mm |
 | Ström | 9–36 V DC, grön 2-polig plugg, **VIN+** överst, **GND** under | Samma |
-| Ethernet | **1000M** (anläggningens nät) och **100M** | **ETH0**, **ETH1**, **ETH2**, alla gigabit |
+| Ethernet | **1000M** (anläggningens nät) och **100M** | **ETH0** (anläggningens nät), **ETH1**, **ETH2**, alla gigabit |
 | RS-485 | **COM2** och **COM4** på den undre 6-poliga plinten | Ingen |
 | Lampor | **PWR** röd, **ACT** grön, **COM1–COM4**, plus lampor för in- och utgångar som Blixt inte använder | **PWR** röd, **ACT** grön |
 | Antenner | WiFi/BT och 4G upptill, om enheten är beställd med dem | Samma |
@@ -32,7 +36,7 @@ Du ska få en enhet som är förberedd. Fråga Sourceful om något av det här �
 - Enheten har rätt programvara och är kopplad till rätt miljö hos Sourceful.
 - Enhetens identitet är registrerad hos Sourceful. Annars kommer inga mätvärden fram. Det gör Sourceful, det finns inget steg för installatören.
 - På IPC3630: serieportarna är aktiverade för enheten.
-- Vem som terminerar RS-485-bussen. Blixtens egna 120 Ω-byglar sitter på kretskortet inuti höljet och är öppna från fabrik.
+- Vem som terminerar RS-485-bussen. Blixt har ingen terminering från fabrik: dess 120 Ω-byglar sitter på kretskortet inuti höljet och är öppna.
 - Du vet vilka växelriktare, batterier och mätare som ska kopplas in, och att det finns en drivrutin för varje modell.
 
 > **Varning:** Är anläggningen med på Svenska kraftnäts stödtjänstmarknad: ändra ingenting i dashboarden, starta inte om och dra inte ur något utan att Sourceful har godkänt just det.
@@ -50,7 +54,7 @@ Du ska få en enhet som är förberedd. Fråga Sourceful om något av det här �
 ## 1. Montera och anslut
 
 1. Snäpp fast Blixt på DIN-skenan, upprätt, med antennerna uppåt. Skruva fast antennerna: **WiFi/BT** och **4G**.
-2. Anslut Ethernet till anläggningens nät. IPC3630: porten **1000M**. IPC2210: fråga Sourceful vilken av ETH0–ETH2 som ska användas. Blixt hämtar adress via DHCP. 4G är reservförbindelse.
+2. Anslut Ethernet till anläggningens nät. IPC3630: porten **1000M**. IPC2210: **ETH0**. Blixt hämtar adress via DHCP. 4G är reservförbindelse.
 3. Anslut strömmen i den gröna pluggen: **VIN+** överst, **GND** under, 9–36 V DC. Kontrollera polariteten innan du slår på.
 
 Använd inte **PROGRAMMING**-porten (Micro-USB, under DIN-fästet). Den är bara till för att avbilda enheten.
@@ -70,7 +74,7 @@ Använd den **undre** serieplinten. Den vänstra kolumnen är COM2, den högra C
 | COM4 | **IGND**, **A4**, **B4** (höger kolumn) | `/dev/ttyAMA3` |
 
 1. Koppla A till A, B till B och IGND till enhetens GND. Portarna är isolerade, så GND ska med.
-2. Terminera bara bussens två ändar med 120 Ω. Är Blixt i ena änden måste dess bygel sitta i, inuti höljet (J22 för COM2, J24 för COM4). Kom överens om det med Sourceful innan du åker.
+2. Terminera bara bussens två ändar med 120 Ω. Blixt är inte terminerad från fabrik. Sitter den i ena änden behöver den änden 120 Ω: antingen dess bygel inuti höljet (J22 för COM2, J24 för COM4) eller ett motstånd mellan A och B. Kom överens med Sourceful innan du åker om vilket.
 3. En enhet kan bara ha en Modbus-master. Behöver något annat system läsa samma enhet: använd **Gateway → Modbus proxy** i dashboarden i stället för en andra master.
 
 Lampan **COM2** eller **COM4** blinkar när det går trafik på linjen. Det är en snabb kontroll av kablaget.
@@ -133,10 +137,8 @@ Kopplingen till en aggregator görs av Sourceful och inte på plats. Medan en ag
 
 ## Öppna frågor
 
-- Vilken modell är produkten för nya kundinstallationer, IPC3630 eller IPC2210? Ingen av dem körs på en kundanläggning utanför stödtjänstmarknaden i dag.
-- IPC2210: vilken av ETH0–ETH2 anläggningens nät ska sitta i är inte dokumenterat.
 - IPC2210: serieenheter skulle kräva en USB-till-RS-485-adapter. Det är varken dokumenterat eller testat för Blixt.
-- Hur termineringsbyglarna inuti IPC3630 sätts, och av vem, är inte dokumenterat.
+- När Blixt sitter i en buss-ände: sätter Sourceful bygeln före leverans, eller sätter installatören ett motstånd vid plinten? EDATEC beskriver inte hur höljet öppnas.
 - Är serienumret på enheten samma som det som används i `blixt-<serienummer>.local`?
 - Den befintliga snabbstarten i `blixt-gateway` säger att Blixt drivs med USB-C 5 V. Det stämmer inte med någon av modellerna.
 
