@@ -45,8 +45,8 @@ The guide always ends with `## Sources` (`## Källor` in Swedish), listing the s
 ## Correctness
 
 - Write from the source, not from memory. The code at the version the field runs, the app at the version in the stores, the support articles and the product images are sources. An old guide, a chat thread or "that's how it usually works" is not.
-- When sources disagree, the app and the firmware win over the support articles, because they are what the person on site sees. List the disagreement under `## Open questions` so the other source gets fixed.
-- When something cannot be verified, it goes under `## Open questions`, not into the steps.
+- When sources disagree, the app and the firmware win over the support articles, because they are what the person on site sees. List the disagreement under `## Differences from the support site` so the article gets fixed.
+- When something cannot be verified, it goes under `## Open questions`, not into the steps. Close it as soon as someone who knows the product answers, and name them under Sources.
 - When the app, the firmware or the hardware changes, update the guide in the same go and set a new **Last verified** date.
 - Drivers come only from Sourceful's device-support registry. Point there, never to a copy in a repository.
 

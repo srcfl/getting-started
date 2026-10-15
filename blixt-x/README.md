@@ -105,11 +105,6 @@ If another device already uses the name, the gateway calls itself `blixt-<suffix
 
 Blixt X 3.0.0 is on `main` but not in the field yet. In 3.0.0, devices are added with a driver and version from Sourceful's driver registry instead of a built-in profile, and the gateway reports Ethernet to the app. This guide is updated when 3.0.0 ships.
 
-## Open questions
-
-- When does 3.0.0 reach the field? The app 2.7.9 adds devices with a profile, which 3.0.0 refuses, so the app needs an update first.
-- The name: the firmware README calls the gateway "Blixt", the same name as the commercial Blixt.
-
 ## Sources
 
 - RAK Hotspot V2: [datasheet](https://docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/datasheet) (dimensions, interfaces, USB-C 5 V / 2.4 A, lights), [troubleshooting](https://docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/troubleshooting) (what the lights mean), [installation guide](https://docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/installation-guide) (antenna before power)

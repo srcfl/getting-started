@@ -136,10 +136,6 @@ Sourceful connects the Blixt to an aggregator, not the installer. While an aggre
 | Power settles just below the setpoint | The fuse limit is capping it | Check **Site configuration**. |
 | The unit never shows up at Sourceful | The first update is still running, or the identity is not registered | Wait 20 minutes, then contact Sourceful. |
 
-## Open questions
-
-- The existing quick start in `blixt-gateway` says Blixt runs on USB-C 5 V. That matches neither model.
-
 ## Sources
 
 - EDATEC: [IPC3630 user manual](https://edatec.cn/docs/ipc3630/um/1-hardware/) and [datasheet](https://edatec.cn/docs/ipc3630/ds/) (front panel, power plug, serial plugs and pins, termination jumpers, lights, ports), [IPC2200 user manual](https://edatec.cn/docs/ipc2200/um/1-hardware/) and [datasheet](https://edatec.cn/docs/ipc2200/ds/) (IPC2210 front panel, power, Ethernet)

@@ -136,10 +136,6 @@ Kopplingen till en aggregator görs av Sourceful och inte på plats. Medan en ag
 | Effekten stannar strax under börvärdet | Säkringsgränsen begränsar | Kontrollera **Site configuration**. |
 | Enheten dyker aldrig upp hos Sourceful | Första uppdateringen pågår, eller identiteten är inte registrerad | Vänta 20 minuter, kontakta sedan Sourceful. |
 
-## Öppna frågor
-
-- Den befintliga snabbstarten i `blixt-gateway` säger att Blixt drivs med USB-C 5 V. Det stämmer inte med någon av modellerna.
-
 ## Källor
 
 - EDATEC: [IPC3630 användarmanual](https://edatec.cn/docs/ipc3630/um/1-hardware/) och [datablad](https://edatec.cn/docs/ipc3630/ds/) (frontpanel, strömplugg, serieplintar och stift, termineringsbyglar, lampor, portar), [IPC2200 användarmanual](https://edatec.cn/docs/ipc2200/um/1-hardware/) och [datablad](https://edatec.cn/docs/ipc2200/ds/) (IPC2210:s frontpanel, ström, Ethernet)

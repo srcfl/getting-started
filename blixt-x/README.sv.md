@@ -105,11 +105,6 @@ Använder en annan enhet redan namnet heter gatewayen `blixt-<suffix>.local` i s
 
 Blixt X 3.0.0 finns på `main` men är inte ute i fält än. I 3.0.0 läggs enheter till med en drivrutin och version från Sourcefuls drivrutinsregister i stället för en inbyggd profil, och gatewayen rapporterar Ethernet till appen. Guiden uppdateras när 3.0.0 släpps.
 
-## Öppna frågor
-
-- När kommer 3.0.0 ut i fält? Appen 2.7.9 lägger till enheter med en profil, vilket 3.0.0 avvisar, så appen behöver uppdateras först.
-- Namnet: firmware-README:n kallar gatewayen "Blixt", samma namn som den kommersiella Blixt.
-
 ## Källor
 
 - RAK Hotspot V2: [datablad](https://docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/datasheet) (mått, portar, USB-C 5 V / 2,4 A, lampor), [felsökning](https://docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/troubleshooting) (vad lamporna betyder), [installationsguide](https://docs.rakwireless.com/product-categories/wisgate/rak-hotspot-v2/installation-guide) (antennen före strömmen)
