@@ -1,0 +1,36 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  guides:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: The guides follow CONTRIBUTING.md
+        run: python scripts/check_guides.py
+
+  one-pagers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: WeasyPrint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0
+          pip install weasyprint==70.0
+      - name: Build every one-pager, exactly one A4 page each
+        run: python onepagers/build.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: one-pagers
+          path: "*/*-one-pager-*.pdf"
