@@ -85,7 +85,7 @@ Det kan ta upp till två minuter innan mätvärden visas.
 ## 6. Klart när
 
 - **Grön i P1 UT** blinkar ungefär var tionde sekund. Mätaren svarar.
-- **Blå** dubbelblinkade en stund efter start, oftast inom 30 sekunder, och är släckt nu. Wifi är uppe.
+- **Blå** är släckt. Den släcks ungefär en minut efter att wifi är uppe, när Bluetooth stängs.
 - **Appen** visar mätardata.
 
 ### Kontrollera från en dator (valfritt)
@@ -134,10 +134,9 @@ Appen söker inte efter växelriktare på nätet. Du skriver in IP-adressen.
 | Grön i P1 IN | Släckt | Ingen ström. Kolla kabeln, eller mata med USB-C. |
 | Grön i P1 UT | Blinkar ungefär var tionde sekund | Data från mätaren |
 | Grön i P1 UT | Blinkar aldrig | P1-porten är troligen avstängd. Kontakta elnätsbolaget. |
+| Blå | En kort blink vid start | Zap startar |
 | Blå | Fast | Väntar på appen (Bluetooth, inget wifi inställt) |
-| Blå | En blink vid start | Zap startar |
-| Blå | Dubbelblink en stund efter start | Ansluten till wifi |
-| Blå | En blink vid start, aldrig någon dubbelblink | Wifi misslyckades |
+| Blå | Släckt | Igång. Lampan visar inte om wifi fungerar: kontrollera i appen, eller på `zap.local/api/network` |
 
 | Håll knappen | Medan du håller | När du släpper |
 | --- | --- | --- |
@@ -154,7 +153,7 @@ Appen har ingen omstartsknapp. Använd knappen.
 | --- | --- | --- |
 | Ingen data-blink | Mätaren är inte tillagd i appen, P1-porten är inte påslagen, eller kabeln sitter inte i helt | Lägg till mätaren (steg 5). Tryck in kabeln i båda ändar. Be elnätsbolaget slå på porten. |
 | **Mätaren kunde inte identifieras** i appen | Kabeln, eller porten är inte påslagen | Kontrollera kabeln och porten, tryck **Identifiera mätare** igen. |
-| Blå blinkar en gång vid start och sedan aldrig | Zap når inte det sparade wifi-nätet: ny router eller nytt lösenord, router med bara 5 GHz, MAC-filter, fullt DHCP, eller ett plåtskåp | Håll knappen 5–10 s. Fast blått betyder att det gick. Gör om wifi på ett 2,4 GHz-nät. |
+| Appen säger **Kan inte nå Zap** | Zap når inte det sparade wifi-nätet: ny router eller nytt lösenord, router med bara 5 GHz, MAC-filter, fullt DHCP, eller ett plåtskåp | Håll knappen 5–10 s. Fast blått betyder att det gick. Gör om wifi på ett 2,4 GHz-nät. |
 | Appen hittar inte Zap | Blå lyser inte fast, eller telefonen är för långt bort | Slå på Bluetooth, stå nära. Har Zap varit uppsatt förut: håll knappen 5–10 s. |
 | Ingen grön lampa i P1 IN | Ingen ström från mätaren | Kolla kabeln. Mata med USB-C. |
 | Mätardata på `zap.local/api/devices` men inte i appen | `"mqttConnected": false` på `/api/network`: inget internet, eller Zap behöver startas om | Kolla internetanslutningen. Dra ur Zap i 10 sekunder. |
@@ -185,6 +184,7 @@ Här säger källorna emot varandra. Stegen ovan följer appen och firmware.
 - Supportartiklarna beskriver grön, orange och röd signal. Appen visar orange signalstaplar.
 - Supportartiklarna säger att appen kan söka efter växelriktare på nätet. Appen 2.7.9 har ingen sådan sökning. Du skriver in IP-adressen.
 - Supportartiklarna säger att den gröna datalampan blinkar så fort Zap är på wifi. På firmware 2.3.x läser Zap mätaren, och lampan blinkar, först när mätaren är tillagd i appen (steg 5).
+- Supportartiklarna säger att blått dubbelblinkar när wifi är uppe, och att en blink och sedan inget betyder att wifi misslyckades. Firmware 2.3.x har ingen dubbelblink: blått blinkar en gång vid start, lyser fast bara när den väntar på appen, och släcks när Bluetooth stängs. Se i appen om Zap är uppkopplad.
 - Supportartiklarna anger både 5 s och 10 s för återställning. Firmware gör båda: 5 s rensar wifi, 10 s är en fullständig fabriksåterställning.
 - Plinten på UT-sidan heter **RS485 Input** på produktbilderna. Referensmanualen säger att den är reserverad för framtida sensorer och inte aktiv, medan vissa märkesguider kopplar växelriktare till den.
 - "Zap bortom P1-mätare" anger firmware 1.2.1 och 1.6.20. Firmware-repot har använt 2.x sedan november 2025.
@@ -194,7 +194,7 @@ Här säger källorna emot varandra. Stegen ovan följer appen och firmware.
 ## Källor
 
 - Supportartiklar på support.sourceful.energy, alla uppdaterade 2026-06-02: [referensmanual](https://support.sourceful.energy/sv/zap-referensmanual), [anslut Zap till elmätaren](https://support.sourceful.energy/sv/hur-du-ansluter-till-din-zap-till-elmataren), [anslut din växelriktare](https://support.sourceful.energy/sv/sa-har-ansluter-du-din-vaxelriktare), [kompatibla elmätare](https://support.sourceful.energy/sv/vilka-elmatare-ar-kompatibla-med-zap), [kompatibla växelriktare](https://support.sourceful.energy/sv/vilka-vaxelriktare-ar-kompatibla-med-sourceful-energy), [Modbus TCP i växelriktaren](https://support.sourceful.energy/sv/hur-vet-jag-om-modbus-tcp-ar-aktiverat-pa-min-vaxelriktare), [konfigurera om wifi](https://support.sourceful.energy/sv/zap-konfigurera-om-wifi-firmware-v2-2-0), [ingen data i appen](https://support.sourceful.energy/sv/felsokning-zap-ar-ansluten-men-ingen-data-i-appen), [blå LED blinkar en gång](https://support.sourceful.energy/sv/felsokning-blae-status-led-blinkar-en-gang-vid-start-och-stangs-sedan-av), [överhettning eller fel port](https://support.sourceful.energy/sv/felsokning-zap-overhettas-eller-ar-ansluten-till-fel-port), [säkerhetsinformation](https://support.sourceful.energy/sv/zap-sakerhetsinformation)
-- Knapptider: `srcfl/srcful-zap-x-firmware`, `fw_controller/main/main_loop.cpp` på `main` (6da453f9)
+- Knapptider och statuslampan: `srcfl/srcful-zap-x-firmware`, `fw_controller/main/main_loop.cpp` på `main` (6da453f9) och v2.3.17 (ingen dubbelblink; fast blått bara medan Bluetooth väntar), `fw_controller/main/main.cpp` (en blink vid start; Bluetooth bara utan sparat wifi)
 - Mätaren läggs inte till automatiskt: `fw_controller/main/main.cpp` (`MIGRATION_ENABLED 0` på `main`, v2.3.13 och v2.3.17); datalampan styrs av P1-läsaren: `components/p1_data_reader/p1_meter.cpp`, `components/board/include/boards/zap-p1.h`
 - Lägga till mätaren: `srcfl/srcful-flutter-app` vid 9800165, `lib/utils/smart_meter_onboarding_policy.dart`, `lib/screens/device_onboard/onboard_steps.dart`
 - Lokala adresser och namn: `srcfl/srcful-zap-x-firmware`, `fw_controller/API.md` och `components/wifi/wifi_manager.cpp`; läsande kontroller på två Zappar (firmware 2.3.13 och 2.3.25), 2026-10-15

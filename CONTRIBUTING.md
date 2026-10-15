@@ -75,7 +75,7 @@ python3 onepagers/build.py --thumbs
 - One A4 page each. The build fails if a one-pager spills onto a second page, or if the content runs into the block at the bottom.
 - Layout and drawing helpers are shared in `onepagers/common.py` and `onepagers/base.css`. The text for both languages sits in the `T` dictionary of each product module.
 - `--thumbs` refreshes the preview images in `<product>/images/` (needs `pdftoppm`).
-- Every build also writes the device drawings to `assets/devices/`. Draw a device from the vendor's or Sourceful's own images, at the right proportions, with Sourceful's label instead of the vendor's. Where no image exists, draw a schematic and say so on the page.
+- Every build also writes the device drawings to `assets/devices/`. Draw a device from the vendor's or Sourceful's own images, at the right proportions, with Sourceful's label instead of the vendor's. Where no image exists, ask someone who has the device, or draw a schematic and say so on the page.
 
 ## Making a change
 

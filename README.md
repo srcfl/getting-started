@@ -19,9 +19,9 @@ Svenska: [README.sv.md](README.sv.md)
 
 Every device drawn in the one-pagers is also in [assets/devices/](assets/devices/) as an SVG, built from the same code:
 
-| Zap P1 | Zap HAN (schematic) | Blixt IPC3630 | Blixt IPC2210 | Blixt X (RAK Hotspot V2) |
+| Zap P1 | Zap HAN | Blixt IPC3630 | Blixt IPC2210 | Blixt X (RAK Hotspot V2) |
 | --- | --- | --- | --- | --- |
-| ![Zap P1 from above](assets/devices/zap-p1.svg) | ![Zap HAN, schematic](assets/devices/zap-han-schematic.svg) | ![Blixt on the IPC3630](assets/devices/blixt-ipc3630.svg) | ![Blixt on the IPC2210](assets/devices/blixt-ipc2210.svg) | ![Blixt X on the RAK Hotspot V2](assets/devices/blixt-x-rak-hotspot-v2.svg) |
+| ![Zap P1 from above](assets/devices/zap-p1.svg) | ![Zap HAN from above](assets/devices/zap-han.svg) | ![Blixt on the IPC3630](assets/devices/blixt-ipc3630.svg) | ![Blixt on the IPC2210](assets/devices/blixt-ipc2210.svg) | ![Blixt X on the RAK Hotspot V2](assets/devices/blixt-x-rak-hotspot-v2.svg) |
 
 ## How we keep the guides good
 

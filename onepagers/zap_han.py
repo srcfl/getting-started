@@ -1,18 +1,21 @@
 """Zap HAN one-pager: connect a Zap HAN to a meter's RJ45 HAN port.
 
 Sources:
-- David (2026-10-15): the Zap HAN has an RJ12 socket; the cable goes from RJ12 on the Zap to
-  RJ45 in the meter; the Zap HAN needs its own power because the HAN port does not supply it.
+- David (2026-10-15): the Zap HAN has the same box and sockets as the Zap P1, but no separate
+  blue status light; the light in its RJ12 socket is an RGB light that does that job
+  (rainbow at boot). It ships with an RJ12-to-RJ45 cable and always needs USB-C power
+  (5 V, at least 1 A), because the HAN port does not power the Zap the way a P1 port does.
+  Tested with Kamstrup.
 - Aidon RJ45 HAN interface v1.6 A: pin 1 M-Bus data/power (12-24 V, 30 mA max, about 700 mW),
   pins 2 and 8 GND, 6-7 do not connect; the HAN port and its power are off until the grid
   company turns them on.
 - srcfl/srcful-zap-x-firmware main: zap-han.h (HAN input 2400 8N1, one WS2812 RGB LED),
-  main.cpp (rainbow at boot), main_loop.cpp (blue only: solid while waiting for the app,
-  button 2/5/10 s), fw_controller/API.md (detected_type han_uart), decoders (no encryption).
+  main.cpp (rainbow at boot; Bluetooth only without saved Wi-Fi), main_loop.cpp (blue while
+  waiting for the app, off when Bluetooth closes, button 2/5/10 s), fw_controller/API.md
+  (detected_type han_uart), decoders (no decryption).
 - The app 2.7.9: same onboarding as the Zap P1; meter added as "P1 / HAN meter".
-The Zap HAN itself is drawn schematically: no photo or drawing of it exists in Sourceful's
-sources, so socket positions are not shown as fact.
 """
+from zap import zap_top
 from common import (crop, BLUE, BOLT, CREAM, GREEN, IC_METER, IC_PHONE, IC_PLUG, IC_WIFI, INK,
                     LOGO_LIGHT, MONO, MUTED, PLASTIC, SIGNAL, TICK, fill, jack_g, marker, page,
                     pattern, pattern_svg)
@@ -26,25 +29,25 @@ T = {
         "p1_t": "HAN-porten påslagen", "p1_d": "Hos elnätsbolaget, före besöket.",
         "wifi_t": "Wifi, bara 2,4&nbsp;GHz", "wifi_d": "Nätnamn och lösenord.",
         "app_t": "Appen och Bluetooth", "app_d": "Sourceful Energy, inloggad.",
-        "pow_t": "Kabel och ström", "pow_d": "RJ12–RJ45-kabeln. USB-C 5 V, 1 A.",
+        "pow_t": "Kabel och ström", "pow_d": "RJ12–RJ45-kabeln. USB-C, 5 V, minst 1 A.",
         "meter": "ELMÄTARE", "reading": "12 345,6", "jack": "RJ45", "pins": "8 STIFT · HAN",
-        "zap": "ZAP HAN", "schematic": "SCHEMATISK", "han_in": "HAN · RJ12", "usbc": "USB-C",
+        "zap_above": "ZAP HAN OVANIFRÅN", "out": "P1 UT", "rs485": "RS485", "button": "KNAPP", "status": "", "in": "IN · RJ12", "usbc": "USB-C",
         "charger": "Laddare", "charger_sub": "5 V · KRAV",
         "cable": "RJ45 → RJ12", "lights": "LAMPAN",
         "rows": [
             ("rainbow", "Regnbåge", "~1 s", "Startar"),
             (BLUE, "Blå, fast", "", "Väntar på appen"),
-            ("off", "Släckt", "", "Normal drift, eller ingen ström"),
+            ("off", "Släckt", "", "Igång, eller ingen ström"),
             (BLUE, "Blå, snabb", "KNAPP", "5–10 s: wifi rensas"),
         ],
         "s1_h": "Hitta porten",
         "s1_p": "Det bredare uttaget med åtta stift (RJ45), märkt <b>HAN</b>. Ofta bakom ett lock.",
         "s1_warn": "Aldrig en <b>Zap P1</b> eller adapter i RJ45 HAN. Bara Zap HAN och dess kabel.",
         "s2_h": "Koppla in",
-        "s2_p": "RJ45-änden i mätaren, RJ12-änden i Zap HAN. Båda ska klicka. Sätt i USB-C-strömmen: HAN-porten ger för lite ström, eller ingen.",
+        "s2_p": "RJ45-änden i mätaren, RJ12-änden i Zappens <b>IN</b>, långsidan med USB-C. Båda ska klicka. Sätt i USB-C: HAN-porten ger ingen ström till Zap.",
         "s2_q": "Zap HAN startar bara med USB-C-ström.",
         "s3_h": "Kolla lampan",
-        "s3_p1": "Regnbåge en sekund: Zap startar. Sedan blå, fast: den väntar på appen.",
+        "s3_p1": "Lampan sitter i RJ12-uttaget. Regnbåge en sekund: Zap startar. Sedan blå, fast: den väntar på appen.",
         "s3_p2": "Ingen blå: håll knappen 5–10&nbsp;s tills den blinkar snabbt, släpp.",
         "s4_h": "I appen", "s4_micro": "Samma flöde som Zap P1",
         "app_steps": [
@@ -58,7 +61,7 @@ T = {
         "s5_h": "Klart när",
         "seen": "Det här syns",
         "ok1_q": "Appen", "ok1": "Visar mätardata inom två minuter efter <b>Mätaren är tillagd</b>.",
-        "ok2_q": "Lampan släckt", "ok2": "Efter wifi och Bluetooth. Zap HAN har ingen datalampa.",
+        "ok2_q": "Lampan släckt", "ok2": "En minut efter att wifi är uppe. Bluetooth har stängt.",
         "ok3_q": "<code>han_uart</code>", "ok3": "Syns på mätaren i <code>zap.local/api/devices</code>.",
         "ifnot": "Om inte",
         "f1_q": "Mätaren kunde inte identifieras", "f1": "HAN-porten är inte påslagen, eller kabeln sitter fel. Be elnätsbolaget slå på den.",
@@ -69,10 +72,10 @@ T = {
         "wifi_path": ["<b>Mina Zappar</b>", "Zappen", "<b>Konfigurera om WiFi</b>", "välj&nbsp;den", "<b>Konfigurera Nätverk</b>", "nät, lösenord", "<b>Anslut</b>"],
         "card_k": "HAN", "card_m": "Mätare som stöds",
         "card1": "<b>Okrypterad HAN</b> (DLMS/COSEM över M-Bus). Krypterade mätare fungerar inte än.",
-        "card2": "Firmware namnger <b>Kamstrup</b>. Andra märken: fråga Sourceful innan du installerar.",
+        "card2": "Testad med <b>Kamstrup</b>. Andra märken: fråga Sourceful innan du installerar.",
         "card3": "Elnätsbolaget måste slå på HAN-porten. Den är ofta av från start.",
-        "foot1": "zap-x-firmware main &middot; appen 2.7.9 &middot; Aidon RJ45 HAN v1.6 &middot; verifierad 2026-10-15",
-        "foot2": "Zap HAN schematisk",
+        "foot1": "firmware main &middot; appen 2.7.9 &middot; Aidon HAN v1.6 &middot; 2026-10-15",
+        "foot2": "RJ45: Open Connector Graphics, CC BY 4.0",
     },
     "en": {
         "title": "Connect a Zap HAN",
@@ -82,25 +85,25 @@ T = {
         "p1_t": "HAN port enabled", "p1_d": "By the grid operator, beforehand.",
         "wifi_t": "Wi-Fi, 2.4&nbsp;GHz only", "wifi_d": "Network name and password.",
         "app_t": "App and Bluetooth", "app_d": "Sourceful Energy, signed in.",
-        "pow_t": "Cable and power", "pow_d": "The RJ12–RJ45 cable. USB-C 5 V, 1 A.",
+        "pow_t": "Cable and power", "pow_d": "The RJ12–RJ45 cable. USB-C, 5 V, at least 1 A.",
         "meter": "ELECTRICITY METER", "reading": "12,345.6", "jack": "RJ45", "pins": "8 PINS · HAN",
-        "zap": "ZAP HAN", "schematic": "SCHEMATIC", "han_in": "HAN · RJ12", "usbc": "USB-C",
+        "zap_above": "ZAP HAN FROM ABOVE", "out": "P1 OUT", "rs485": "RS485", "button": "BUTTON", "status": "", "in": "IN · RJ12", "usbc": "USB-C",
         "charger": "Charger", "charger_sub": "5 V · REQUIRED",
         "cable": "RJ45 → RJ12", "lights": "THE LIGHT",
         "rows": [
             ("rainbow", "Rainbow", "~1 s", "Starting"),
             (BLUE, "Blue, solid", "", "Waiting for the app"),
-            ("off", "Off", "", "Normal running, or no power"),
+            ("off", "Off", "", "Running, or no power"),
             (BLUE, "Blue, fast", "BUTTON", "5–10 s: Wi-Fi cleared"),
         ],
         "s1_h": "Find the port",
         "s1_p": "The wider socket with eight pins (RJ45), labelled <b>HAN</b>. Often behind a cover.",
         "s1_warn": "Never a <b>Zap P1</b> or an adapter in RJ45 HAN. Only the Zap HAN and its cable.",
         "s2_h": "Plug in",
-        "s2_p": "The RJ45 end into the meter, the RJ12 end into the Zap HAN. Both should click. Plug in USB-C power: the HAN port gives too little power, or none.",
+        "s2_p": "The RJ45 end into the meter, the RJ12 end into the Zap's <b>IN</b>, the long side with USB-C. Both should click. Plug in USB-C: the HAN port does not power the Zap.",
         "s2_q": "The Zap HAN only starts on USB-C power.",
         "s3_h": "Check the light",
-        "s3_p1": "Rainbow for a second: the Zap is starting. Then blue, solid: it is waiting for the app.",
+        "s3_p1": "The light sits in the RJ12 socket. Rainbow for a second: starting. Then blue, solid: waiting for the app.",
         "s3_p2": "No blue: hold the button 5–10&nbsp;s until it blinks fast, let go.",
         "s4_h": "In the app", "s4_micro": "Same flow as Zap P1",
         "app_steps": [
@@ -114,7 +117,7 @@ T = {
         "s5_h": "Done when",
         "seen": "You see this",
         "ok1_q": "The app", "ok1": "Shows meter data within two minutes of <b>Meter added</b>.",
-        "ok2_q": "The light is off", "ok2": "After Wi-Fi and Bluetooth. The Zap HAN has no data light.",
+        "ok2_q": "The light is off", "ok2": "A minute after Wi-Fi is up. Bluetooth has closed.",
         "ok3_q": "<code>han_uart</code>", "ok3": "On the meter in <code>zap.local/api/devices</code>.",
         "ifnot": "If not",
         "f1_q": "The meter was not detected", "f1": "The HAN port is not on, or the cable is wrong. Ask the grid operator to turn it on.",
@@ -125,15 +128,15 @@ T = {
         "wifi_path": ["<b>My Zaps</b>", "the Zap", "<b>Reconfigure WiFi</b>", "pick&nbsp;it", "<b>Configure network</b>", "network, password", "<b>Connect</b>"],
         "card_k": "HAN", "card_m": "Supported meters",
         "card1": "<b>Unencrypted HAN</b> (DLMS/COSEM over M-Bus). Encrypted meters do not work yet.",
-        "card2": "The firmware names <b>Kamstrup</b>. Other brands: ask Sourceful before you install.",
+        "card2": "Tested with <b>Kamstrup</b>. Other brands: ask Sourceful before you install.",
         "card3": "The grid operator must turn the HAN port on. It is often off at first.",
-        "foot1": "zap-x-firmware main &middot; app 2.7.9 &middot; Aidon RJ45 HAN v1.6 &middot; verified 2026-10-15",
-        "foot2": "Zap HAN drawn as a schematic",
+        "foot1": "firmware main &middot; app 2.7.9 &middot; Aidon HAN v1.6 &middot; 2026-10-15",
+        "foot2": "RJ45: Open Connector Graphics, CC BY 4.0",
     },
 }
 
 EXTRA_CSS = """
-h1{font-size:31pt;}
+h1{font-size:30pt;}
 .path{line-height:1.45;}
 .list li{padding:1.25mm 0;}
 code{font-family:'JetBrains Mono',monospace;font-size:0.88em;}
@@ -183,34 +186,22 @@ def hero(t, export=False):
     o.append(f'<text x="62" y="40.4" text-anchor="middle" font-size="3.6" font-weight="700" fill="{INK}">{t["jack"]}</text>')
     lab(62, 44.1, t["pins"], 2.1, MUTED, "middle")
 
-    # the Zap HAN, schematic
-    zx, zy, zw, zh = 96, 12, 40, 30
-    lab(zx + zw / 2, zy - 3, t["schematic"], 1.9, MUTED, "middle")
-    o.append(f'<rect x="{zx}" y="{zy}" width="{zw}" height="{zh}" rx="5" fill="{INK}"/>')
-    s = 0.24
-    o.append(f'<path d="{BOLT}" fill="{CREAM}" transform="translate({zx + zw / 2 - 22.8 * s:.2f},{zy + 11 - 23.3 * s:.2f}) scale({s})"/>')
-    lab(zx + zw / 2, zy + 22, t["zap"], 2.4, "#FAFAF7", "middle", "700")
-    # RGB light
-    o.append(light_glyph(BLUE, zx + zw - 5, zy + 5, 1.1))
-    # the HAN socket (RJ12) with the cable's RJ12 plug, on the left
-    o.append(f'<rect x="{zx - 6}" y="{zy + 18}" width="7" height="5" rx="0.9" fill="{PLASTIC}" stroke="{INK}" stroke-width="0.25"/>')
-    lab(zx + 2.5, zy + 16.6, t["han_in"], 1.8, "#B9B6AA")
-    # USB-C with the charger, on the left too, above
-    ux = zx + zw * 0.62
-    o.append(f'<rect x="{ux - 2.2:.2f}" y="{zy + zh - 1.2}" width="4.4" height="2" rx="1" fill="#8C8A80"/>')
-    lab(ux, zy + zh - 3, t["usbc"], 1.8, "#B9B6AA", "middle")
-    o.append(f'<path d="M{ux:.2f} {zy + zh + 0.8} V{zy + zh + 6}" fill="none" stroke="{INK}" stroke-width="0.9" stroke-linecap="round"/>')
-    o.append(f'<rect x="{ux - 10:.2f}" y="{zy + zh + 6}" width="20" height="10" rx="2" fill="#FFFFFF" stroke="{INK}" stroke-width="0.4"/>')
-    o.append(f'<text x="{ux:.2f}" y="{zy + zh + 10.8}" text-anchor="middle" font-size="2.5" font-weight="500" fill="{INK}">{t["charger"]}</text>')
-    lab(ux, zy + zh + 14, t["charger_sub"], 1.5, SIGNAL, "middle", "700")
+    # the Zap HAN: the same box as the Zap P1, RGB light in the RJ12 IN socket
+    zap_top(o, t, 88, 9.5, han=True)
+    zb = 9.5 + 42.7
+    ux = 88 + 0.466 * 56                                             # USB-C, with the charger
+    o.append(f'<path d="M{ux:.2f} {zb + 0.8:.2f} V{zb + 3.4:.2f}" fill="none" stroke="{INK}" stroke-width="0.9" stroke-linecap="round"/>')
+    o.append(f'<rect x="{ux - 4:.2f}" y="{zb + 3.4:.2f}" width="21" height="8.6" rx="2" fill="#FFFFFF" stroke="{INK}" stroke-width="0.4"/>')
+    o.append(f'<text x="{ux + 6.5:.2f}" y="{zb + 7.2:.2f}" text-anchor="middle" font-size="2.5" font-weight="500" fill="{INK}">{t["charger"]}</text>')
+    lab(ux + 6.5, zb + 10.4, t["charger_sub"], 1.5, SIGNAL, "middle", "700")
 
-    # the cable: RJ45 in the meter -> RJ12 in the Zap HAN
-    o.append(f'<path d="M27.2 41.6 V56 C27.2 59.8 29.6 61.8 33.4 61.8 H80 C84 61.8 86 59.8 86 55.8 V36 C86 32.6 87.6 32.5 90 32.5" '
+    # the cable: RJ45 in the meter -> RJ12 in the Zap HAN's IN socket, from below
+    o.append(f'<path d="M27.2 41.6 V56 C27.2 59.8 29.6 61.8 33.4 61.8 H99 C100.9 61.8 101.9 61.2 101.9 60.2" '
              f'fill="none" stroke="{INK}" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>')
-    lab(58, 60.2, t["cable"], 2, INK, "middle", "700")
+    lab(47, 59.6, t["cable"], 2, INK, "middle", "700")
 
     # the light, explained
-    lx = 145
+    lx = 153.5
     lab(lx + 5, 12.6, t["lights"], 2.2)
     y = 18.4
     for kind, name, extra, mean in t["rows"]:
@@ -329,7 +320,7 @@ def build(lang):
 
 
 # Standalone drawings for assets/devices/, cut out of the hero (English labels).
-DEVICES = {"zap-han-schematic": (87, 6, 54, 54)}
+DEVICES = {"zap-han": (84, 1, 64, 63.5)}
 
 
 def devices():

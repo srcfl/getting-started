@@ -12,13 +12,13 @@ Zap HAN läser elmätare som har ett RJ45 HAN-uttag (M-Bus). Den skickar mätard
 
 ## Zap HAN
 
-![Schematisk bild av Zap HAN: HAN-uttaget (RJ12) med kabeln, USB-C med laddare och en lampa](../assets/devices/zap-han-schematic.svg)
+![Zap HAN ovanifrån: samma låda som Zap P1, RGB-lampan i RJ12-uttaget IN, USB-C bredvid](../assets/devices/zap-han.svg)
 
-Bilden är schematisk. Sourcefuls källor har ännu inget foto eller ritning av Zap HAN, så den visar inte var uttagen sitter.
+Zap HAN har samma låda och samma uttag som [Zap P1](../zap/README.sv.md). Skillnaderna:
 
-- **HAN-uttag (RJ12):** kabeln till mätarens RJ45 HAN-uttag.
-- **USB-C:** ström. Behövs alltid.
-- **En lampa** (RGB) och **knappen**.
+- **Ingen separat blå statuslampa.** Lampan i RJ12-uttaget är en RGB-lampa som gör det jobbet: regnbåge vid start, sedan blått som Zap P1:ans statuslampa.
+- **Kabeln** som följer med går från **RJ12** på Zap (uttaget **IN**, på långsidan med USB-C) till **RJ45** i mätaren.
+- **USB-C-ström behövs alltid.** HAN-porten ger inte Zap ström som en P1-port gör.
 
 ## Innan du åker
 
@@ -26,7 +26,7 @@ Bilden är schematisk. Sourcefuls källor har ännu inget foto eller ritning av 
 - [ ] **Wifi-namn och lösenord.** Bara 2,4 GHz.
 - [ ] **Sourceful Energy-appen**, inloggad, med en profil och en anläggning. **Bluetooth på.**
 - [ ] **Kabeln** som följer med Zap HAN: RJ12 i Zap-änden, RJ45 i mätaränden.
-- [ ] **En USB-C-laddare**, 5 V. Sourcefuls support rekommenderar minst 1 A för Zap.
+- [ ] **En USB-C-laddare**, 5 V, minst 1 A.
 
 ## 1. Hitta porten på mätaren
 
@@ -37,12 +37,14 @@ Det bredare uttaget med åtta stift (RJ45, ungefär 11,5 mm), märkt **HAN**. De
 ## 2. Koppla in
 
 1. Tryck in kabelns RJ45-ände i mätarens HAN-uttag. Den ska klicka.
-2. Tryck in RJ12-änden i Zap HAN:s HAN-uttag. Den ska klicka.
+2. Tryck in RJ12-änden i Zap HAN:s uttag **IN**, på långsidan med USB-C. Den ska klicka.
 3. Sätt i USB-C-strömmen.
 
-HAN-porten ger för lite ström för Zap, eller ingen alls: på Aidon-mätare högst ungefär 0,7 W, och först när elnätsbolaget har slagit på den. Zap HAN drivs alltid med USB-C.
+HAN-porten ger inte Zap ström: på Aidon-mätare högst ungefär 0,7 W, och först när elnätsbolaget har slagit på den. Zap HAN drivs alltid med USB-C.
 
 ## 3. Kolla lampan
+
+Lampan sitter i RJ12-uttaget.
 
 - **Regnbåge i ungefär en sekund:** Zap HAN startar.
 - **Blå, fast:** den väntar på appen. Gå till steg 4.
@@ -104,7 +106,7 @@ Det kan ta upp till två minuter innan mätvärden visas.
 
 - Zap HAN läser okrypterad HAN-data (DLMS/COSEM över M-Bus, 2400 baud).
 - Krypterade mätare fungerar inte än: det finns ingen inställning för en nyckel.
-- Firmware namnger Kamstrup. För andra märken: fråga Sourceful innan du installerar.
+- Testad med Kamstrup. För andra märken: fråga Sourceful innan du installerar.
 
 ## Felsökning
 
@@ -117,18 +119,13 @@ Det kan ta upp till två minuter innan mätvärden visas.
 
 ## Öppna frågor
 
-- Det finns inget foto eller ritning av Zap HAN i Sourcefuls källor: hur många uttag den har, vad de heter och vilka sidor de sitter på.
-- Kabeln: längden och hur RJ12 kopplas till RJ45 är inte dokumenterat. Att den går från RJ12 på Zap till RJ45 i mätaren kommer från David (2026-10-15).
-- USB-C-märkningen för Zap HAN är inte dokumenterad.
-- Om Zap HAN har en ström- eller datalampa utöver RGB-lampan. Firmware nämner en hårdvarustyrd P1-lampa.
-- Vilka HAN-mätare som är testade. Bara Kamstrup nämns i koden, och Sourcefuls referens-Zap HAN läser sin Kamstrup via P1-ingången, inte HAN-ingången.
 - Supportsajten säger emot sig själv om HAN: de engelska sidorna kallar RJ45 HAN inkompatibelt och säger att det ger 24–36 V, den svenska mätarsidan räknar HAN som en etikett på RJ12-uttag, och en sida säger att HAN-portar inte ger någon ström.
 
 ## Källor
 
-- David (2026-10-15): kabeln från RJ12 till RJ45 och behovet av egen ström
+- David (2026-10-15): samma låda och uttag som Zap P1, RGB-lampan i RJ12-uttaget i stället för en separat blå lampa, kabeln från RJ12 till RJ45, USB-C-ström (5 V, minst 1 A) eftersom HAN-porten inte driver Zap, testad med Kamstrup
 - Aidon, [RJ45 HAN Interface](https://aidon.com/wp-content/uploads/2023/06/AIDONFD_RJ45_HAN_Interface_EN.pdf) v1.6 A: stift 1 M-Bus data och ström (12–24 V, 30 mA), stift 2 och 8 GND, stift 6–7 kopplas inte, HAN-porten och strömmen är av tills elnätsbolaget slår på dem
 - `srcfl/srcful-zap-x-firmware` på `main` (6da453f): `components/board/include/boards/zap-han.h` (HAN-ingång 2400 8N1, en RGB-lampa, knapp), `fw_controller/main/main.cpp` (regnbåge vid start), `fw_controller/main/main_loop.cpp` (blå lampa och knapptider), `fw_controller/API.md` (`detected_type: han_uart`, Zap HAN provar båda ingångarna), `components/p1_data_reader/decoding/` (HDLC, DLMS/COSEM, M-Bus; ingen dekryptering), `fw_simulator/README.md` (RJ12-HAN-kontakten)
 - `srcfl/srcful-flutter-app` vid 9800165 (appen 2.7.9): onboardingen är densamma som för Zap P1; mätaren läggs till som **P1 / HAN-mätare** med **Identifiera mätare** på firmware 2.3.13 eller senare
 - Läsande kontroll av Sourcefuls referens-Zap HAN (firmware 2.3.13), 2026-10-15
-- One-pagern byggs från [onepagers/zap_han.py](../onepagers/zap_han.py)
+- One-pagern byggs från [onepagers/zap_han.py](../onepagers/zap_han.py); RJ45-uttaget följer Open Connector Graphics (Wikke Andeweg, CC BY 4.0)

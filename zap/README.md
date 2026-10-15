@@ -83,7 +83,7 @@ Meter data can take up to two minutes to appear.
 ## 6. Done when
 
 - **Green in P1 OUT** blinks about every ten seconds. The meter is answering.
-- **Blue** double-blinked shortly after start, usually within 30 seconds, and is off now. Wi-Fi is up.
+- **Blue** is off. It goes off about a minute after Wi-Fi is up, when Bluetooth closes.
 - **The app** shows meter data.
 
 ### Check it from a laptop (optional)
@@ -132,10 +132,9 @@ If the Zap is still online, the button is **Configure Network** on the **Network
 | Green in P1 IN | Off | No power. Check the cable, or use USB-C. |
 | Green in P1 OUT | Blinks about every 10 s | Data from the meter |
 | Green in P1 OUT | Never blinks | The P1 port is probably not enabled. Contact the grid operator. |
+| Blue | One short blink at start | The Zap is starting |
 | Blue | Solid | Waiting for the app (Bluetooth, no Wi-Fi set) |
-| Blue | One blink at start | The Zap is starting |
-| Blue | Double blink shortly after start | Connected to Wi-Fi |
-| Blue | One blink at start, never a double blink | Wi-Fi failed |
+| Blue | Off | Running. The light does not show whether Wi-Fi works: check the app, or `zap.local/api/network` |
 
 | Hold the button | While you hold | When you let go |
 | --- | --- | --- |
@@ -152,7 +151,7 @@ The app has no restart button. Use the button.
 | --- | --- | --- |
 | No data blink | The meter is not added in the app, the P1 port is not enabled, or the cable is not fully in | Add the meter (step 5). Push the cable in at both ends. Ask the grid operator to enable the port. |
 | **The meter was not detected** in the app | The cable, or the port is not enabled | Check the cable and the port, then tap **Detect meter** again. |
-| Blue blinks once at start and never again | The Zap cannot reach the saved Wi-Fi: new router or password, a 5 GHz-only router, MAC filtering, a full DHCP pool, or a metal cabinet | Hold the button 5–10 s; solid blue means it worked. Set up Wi-Fi again on a 2.4 GHz network. |
+| The app says **Unable to reach Zap** | The Zap cannot reach the saved Wi-Fi: new router or password, a 5 GHz-only router, MAC filtering, a full DHCP pool, or a metal cabinet | Hold the button 5–10 s; solid blue means it worked. Set up Wi-Fi again on a 2.4 GHz network. |
 | The app does not find the Zap | Blue is not solid, or the phone is too far away | Turn Bluetooth on, stand close. If the Zap was set up before, hold the button 5–10 s. |
 | No green light in P1 IN | No power from the meter | Check the cable. Power the Zap with USB-C. |
 | Meter data at `zap.local/api/devices` but not in the app | `"mqttConnected": false` at `/api/network`: no internet, or the Zap needs a restart | Check the internet connection. Unplug the Zap for 10 seconds. |
@@ -183,6 +182,7 @@ These are places where the sources disagree. The steps above follow the app and 
 - The support articles describe green, orange and red signal colours. The app shows orange signal bars.
 - The support articles say the app can scan the network for inverters. App 2.7.9 has no scan; you type the IP.
 - The support articles say the green data light blinks as soon as the Zap is on Wi-Fi. On firmware 2.3.x the Zap only reads the meter, and the light only blinks, after the meter is added in the app (step 5).
+- The support articles say blue double-blinks when Wi-Fi is up, and that one blink and then nothing means Wi-Fi failed. Firmware 2.3.x has no double blink: blue blinks once at start, is solid only while waiting for the app, and goes off when Bluetooth closes. Use the app to see whether the Zap is online.
 - The support articles give 5 s and 10 s for a reset. The firmware does both: 5 s clears Wi-Fi, 10 s is a full factory reset.
 - The terminal on the OUT side is called **RS485 Input** in the product images. The reference manual says it is reserved for future sensors and not active, while some brand guides wire inverters to it.
 - "Zap beyond P1 meters" names firmware 1.2.1 and 1.6.20. The firmware repository has used 2.x since November 2025.
@@ -192,7 +192,7 @@ These are places where the sources disagree. The steps above follow the app and 
 ## Sources
 
 - Support articles on support.sourceful.energy, all updated 2026-06-02: [reference manual](https://support.sourceful.energy/en/zap-reference-manual), [connect Zap to the meter](https://support.sourceful.energy/en/how-to-connect-zap-to-your-electricity-meter), [connect Zap to an inverter](https://support.sourceful.energy/en/how-to-connect-zap-to-your-inverter), [compatible meters](https://support.sourceful.energy/en/which-electricity-meters-are-compatible-with-sourceful-energy), [compatible inverters](https://support.sourceful.energy/en/which-inverters-are-compatible-with-sourceful-energy), [Modbus TCP on the inverter](https://support.sourceful.energy/en/how-do-i-know-if-modbus-tcp-is-activated-on-my-inverter), [reconfigure Wi-Fi](https://support.sourceful.energy/en/zap-reconfigure-wifi-firmware-v2-2-0), [no data in the app](https://support.sourceful.energy/en/troubleshooting-zap-connected-but-no-data-in-app), [blue LED blinks then turns off](https://support.sourceful.energy/en/troubleshooting-blue-status-led-blinking-then-turning-off), [overheating or wrong port](https://support.sourceful.energy/en/troubleshooting-zap-overheating-or-connected-to-wrong-port), [safety information](https://support.sourceful.energy/en/zap-safety-information)
-- Button timings: `srcfl/srcful-zap-x-firmware`, `fw_controller/main/main_loop.cpp` on `main` (6da453f9)
+- Button timings and the status light: `srcfl/srcful-zap-x-firmware`, `fw_controller/main/main_loop.cpp` on `main` (6da453f9) and v2.3.17 (no double blink; blue solid only while Bluetooth waits), `fw_controller/main/main.cpp` (one blink at start; Bluetooth only without saved Wi-Fi)
 - The meter is not added automatically: `fw_controller/main/main.cpp` (`MIGRATION_ENABLED 0` on `main`, v2.3.13 and v2.3.17); the data light is driven by the P1 reader: `components/p1_data_reader/p1_meter.cpp`, `components/board/include/boards/zap-p1.h`
 - Adding the meter: `srcfl/srcful-flutter-app` at 9800165, `lib/utils/smart_meter_onboarding_policy.dart`, `lib/screens/device_onboard/onboard_steps.dart`
 - Local endpoints and names: `srcfl/srcful-zap-x-firmware`, `fw_controller/API.md` and `components/wifi/wifi_manager.cpp`; read-only checks on two Zaps (firmware 2.3.13 and 2.3.25), 2026-10-15

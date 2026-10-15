@@ -31,7 +31,7 @@ T = {
             (BLUE, "Blå", "STATUS", "solid", "Väntar på appen"),
             (BLUE, "Blå", "STATUS", "fast", "Wifi rensat, Bluetooth"),
             (GREEN, "Grön", "I UT", "ten", "Mätardata, ~10 s"),
-            (BLUE, "Blå", "STATUS", "double", "Wifi uppe"),
+            (BLUE, "Blå", "STATUS", "off", "Släckt: igång"),
         ],
         "s1_h": "Hitta porten",
         "s1_p": "Det lilla uttaget, som ett gammalt telefonjack. Märkt <b>P1</b>, <b>Customer</b>, <b>User</b> eller <b>RJ12</b>, ibland <b>HAN</b>. Sex stift. Ofta bakom ett lock.",
@@ -54,12 +54,12 @@ T = {
         "s5_h": "Klart när",
         "seen": "Det här syns",
         "ok_data_q": "Grön i UT", "ok_data": "Blinkar ungefär var 10:e s när mätaren är tillagd.",
-        "ok_wifi_q": "Blå dubbelblink", "ok_wifi": "En stund efter start. Wifi är uppe.",
+        "ok_wifi_q": "Blå släckt", "ok_wifi": "En minut efter att wifi är uppe. Bluetooth har stängt.",
         "ok_app": "Appen visar mätardata inom 2 min",
         "ifnot": "Om inte",
         "nd_q": "Ingen data-blink",
         "nd": "Är mätaren tillagd (4.6)? Då är porten oftast inte påslagen, eller så sitter kabeln fel.",
-        "nw_q": "Blå en gång, sen tyst", "nw": "Wifi nås inte. Bättre täckning, eller gör om wifi.",
+        "nw_q": "Appen: Kan inte nå Zap", "nw": "Wifi nås inte. Bättre täckning, eller gör om wifi.",
         "hang_q": "Verkar hängd", "hang": "Håll knappen 2–5&nbsp;s, släpp. Zap startar om.",
         "wifi_h": "Byta wifi",
         "wifi_p": "Håll knappen 5–10&nbsp;s (snabb blå blink), släpp. Sedan:<br>",
@@ -91,7 +91,7 @@ T = {
             (BLUE, "Blue", "STATUS", "solid", "Waiting for the app"),
             (BLUE, "Blue", "STATUS", "fast", "Wi-Fi cleared, Bluetooth"),
             (GREEN, "Green", "OUT", "ten", "Meter data, ~10 s"),
-            (BLUE, "Blue", "STATUS", "double", "Wi-Fi up"),
+            (BLUE, "Blue", "STATUS", "off", "Off: running"),
         ],
         "s1_h": "Find the port",
         "s1_p": "The small socket, like an old phone jack. Labelled <b>P1</b>, <b>Customer</b>, <b>User</b> or <b>RJ12</b>, sometimes <b>HAN</b>. Six pins. Often behind a cover.",
@@ -114,12 +114,12 @@ T = {
         "s5_h": "Done when",
         "seen": "You see this",
         "ok_data_q": "Green in OUT", "ok_data": "Blinks about every 10 s once the meter is added.",
-        "ok_wifi_q": "Blue double blink", "ok_wifi": "Shortly after start. Wi-Fi is up.",
+        "ok_wifi_q": "Blue off", "ok_wifi": "A minute after Wi-Fi is up. Bluetooth has closed.",
         "ok_app": "Meter data in the app within 2 min",
         "ifnot": "If not",
         "nd_q": "No data blink",
         "nd": "Is the meter added (4.6)? Then the port is usually not enabled, or the cable is wrong.",
-        "nw_q": "Blue once, then nothing", "nw": "No Wi-Fi. Better coverage, or redo the Wi-Fi.",
+        "nw_q": "App: Unable to reach Zap", "nw": "No Wi-Fi. Better coverage, or redo the Wi-Fi.",
         "hang_q": "Seems stuck", "hang": "Hold the button 2–5&nbsp;s, let go. The Zap restarts.",
         "wifi_h": "Change Wi-Fi",
         "wifi_p": "Hold the button 5–10&nbsp;s (fast blue blink), let go. Then:<br>",
@@ -134,6 +134,60 @@ T = {
         "foot2": "RJ12 jack after Open Connector Graphics, Wikke Andeweg, CC BY 4.0",
     },
 }
+
+
+def zap_top(o, t, zx, zy, han=False):
+    """The Zap from above, at about 1:1 (RJ12 is ~24 % of the 56 mm long side).
+
+    Lower long side = IN side; upper long side = OUT side, mirrored as seen from above.
+    The Zap HAN (han=True) has the same box and sockets but no separate blue status
+    light: the light in its RJ12 IN socket is an RGB light that does that job (David,
+    2026-10-15).
+    """
+    zw, zh = 56, 42.7
+    zb = zy + zh
+    X = lambda f: zx + f * zw
+    o.append(f'<text x="{zx + zw / 2}" y="{zy - 3.9}" text-anchor="middle" {MONO} font-size="2.2" '
+             f'letter-spacing="0.35" fill="{MUTED}">{t["zap_above"]}</text>')
+    o.append(f'<rect x="{X(0.249) - 4.8:.2f}" y="{zb - 0.6:.2f}" width="9.6" height="6.6" rx="0.9" '
+             f'fill="{PLASTIC}" stroke="{INK}" stroke-width="0.25"/>')
+    o.append(f'<rect x="{X(0.249) - 1.5:.2f}" y="{zb + 6:.2f}" width="3" height="2.2" rx="0.5" fill="#BDB8AA"/>')
+    o.append(f'<rect x="{zx}" y="{zy}" width="{zw}" height="{zh}" rx="5.6" fill="{INK}"/>')
+    o.append(f'<rect x="{zx + 2.2}" y="{zy + 2.2}" width="{zw - 4.4}" height="{zh - 4.4}" rx="3.8" fill="#1F1F1E"/>')
+    s = 0.3
+    o.append(f'<path d="{BOLT}" fill="{CREAM}" transform="translate({zx + zw / 2 - 22.8 * s:.2f},'
+             f'{zy + zh / 2 - 23.3 * s:.2f}) scale({s})"/>')
+    lab = f'{MONO} font-size="2" letter-spacing="0.25" fill="#B9B6AA" text-anchor="middle"'
+    tick = lambda x, y1, y2: o.append(f'<line x1="{x:.2f}" y1="{y1:.2f}" x2="{x:.2f}" y2="{y2:.2f}" '
+                                      f'stroke="#6E6C66" stroke-width="0.2"/>')
+    edge = lambda f, w, y, color, rx=0.4: o.append(
+        f'<rect x="{X(f) - w / 2:.2f}" y="{y - 0.8:.2f}" width="{w}" height="1.6" rx="{rx}" fill="{color}"/>')
+    # upper long side, the OUT side
+    edge(0.286, 13.4, zy, "#55534F")
+    edge(0.540, 13.4, zy, "#5E8F66", 0.2)
+    o.append(f'<rect x="{X(0.761) - 3:.2f}" y="{zy - 0.8:.2f}" width="6" height="1.6" rx="0.8" '
+             f'fill="{INK}" stroke="#8C8A80" stroke-width="0.25"/>')
+    tick(X(0.540), zy + 1, zy + 4.2)
+    tick(X(0.761), zy + 1, zy + 4.2)
+    o.append(f'<text x="{X(0.286):.2f}" y="{zy + 6.4:.2f}" {lab}>{t["out"]}</text>')
+    o.append(f'<text x="{X(0.540):.2f}" y="{zy + 6.4:.2f}" {lab}>{t["rs485"]}</text>')
+    o.append(f'<text x="{X(0.761):.2f}" y="{zy + 6.4:.2f}" {lab}>{t["button"]}</text>')
+    if not han:
+        o.append(f'<circle cx="{X(0.286):.2f}" cy="{zy + 2.6:.2f}" r="0.85" fill="{GREEN}"/>')
+        o.append(f'<circle cx="{X(0.849):.2f}" cy="{zy + 2.6:.2f}" r="0.85" fill="{BLUE}"/>')
+        tick(X(0.849), zy + 3.6, zy + 7.4)
+        o.append(f'<text x="{X(0.849):.2f}" y="{zy + 9.6:.2f}" {lab}>{t["status"]}</text>')
+    # lower long side, the IN side
+    edge(0.249, 13.4, zb, "#55534F")
+    edge(0.466, 9.4, zb, "#8C8A80", 0.8)
+    if han:   # the RGB light in the RJ12 socket
+        for i, c in enumerate(("#E5484D", "#F2D53C", "#30A46C", "#3E63DD")):
+            o.append(f'<circle cx="{X(0.249) - 1.6 + i * 1.07:.2f}" cy="{zb - 2.6:.2f}" r="0.5" fill="{c}"/>')
+    else:
+        o.append(f'<circle cx="{X(0.249):.2f}" cy="{zb - 2.6:.2f}" r="0.85" fill="{GREEN}"/>')
+    tick(X(0.466), zb - 1, zb - 4.2)
+    o.append(f'<text x="{X(0.249):.2f}" y="{zb - 4.8:.2f}" {lab}>{t["in"]}</text>')
+    o.append(f'<text x="{X(0.466):.2f}" y="{zb - 4.8:.2f}" {lab}>{t["usbc"]}</text>')
 
 
 def hero(t, export=False):
@@ -170,45 +224,7 @@ def hero(t, export=False):
     o.append(f'<text x="62" y="40.4" text-anchor="middle" font-size="3.6" font-weight="700" fill="{INK}">RJ12</text>')
     o.append(f'<text x="62" y="44.1" text-anchor="middle" {MONO} font-size="2.1" letter-spacing="0.2" fill="{MUTED}">{t["pins"]}</text>')
 
-    # Zap from above. RJ12 is ~24 % of the long side, so 56 mm is close to 1:1.
-    # Lower long side = IN side; upper long side = OUT side, mirrored as seen from above.
-    zx, zy, zw, zh = 88, 9.5, 56, 42.7
-    zb = zy + zh
-    X = lambda f: zx + f * zw
-    o.append(f'<text x="{zx + zw / 2}" y="5.6" text-anchor="middle" {MONO} font-size="2.2" '
-             f'letter-spacing="0.35" fill="{MUTED}">{t["zap_above"]}</text>')
-    o.append(f'<rect x="{X(0.249) - 4.8:.2f}" y="{zb - 0.6:.2f}" width="9.6" height="6.6" rx="0.9" '
-             f'fill="{PLASTIC}" stroke="{INK}" stroke-width="0.25"/>')
-    o.append(f'<rect x="{X(0.249) - 1.5:.2f}" y="{zb + 6:.2f}" width="3" height="2.2" rx="0.5" fill="#BDB8AA"/>')
-    o.append(f'<rect x="{zx}" y="{zy}" width="{zw}" height="{zh}" rx="5.6" fill="{INK}"/>')
-    o.append(f'<rect x="{zx + 2.2}" y="{zy + 2.2}" width="{zw - 4.4}" height="{zh - 4.4}" rx="3.8" fill="#1F1F1E"/>')
-    s = 0.3
-    o.append(f'<path d="{BOLT}" fill="{CREAM}" transform="translate({zx + zw / 2 - 22.8 * s:.2f},'
-             f'{zy + zh / 2 - 23.3 * s:.2f}) scale({s})"/>')
-    lab = f'{MONO} font-size="2" letter-spacing="0.25" fill="#B9B6AA" text-anchor="middle"'
-    tick = lambda x, y1, y2: o.append(f'<line x1="{x:.2f}" y1="{y1:.2f}" x2="{x:.2f}" y2="{y2:.2f}" '
-                                      f'stroke="#6E6C66" stroke-width="0.2"/>')
-    edge = lambda f, w, y, color, rx=0.4: o.append(
-        f'<rect x="{X(f) - w / 2:.2f}" y="{y - 0.8:.2f}" width="{w}" height="1.6" rx="{rx}" fill="{color}"/>')
-    edge(0.286, 13.4, zy, "#55534F")
-    edge(0.540, 13.4, zy, "#5E8F66", 0.2)
-    o.append(f'<rect x="{X(0.761) - 3:.2f}" y="{zy - 0.8:.2f}" width="6" height="1.6" rx="0.8" '
-             f'fill="{INK}" stroke="#8C8A80" stroke-width="0.25"/>')
-    o.append(f'<circle cx="{X(0.286):.2f}" cy="{zy + 2.6:.2f}" r="0.85" fill="{GREEN}"/>')
-    o.append(f'<circle cx="{X(0.849):.2f}" cy="{zy + 2.6:.2f}" r="0.85" fill="{BLUE}"/>')
-    tick(X(0.540), zy + 1, zy + 4.2)
-    tick(X(0.761), zy + 1, zy + 4.2)
-    tick(X(0.849), zy + 3.6, zy + 7.4)
-    o.append(f'<text x="{X(0.286):.2f}" y="{zy + 6.4:.2f}" {lab}>{t["out"]}</text>')
-    o.append(f'<text x="{X(0.540):.2f}" y="{zy + 6.4:.2f}" {lab}>{t["rs485"]}</text>')
-    o.append(f'<text x="{X(0.761):.2f}" y="{zy + 6.4:.2f}" {lab}>{t["button"]}</text>')
-    o.append(f'<text x="{X(0.849):.2f}" y="{zy + 9.6:.2f}" {lab}>{t["status"]}</text>')
-    edge(0.249, 13.4, zb, "#55534F")
-    edge(0.466, 9.4, zb, "#8C8A80", 0.8)
-    o.append(f'<circle cx="{X(0.249):.2f}" cy="{zb - 2.6:.2f}" r="0.85" fill="{GREEN}"/>')
-    tick(X(0.466), zb - 1, zb - 4.2)
-    o.append(f'<text x="{X(0.249):.2f}" y="{zb - 4.8:.2f}" {lab}>{t["in"]}</text>')
-    o.append(f'<text x="{X(0.466):.2f}" y="{zb - 4.8:.2f}" {lab}>{t["usbc"]}</text>')
+    zap_top(o, t, 88, 9.5)
 
     # the lights
     lx = 153.5
@@ -334,8 +350,8 @@ def build(lang):
         "LOGO": LOGO_LIGHT, "IC_METER": IC_METER, "IC_WIFI": IC_WIFI, "IC_PHONE": IC_PHONE,
         "IC_CABLE": IC_CABLE, "HERO": hero(t), "APP_TRACK": track, "TICK": TICK,
         "WIFI_PATH": arrow.join(t["wifi_path"]),
-        "PAT_DATA": pattern_svg("ten", GREEN), "PAT_WIFI": pattern_svg("double", BLUE),
-        "PAT_NONE": pattern_svg("once", BLUE), "PAT_RESTART": pattern_svg("slow", BLUE),
+        "PAT_DATA": pattern_svg("ten", GREEN), "PAT_WIFI": pattern_svg("off", BLUE),
+        "PAT_NONE": "", "PAT_RESTART": pattern_svg("slow", BLUE),
     })
     return page(lang, t["title"], fill(BODY, values), EXTRA_CSS)
 

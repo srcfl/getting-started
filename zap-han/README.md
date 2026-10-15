@@ -12,13 +12,13 @@ The Zap HAN reads electricity meters that have an RJ45 HAN port (M-Bus). It send
 
 ## The Zap HAN
 
-![Schematic of the Zap HAN: the HAN socket (RJ12) with the cable, USB-C with a charger, and one light](../assets/devices/zap-han-schematic.svg)
+![The Zap HAN from above: the same box as the Zap P1, the RGB light in the RJ12 IN socket, USB-C next to it](../assets/devices/zap-han.svg)
 
-The drawing is a schematic. Sourceful's sources have no photo or drawing of the Zap HAN yet, so it does not show where the sockets sit.
+The Zap HAN has the same box and the same sockets as the [Zap P1](../zap/README.md). The differences:
 
-- **HAN socket (RJ12):** the cable to the meter's RJ45 HAN port.
-- **USB-C:** power. Always needed.
-- **One light** (RGB) and **the button**.
+- **No separate blue status light.** The light in the RJ12 socket is an RGB light that does that job: rainbow at start, then blue like the Zap P1's status light.
+- **The cable** that comes with it goes from **RJ12** on the Zap (the **IN** socket, on the long side with USB-C) to **RJ45** in the meter.
+- **USB-C power is always needed.** The HAN port does not power the Zap the way a P1 port does.
 
 ## Before you go
 
@@ -26,7 +26,7 @@ The drawing is a schematic. Sourceful's sources have no photo or drawing of the 
 - [ ] **Wi-Fi name and password.** 2.4 GHz only.
 - [ ] **The Sourceful Energy app**, signed in, with a profile and a site. **Bluetooth on.**
 - [ ] **The cable** that comes with the Zap HAN: RJ12 on the Zap end, RJ45 on the meter end.
-- [ ] **A USB-C charger**, 5 V. Sourceful's support recommends at least 1 A for the Zap.
+- [ ] **A USB-C charger**, 5 V, at least 1 A.
 
 ## 1. Find the port on the meter
 
@@ -37,12 +37,14 @@ The wider socket with eight pins (RJ45, about 11.5 mm), labelled **HAN**. It oft
 ## 2. Plug in
 
 1. Push the RJ45 end of the cable into the meter's HAN port. It should click.
-2. Push the RJ12 end into the Zap HAN's HAN socket. It should click.
+2. Push the RJ12 end into the Zap HAN's **IN** socket, on the long side with USB-C. It should click.
 3. Plug in USB-C power.
 
-The HAN port gives too little power for the Zap, or none: on Aidon meters at most about 0.7 W, and only once the grid operator has turned it on. The Zap HAN always runs on USB-C.
+The HAN port does not power the Zap: on Aidon meters it gives at most about 0.7 W, and only once the grid operator has turned it on. The Zap HAN always runs on USB-C.
 
 ## 3. Check the light
+
+The light sits in the RJ12 socket.
 
 - **Rainbow for about a second:** the Zap HAN is starting.
 - **Blue, solid:** it is waiting for the app. Go to step 4.
@@ -104,7 +106,7 @@ Meter data can take up to two minutes to appear.
 
 - The Zap HAN reads unencrypted HAN data (DLMS/COSEM over M-Bus, 2400 baud).
 - Encrypted meters do not work yet: there is no setting for a key.
-- The firmware names Kamstrup. For other brands, ask Sourceful before you install.
+- Tested with Kamstrup. For other brands, ask Sourceful before you install.
 
 ## Troubleshooting
 
@@ -117,18 +119,13 @@ Meter data can take up to two minutes to appear.
 
 ## Open questions
 
-- There is no photo or drawing of the Zap HAN in Sourceful's sources: how many sockets it has, their labels and which sides they are on.
-- The cable: its length and its RJ12-to-RJ45 pin mapping are not documented. That it goes from RJ12 on the Zap to RJ45 in the meter comes from David (2026-10-15).
-- The USB-C rating for the Zap HAN is not documented.
-- Whether the Zap HAN has a power or data light besides the RGB light. The firmware mentions a hardware-driven P1 light.
-- Which HAN meters are tested. Only Kamstrup is named in the code, and Sourceful's reference Zap HAN reads its Kamstrup through the P1 input, not the HAN input.
 - The support site disagrees about HAN: the English pages call RJ45 HAN ports incompatible and say they give 24–36 V, the Swedish meter page lists HAN as a label for RJ12 ports, and one page says HAN ports give no power.
 
 ## Sources
 
-- David (2026-10-15): the RJ12-to-RJ45 cable and the need for separate power
+- David (2026-10-15): the same box and sockets as the Zap P1, the RGB light in the RJ12 socket instead of a separate blue light, the RJ12-to-RJ45 cable, USB-C power (5 V, at least 1 A) because the HAN port does not power the Zap, tested with Kamstrup
 - Aidon, [RJ45 HAN Interface](https://aidon.com/wp-content/uploads/2023/06/AIDONFD_RJ45_HAN_Interface_EN.pdf) v1.6 A: pin 1 M-Bus data and power (12–24 V, 30 mA), pins 2 and 8 GND, pins 6–7 not connected, HAN port and power off until the grid company turns them on
 - `srcfl/srcful-zap-x-firmware` on `main` (6da453f): `components/board/include/boards/zap-han.h` (HAN input 2400 8N1, one RGB light, button), `fw_controller/main/main.cpp` (rainbow at start), `fw_controller/main/main_loop.cpp` (blue light and button timings), `fw_controller/API.md` (`detected_type: han_uart`, the Zap HAN probes both inputs), `components/p1_data_reader/decoding/` (HDLC, DLMS/COSEM, M-Bus; no decryption), `fw_simulator/README.md` (the RJ12 HAN connector)
 - `srcfl/srcful-flutter-app` at 9800165 (app 2.7.9): the onboarding is the same as for the Zap P1; the meter is added as **P1 / HAN meter** with **Detect meter** on firmware 2.3.13 or later
 - A read-only check of Sourceful's reference Zap HAN (firmware 2.3.13), 2026-10-15
-- The one-pager is built from [onepagers/zap_han.py](../onepagers/zap_han.py)
+- The one-pager is built from [onepagers/zap_han.py](../onepagers/zap_han.py); the RJ45 jack follows Open Connector Graphics (Wikke Andeweg, CC BY 4.0)
