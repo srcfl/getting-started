@@ -65,6 +65,8 @@ Zap tar ström från mätaren. Mata med USB-C (5 V, minst 1 A) när:
 
 ## 4. I appen
 
+Skärmdumpar av varje skärm: [mobile/onboarding/](../mobile/onboarding/README.md).
+
 1. Öppna Sourceful Energy och logga in. Saknas profil eller anläggning: tryck **Skapa profil** eller **Skapa ny anläggning** först. Där anger du anläggningens plats.
 2. Tryck **Lägg till en ny Zap** under **Kom igång**. Eller gå till **Mer → Mina Zappar → Lägg till en ny Zap**.
 3. Stå nära Zap. Appen söker via Bluetooth i några sekunder och listar alla Zappar den hittar, med signalstaplar. Listan är inte sorterad: välj den med flest staplar. Hittas ingen: tryck på raden för att söka igen.

@@ -63,6 +63,8 @@ The meter powers the Zap. Add USB-C power (5 V, at least 1 A) when:
 
 ## 4. In the app
 
+Screenshots of every screen (Swedish app): [mobile/onboarding/](../mobile/onboarding/README.md).
+
 1. Open Sourceful Energy and sign in. No profile or site yet: tap **Create new profile** or **Create new site** first. You set the site's location there.
 2. Tap **Onboard a new Zap** under **Get started**. Or go to **More → My Zaps → Add a new Zap**.
 3. Stand close to the Zap. The app scans over Bluetooth for a few seconds and lists every Zap it finds, with signal bars. The list is not sorted: pick the one with the most bars. Nothing found: tap the line to scan again.

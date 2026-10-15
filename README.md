@@ -15,6 +15,10 @@ Svenska: [README.sv.md](README.sv.md)
 | --- | --- | --- | --- |
 | [![Zap P1 one-pager](zap/images/one-pager-en.png)](zap/zap-one-pager-en.pdf) | [![Zap HAN one-pager](zap-han/images/one-pager-en.png)](zap-han/zap-han-one-pager-en.pdf) | [![Blixt one-pager](blixt/images/one-pager-en.png)](blixt/blixt-one-pager-en.pdf) | [![Blixt X one-pager](blixt-x/images/one-pager-en.png)](blixt-x/blixt-x-one-pager-en.pdf) |
 
+## App screenshots
+
+[mobile/onboarding/](mobile/onboarding/README.md) walks through onboarding a Zap and adding an inverter in the app, screen by screen (Swedish).
+
 ## Device drawings
 
 Every device drawn in the one-pagers is also in [assets/devices/](assets/devices/) as an SVG, built from the same code:

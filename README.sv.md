@@ -17,6 +17,8 @@ English: [README.md](README.md)
 
 Enheterna ritade som SVG finns i [assets/devices/](assets/devices/).
 
+Skärmdumpar från appen, skärm för skärm, för att lägga till en Zap och en växelriktare: [mobile/onboarding/](mobile/onboarding/README.md).
+
 ## Så håller vi guiderna bra
 
 Guiderna ska vara **korrekta, konkreta och lätta att läsa**. Varje guide säger överst vad den gäller och när den senast kontrollerades mot sina källor, och listar källorna längst ner. Där källorna säger emot varandra står det under **Öppna frågor** i stället för att vi gissar. Reglerna finns i [CONTRIBUTING.md](CONTRIBUTING.md), och CI kontrollerar dem vid varje ändring.
