@@ -4,7 +4,8 @@
 - Every product has README.md (English) and README.sv.md (Swedish), each with its
   header fields (Applies to / Last verified / For, or Gäller / Senast verifierad / För)
   and a sources section (## Sources / ## Källor).
-- Every product has a one-pager in both languages.
+- Every product has a one-pager in both languages and a field-test CHECKLIST.md, and
+  the guides say whether that field test is done (Field test / Fälttest).
 - Relative links and images point at files that exist.
 - The root README links to every guide.
 - Nothing internal leaks out: private IPs, internal host names, fleet names, keys.
@@ -50,8 +51,8 @@ def check_links(path, text):
 
 
 LANG_FIELDS = {
-    "README.md": (("**Applies to:**", "**Last verified:**", "**For:**"), "## Sources"),
-    "README.sv.md": (("**Gäller:**", "**Senast verifierad:**", "**För:**"), "## Källor"),
+    "README.md": (("**Applies to:**", "**Last verified:**", "**For:**", "**Field test:**"), "## Sources"),
+    "README.sv.md": (("**Gäller:**", "**Senast verifierad:**", "**För:**", "**Fälttest:**"), "## Källor"),
 }
 
 
@@ -70,6 +71,8 @@ def check_guide(name):
             err(path, "last-verified date missing (YYYY-MM-DD)")
         if not re.search(rf"^{re.escape(sources)}\s*$", text, re.M):
             err(path, f"missing {sources}")
+    if not (ROOT / name / "CHECKLIST.md").exists():
+        err(ROOT / name, "missing CHECKLIST.md (the field-test checklist)")
     for lang in ("en", "sv"):
         pdf = ROOT / name / f"{name}-one-pager-{lang}.pdf"
         if not pdf.exists():

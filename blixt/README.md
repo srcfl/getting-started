@@ -1,8 +1,9 @@
 # Blixt: getting started
 
-> **Applies to:** the Blixt gateway on EDATEC ED-IPC3630 (IPC3600 series) or ED-IPC2210, dashboard 3.x
-> **Last verified:** 2026-10-15, against `blixt-gateway` on `main` (491197b) and EDATEC's manuals
-> **For:** the installer commissioning a Blixt on a site
+> **Applies to:** the Blixt gateway on EDATEC ED-IPC3630 (IPC3600 series) or ED-IPC2210, dashboard 3.x  
+> **Last verified:** 2026-10-15, against `blixt-gateway` on `main` (491197b) and EDATEC's manuals  
+> **For:** the installer commissioning a Blixt on a site  
+> **Field test:** not done yet. Checklist: [CHECKLIST.md](CHECKLIST.md)
 
 Blixt is an industrial gateway that controls batteries, hybrid inverters, meters and EV chargers on commercial and industrial sites. It reads and controls the devices over Modbus RTU or TCP, keeps the site within its fuse and export limits, and sends measurements to Sourceful. Everything is set up in the Blixt dashboard on the site network.
 
@@ -36,7 +37,6 @@ You should receive a prepared unit. Ask Sourceful before you leave if any of thi
 - The unit has the right software and is connected to the right Sourceful environment.
 - The unit's identity is registered with Sourceful. Without it, no measurements arrive. Sourceful does this; there is no step for the installer.
 - On the IPC3630: the serial ports are enabled for the unit.
-- Who terminates the RS-485 bus. The Blixt has no termination from the factory: its 120 Ω jumpers sit on the circuit board inside the case and are open.
 - You know which inverters, batteries and meters to connect, and there is a driver for each model.
 - You have the unit's dashboard address, `http://blixt-<serial>.local/`.
 
@@ -47,7 +47,7 @@ You should receive a prepared unit. Ask Sourceful before you leave if any of thi
 - [ ] The Blixt, with its antennas if it has them
 - [ ] A 9–36 V DC supply
 - [ ] An Ethernet cable to the site network, with DHCP
-- [ ] Twisted-pair cable for RS-485 if any device connects by serial (IPC3630 only)
+- [ ] Twisted-pair cable for RS-485 if any device connects by serial (IPC3630 only), and a 120 Ω resistor if the Blixt will sit at one end of the bus
 - [ ] Model, IP address, port and unit ID for every inverter, battery and meter
 - [ ] The site's fuse size, number of phases and voltage
 - [ ] A laptop on the same network as the Blixt
@@ -75,14 +75,14 @@ Use the **lower** serial plug. Its left column is COM2, its right column COM4. T
 | COM4 | **IGND**, **A4**, **B4** (right column) | `/dev/ttyAMA3` |
 
 1. Connect A to A, B to B and IGND to the device's GND. The ports are isolated, so GND must be connected.
-2. Terminate only the two ends of the bus with 120 Ω. The Blixt is not terminated from the factory. If it sits at one end of the bus, that end needs 120 Ω: either its jumper inside the case (J22 for COM2, J24 for COM4) or a resistor across A and B. Agree with Sourceful before you go which it is.
+2. Terminate only the two ends of the bus with 120 Ω. The Blixt is not terminated from the factory. If it sits at one end of the bus, put a 120 Ω resistor between A and B at the lower plug: A2–B2 for COM2, A4–B4 for COM4. Do not open the case.
 3. A device can have only one Modbus master. If another system needs to read the same device, use **Gateway → Modbus proxy** in the dashboard instead of a second master.
 
 The **COM2** or **COM4** light blinks when there is traffic on the line. It is a quick wiring check.
 
 > **Warning:** Do not use the upper plug (COM1 and COM3) for Modbus. They are not verified for it, and on some variants they are RS-232.
 
-The IPC2210 has no serial port. Connect its devices over the network (Modbus TCP).
+The IPC2210 has no serial port. On the IPC2210, connect devices over the network only (Modbus TCP).
 
 ## 3. Open the dashboard
 
@@ -138,8 +138,6 @@ Sourceful connects the Blixt to an aggregator, not the installer. While an aggre
 
 ## Open questions
 
-- IPC2210: serial devices would need a USB-to-RS-485 adapter. That is not documented or tested for Blixt.
-- When the Blixt sits at a bus end: does Sourceful fit the jumper before delivery, or does the installer add a resistor at the plug? EDATEC gives no procedure for opening the case.
 - The existing quick start in `blixt-gateway` says Blixt runs on USB-C 5 V. That matches neither model.
 
 ## Sources
@@ -148,6 +146,7 @@ Sourceful connects the Blixt to an aggregator, not the installer. While an aggre
 
 The `srcfl/blixt-gateway` repository is internal. Paths refer to `main` at 491197b.
 
+- David (2026-10-15): both models are products, IPC2210 on ETH0 and Modbus TCP only, the installer terminates at the plug
 - `README.md`: what Blixt is, provisioning and identity registration (done by Sourceful with an admin key), first boot, drivers from the registry
 - `docs/specs/ipc-3600-specs.md`: COM ports and their Linux devices, which ports to use for Modbus, lights under balenaOS
 - `docs/gateway/DASHBOARD-ACCESS.md`: dashboard address and network protection

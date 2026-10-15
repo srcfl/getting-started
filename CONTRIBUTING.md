@@ -29,6 +29,8 @@ At the top of `README.md`:
 
 At the top of `README.sv.md`, the same with **Gäller**, **Senast verifierad** and **För**.
 
+Below them, **Field test** (**Fälttest**) says whether the guide has been walked through on real hardware, with a link to the product's `CHECKLIST.md`. Until every line of the checklist is ticked, the field says "not done yet" and the one-pagers say "Not field-tested" at the top (`FIELD_TESTED = False` in the product's `onepagers/*.py`).
+
 The guide always ends with `## Sources` (`## Källor` in Swedish), listing the support articles, repositories, commits and files the steps are built on. CI rejects a guide that lacks any of this.
 
 ## The steps

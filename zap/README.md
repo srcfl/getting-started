@@ -1,8 +1,9 @@
 # Zap P1: getting started
 
-> **Applies to:** Zap P1 (for meters with an RJ12 P1 port), current firmware (2.3.x), the Sourceful Energy app 2.7.9 on mainnet
-> **Last verified:** 2026-10-15, against the sources at the bottom
-> **For:** the installer on site, and anyone setting up their own Zap
+> **Applies to:** Zap P1 (for meters with an RJ12 P1 port), current firmware (2.3.x), the Sourceful Energy app 2.7.9 on mainnet  
+> **Last verified:** 2026-10-15, against the sources at the bottom  
+> **For:** the installer on site, and anyone setting up their own Zap  
+> **Field test:** not done yet. Checklist: [CHECKLIST.md](CHECKLIST.md)
 
 The Zap P1 plugs into the electricity meter's P1 port (RJ12). It reads the meter and sends the data over Wi-Fi to the Sourceful Energy app. It can also read, and for some models control, an inverter on the same network.
 

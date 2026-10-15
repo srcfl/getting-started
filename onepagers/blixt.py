@@ -5,8 +5,11 @@ docs/specs/ipc-3600-specs.md, docs/gateway/DASHBOARD-ACCESS.md,
 services/dashboard/README.md, docs/specs/site-limits.md, DeviceForm.tsx.
 The drawing is a topology, not the physical front panel.
 """
-from common import (crop, BOLT, CREAM, IC_FUSE, IC_LAPTOP, IC_LIST, IC_SHIELD, INK, LOGO_LIGHT, MONO,
+from common import (crop, rail, BOLT, CREAM, IC_FUSE, IC_LAPTOP, IC_LIST, IC_SHIELD, INK, LOGO_LIGHT, MONO,
                     MUTED, SIGNAL, TICK, fill, marker, page)
+
+# Set to True when CHECKLIST.md is ticked off on real hardware.
+FIELD_TESTED = False
 
 T = {
     "sv": {
@@ -14,24 +17,24 @@ T = {
         "rail": "Driftsättning &middot; Blixt &middot; IPC3630 / IPC2210",
         "lede": "För installatören på en kommersiell eller industriell anläggning. Från DIN-skenan till första batteritestet.",
         "before": "Innan du åker",
-        "prep_t": "Förberedd av Sourceful", "prep_d": "Programvara, identitet, serieportar. Terminering överenskommen.",
+        "prep_t": "Förberedd av Sourceful", "prep_d": "Programvara, identitet, serieportar, dashboard-adress.",
         "site_t": "Anläggningens data", "site_d": "Säkring, antal faser, spänning.",
         "dev_t": "Enhetslista", "dev_d": "Modell, IP, port, unit-id. Drivrutin finns.",
-        "kit_t": "Laptop och kabel", "kit_d": "Laptop på nätet, partvinnad kabel, 9–36 V DC.",
+        "kit_t": "Laptop och kabel", "kit_d": "Laptop, partvinnad kabel, 120 Ω, 9–36 V DC.",
         "leds": "LAMPOR", "leds_sub": "PWR röd · ACT grön", "leds_sub2": "PWR röd · ACT grön",
         "power": "9–36 V DC", "power_sub": "VIN+ överst · GND under",
         "rs485": "RS-485", "rs485_sub": "undre plinten",
-        "eth0": "anläggningens nät", "eth2210": "ETH0: anläggningens nät", "no_serial": "ingen serieport",
+        "eth0": "anläggningens nät", "eth2210": "ETH0: anläggningens nät", "no_serial": "bara Modbus TCP",
         "zoom": "UNDRE PLINTEN, IPC3630", "device": "Enhet",
         "zoom_note1": "A till A, B till B, IGND till GND.",
         "zoom_note2": "Inte den övre plinten (COM1, COM3).",
-        "zoom_note3": "120 Ω i bussens båda ändar.",
+        "zoom_note3": "120 Ω mellan A och B i bussens båda ändar.",
         "s1_h": "Montera och anslut",
         "s1_p": "På DIN-skenan, antennerna uppåt. Ethernet i <b>1000M</b> (IPC3630) eller <b>ETH0</b> (IPC2210). Ström 9–36 V DC i gröna pluggen: <b>VIN+</b> överst, <b>GND</b> under.",
         "s1_q": "<b>PWR</b> röd fast: ström. Blinkar: dålig matning, bryt den. Första start: 10–20 min.",
         "s2_h": "Koppla RS-485",
         "s2_p": "Bara IPC3630: den undre plinten, <b>COM2</b> till vänster eller <b>COM4</b> till höger. COM-lampan blinkar när Modbus-trafik går.",
-        "s2_q": "Inte terminerad från fabrik. I en buss-ände: bestäm vem som sätter 120 Ω. IPC2210 har ingen serieport.",
+        "s2_q": "Inte terminerad från fabrik. I en buss-ände: 120 Ω mellan A och B i plinten. IPC2210: bara Modbus TCP.",
         "s3_h": "Öppna dashboarden",
         "s3_p": "Från laptopen: <b>http://blixt-&lt;serie&gt;.local/</b>, namnet får du av Sourceful. Eller IP-adressen från routern. Svarar inte på 4G.",
         "s3_q": "Den som når dashboarden kan styra batteriet. Skyddat nät, aldrig mot internet.",
@@ -67,24 +70,24 @@ T = {
         "rail": "Commissioning &middot; Blixt &middot; IPC3630 / IPC2210",
         "lede": "For the installer on a commercial or industrial site. From the DIN rail to the first battery test.",
         "before": "Before you go",
-        "prep_t": "Prepared by Sourceful", "prep_d": "Software, identity, serial ports. Termination agreed.",
+        "prep_t": "Prepared by Sourceful", "prep_d": "Software, identity, serial ports, dashboard address.",
         "site_t": "Site data", "site_d": "Fuse size, phases, voltage.",
         "dev_t": "Device list", "dev_d": "Model, IP, port, unit ID. A driver exists.",
-        "kit_t": "Laptop and cable", "kit_d": "Laptop on the network, twisted pair, 9–36 V DC.",
+        "kit_t": "Laptop and cable", "kit_d": "Laptop, twisted pair, 120 Ω, 9–36 V DC.",
         "leds": "LIGHTS", "leds_sub": "PWR red · ACT green", "leds_sub2": "PWR red · ACT green",
         "power": "9–36 V DC", "power_sub": "VIN+ top · GND below",
         "rs485": "RS-485", "rs485_sub": "the lower plug",
-        "eth0": "site network", "eth2210": "ETH0: the site network", "no_serial": "no serial port",
+        "eth0": "site network", "eth2210": "ETH0: the site network", "no_serial": "Modbus TCP only",
         "zoom": "THE LOWER PLUG, IPC3630", "device": "Device",
         "zoom_note1": "A to A, B to B, IGND to GND.",
         "zoom_note2": "Not the upper plug (COM1, COM3).",
-        "zoom_note3": "120 Ω at both ends of the bus.",
+        "zoom_note3": "120 Ω between A and B at both ends of the bus.",
         "s1_h": "Mount and connect",
         "s1_p": "On the DIN rail, antennas up. Ethernet in <b>1000M</b> (IPC3630) or <b>ETH0</b> (IPC2210). Power 9–36 V DC in the green plug: <b>VIN+</b> on top, <b>GND</b> below.",
         "s1_q": "<b>PWR</b> red, solid: power. Blinking: bad supply, cut it. First start: 10–20 min.",
         "s2_h": "Wire RS-485",
         "s2_p": "IPC3630 only: the lower plug, <b>COM2</b> on the left or <b>COM4</b> on the right. The COM light blinks when Modbus traffic flows.",
-        "s2_q": "Not terminated from the factory. At a bus end, agree who fits 120 Ω. The IPC2210 has no serial port.",
+        "s2_q": "Not terminated from the factory. At a bus end: 120 Ω between A and B at the plug. IPC2210: Modbus TCP only.",
         "s3_h": "Open the dashboard",
         "s3_p": "From the laptop: <b>http://blixt-&lt;serial&gt;.local/</b>; Sourceful gives you the name. Or the IP from the router. No answer over 4G.",
         "s3_q": "Whoever reaches the dashboard can control the battery. Protected network, never the internet.",
@@ -357,6 +360,7 @@ BODY = """
 def build(lang):
     t = T[lang]
     values = {k: v for k, v in t.items() if isinstance(v, str)}
+    values["rail"] = rail(lang, t["rail"], FIELD_TESTED)
     values.update({
         "LOGO": LOGO_LIGHT, "IC_SHIELD": IC_SHIELD, "IC_FUSE": IC_FUSE, "IC_LIST": IC_LIST,
         "IC_LAPTOP": IC_LAPTOP, "HERO": hero(t), "TICK": TICK,

@@ -108,6 +108,16 @@ def marker(n, cx, cy, r=2.5):
             f'font-weight="700" fill="#FFFFFF">{n}</text>')
 
 
+NOT_FIELD_TESTED = {"en": "Not field-tested", "sv": "Ej fälttestad"}
+
+
+def rail(lang, text, field_tested):
+    """The top-right label; says so in Signal Orange until the field test is done."""
+    if field_tested:
+        return text
+    return f'{text} &middot; <span style="color:{SIGNAL}">{NOT_FIELD_TESTED[lang]}</span>'
+
+
 def fill(template, values):
     """Replace {{KEY}} placeholders; fail if any is left."""
     out = template

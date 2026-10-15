@@ -1,8 +1,9 @@
 # Blixt X: getting started
 
-> **Applies to:** Blixt X gateway software 2.0.1 (the release running in the field, October 2026) on the RAK Hotspot V2, the Sourceful Energy app 2.7.9 on mainnet
-> **Last verified:** 2026-10-15, against `srcful-blixt-x-firmware` at d501e798 (2.0.1) and `srcful-flutter-app` at 9800165 (2.7.9)
-> **For:** the owner or installer setting up a Blixt X
+> **Applies to:** Blixt X gateway software 2.0.1 (the release running in the field, October 2026) on the RAK Hotspot V2, the Sourceful Energy app 2.7.9 on mainnet  
+> **Last verified:** 2026-10-15, against `srcful-blixt-x-firmware` at d501e798 (2.0.1) and `srcful-flutter-app` at 9800165 (2.7.9)  
+> **For:** the owner or installer setting up a Blixt X  
+> **Field test:** not done yet. Checklist: [CHECKLIST.md](CHECKLIST.md)
 
 Blixt X is Sourceful's gateway software on the RAK Hotspot V2, the gateway Sourceful sold as a dual miner (RAK's "Sourceful ENERGY edition"). Like a Zap, it connects inverters, batteries and EV chargers on the network to Sourceful over the internet. The app sets it up with the Zap flow, and every screen in that flow says "Zap".
 

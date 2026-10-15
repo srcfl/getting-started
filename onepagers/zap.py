@@ -8,9 +8,12 @@ and srcful-flutter-app) and the reference manual on support.sourceful.energy:
 Button timings come from srcful-zap-x-firmware fw_controller/main/main_loop.cpp:
   >2 s slow blink -> restart, >5 s fast blink -> clear Wi-Fi, >10 s solid -> factory reset.
 """
-from common import (crop, BLUE, BOLT, CREAM, GREEN, IC_CABLE, IC_METER, IC_PHONE, IC_WIFI, INK,
+from common import (crop, rail, BLUE, BOLT, CREAM, GREEN, IC_CABLE, IC_METER, IC_PHONE, IC_WIFI, INK,
                     LOGO_LIGHT, MONO, MUTED, PLASTIC, TICK, fill, jack_g, marker, page,
                     pattern, pattern_svg)
+
+# Set to True when CHECKLIST.md is ticked off on real hardware.
+FIELD_TESTED = False
 
 T = {
     "sv": {
@@ -346,6 +349,7 @@ def build(lang):
         for i, (a, b) in enumerate(t["app_steps"], 1))
     arrow = '&nbsp;<span class="arr">&rarr;</span> '
     values = {k: v for k, v in t.items() if isinstance(v, str)}
+    values["rail"] = rail(lang, t["rail"], FIELD_TESTED)
     values.update({
         "LOGO": LOGO_LIGHT, "IC_METER": IC_METER, "IC_WIFI": IC_WIFI, "IC_PHONE": IC_PHONE,
         "IC_CABLE": IC_CABLE, "HERO": hero(t), "APP_TRACK": track, "TICK": TICK,

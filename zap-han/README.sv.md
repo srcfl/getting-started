@@ -1,8 +1,9 @@
 # Zap HAN: kom igång
 
-> **Gäller:** Zap HAN (för mätare med RJ45 HAN-uttag), firmware 2.3.13 eller senare, Sourceful Energy-appen 2.7.9 på mainnet
-> **Senast verifierad:** 2026-10-15, mot källorna längst ner
-> **För:** installatören på plats
+> **Gäller:** Zap HAN (för mätare med RJ45 HAN-uttag), firmware 2.3.13 eller senare, Sourceful Energy-appen 2.7.9 på mainnet  
+> **Senast verifierad:** 2026-10-15, mot källorna längst ner  
+> **För:** installatören på plats  
+> **Fälttest:** inte gjort än. Checklista: [CHECKLIST.md](CHECKLIST.md)
 
 Zap HAN läser elmätare som har ett RJ45 HAN-uttag (M-Bus). Den skickar mätardata över wifi till Sourceful Energy-appen, precis som [Zap P1](../zap/README.sv.md) gör för mätare med RJ12 P1-port.
 

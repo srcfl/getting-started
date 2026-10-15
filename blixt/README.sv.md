@@ -1,8 +1,9 @@
 # Blixt: kom igång
 
-> **Gäller:** Blixt-gatewayen på EDATEC ED-IPC3630 (IPC3600-serien) eller ED-IPC2210, dashboard 3.x
-> **Senast verifierad:** 2026-10-15, mot `blixt-gateway` på `main` (491197b) och EDATECs manualer
-> **För:** installatören som driftsätter en Blixt på en anläggning
+> **Gäller:** Blixt-gatewayen på EDATEC ED-IPC3630 (IPC3600-serien) eller ED-IPC2210, dashboard 3.x  
+> **Senast verifierad:** 2026-10-15, mot `blixt-gateway` på `main` (491197b) och EDATECs manualer  
+> **För:** installatören som driftsätter en Blixt på en anläggning  
+> **Fälttest:** inte gjort än. Checklista: [CHECKLIST.md](CHECKLIST.md)
 
 Blixt är en industri-gateway som styr batterier, hybridväxelriktare, mätare och laddboxar på kommersiella och industriella anläggningar. Den läser och styr enheterna över Modbus RTU eller TCP, håller anläggningens säkring och exportgräns, och skickar mätvärden till Sourceful. Allt ställs in i Blixts lokala dashboard.
 
@@ -36,7 +37,6 @@ Du ska få en enhet som är förberedd. Fråga Sourceful om något av det här �
 - Enheten har rätt programvara och är kopplad till rätt miljö hos Sourceful.
 - Enhetens identitet är registrerad hos Sourceful. Annars kommer inga mätvärden fram. Det gör Sourceful, det finns inget steg för installatören.
 - På IPC3630: serieportarna är aktiverade för enheten.
-- Vem som terminerar RS-485-bussen. Blixt har ingen terminering från fabrik: dess 120 Ω-byglar sitter på kretskortet inuti höljet och är öppna.
 - Du vet vilka växelriktare, batterier och mätare som ska kopplas in, och att det finns en drivrutin för varje modell.
 - Du har enhetens dashboard-adress, `http://blixt-<serienummer>.local/`.
 
@@ -47,7 +47,7 @@ Du ska få en enhet som är förberedd. Fråga Sourceful om något av det här �
 - [ ] Blixt, med antenner om den har det
 - [ ] Strömförsörjning 9–36 V DC
 - [ ] Ethernetkabel till anläggningens nät, med DHCP
-- [ ] Partvinnad kabel för RS-485 om någon enhet ska kopplas seriellt (bara IPC3630)
+- [ ] Partvinnad kabel för RS-485 om någon enhet ska kopplas seriellt (bara IPC3630), och ett 120 Ω-motstånd om Blixt ska sitta i ena änden av bussen
 - [ ] Modell, IP-adress, port och unit-id för varje växelriktare, batteri och mätare
 - [ ] Säkringsstorlek, antal faser och spänning för anläggningen
 - [ ] En laptop på samma nät som Blixt
@@ -75,14 +75,14 @@ Använd den **undre** serieplinten. Den vänstra kolumnen är COM2, den högra C
 | COM4 | **IGND**, **A4**, **B4** (höger kolumn) | `/dev/ttyAMA3` |
 
 1. Koppla A till A, B till B och IGND till enhetens GND. Portarna är isolerade, så GND ska med.
-2. Terminera bara bussens två ändar med 120 Ω. Blixt är inte terminerad från fabrik. Sitter den i ena änden behöver den änden 120 Ω: antingen dess bygel inuti höljet (J22 för COM2, J24 för COM4) eller ett motstånd mellan A och B. Kom överens med Sourceful innan du åker om vilket.
+2. Terminera bara bussens två ändar med 120 Ω. Blixt är inte terminerad från fabrik. Sitter den i ena änden av bussen: sätt ett 120 Ω-motstånd mellan A och B i den undre plinten, A2–B2 för COM2, A4–B4 för COM4. Öppna inte höljet.
 3. En enhet kan bara ha en Modbus-master. Behöver något annat system läsa samma enhet: använd **Gateway → Modbus proxy** i dashboarden i stället för en andra master.
 
 Lampan **COM2** eller **COM4** blinkar när det går trafik på linjen. Det är en snabb kontroll av kablaget.
 
 > **Varning:** Använd inte den övre plinten (COM1 och COM3) för Modbus. De är inte verifierade för det, och på vissa varianter är de RS-232.
 
-IPC2210 har ingen serieport. Koppla dess enheter över nätet (Modbus TCP).
+IPC2210 har ingen serieport. På IPC2210 kopplas enheter bara över nätet (Modbus TCP).
 
 ## 3. Öppna dashboarden
 
@@ -138,8 +138,6 @@ Kopplingen till en aggregator görs av Sourceful och inte på plats. Medan en ag
 
 ## Öppna frågor
 
-- IPC2210: serieenheter skulle kräva en USB-till-RS-485-adapter. Det är varken dokumenterat eller testat för Blixt.
-- När Blixt sitter i en buss-ände: sätter Sourceful bygeln före leverans, eller sätter installatören ett motstånd vid plinten? EDATEC beskriver inte hur höljet öppnas.
 - Den befintliga snabbstarten i `blixt-gateway` säger att Blixt drivs med USB-C 5 V. Det stämmer inte med någon av modellerna.
 
 ## Källor
@@ -148,6 +146,7 @@ Kopplingen till en aggregator görs av Sourceful och inte på plats. Medan en ag
 
 Repot `srcfl/blixt-gateway` är internt. Sökvägarna gäller `main` vid 491197b.
 
+- David (2026-10-15): båda modellerna är produkter, IPC2210 på ETH0 och bara Modbus TCP, installatören terminerar vid plinten
 - `README.md`: vad Blixt är, provisionering och registrering av identiteten (görs av Sourceful med en admin-nyckel), första uppstart, drivrutiner från registret
 - `docs/specs/ipc-3600-specs.md`: COM-portarna och deras Linux-enheter, vilka portar som används för Modbus, lamporna under balenaOS
 - `docs/gateway/DASHBOARD-ACCESS.md`: adress till dashboarden och nätskydd

@@ -21,6 +21,8 @@ Enheterna ritade som SVG finns i [assets/devices/](assets/devices/).
 
 Guiderna ska vara **korrekta, konkreta och lätta att läsa**. Varje guide säger överst vad den gäller och när den senast kontrollerades mot sina källor, och listar källorna längst ner. Där källorna säger emot varandra står det under **Öppna frågor** i stället för att vi gissar. Reglerna finns i [CONTRIBUTING.md](CONTRIBUTING.md), och CI kontrollerar dem vid varje ändring.
 
+Ingen av guiderna är genomgången på riktig hårdvara än. Varje produkt har en `CHECKLIST.md` för det, och guiderna och one-pagers säger "ej fälttestad" tills det är gjort.
+
 Hittar du ett steg som är fel? Öppna en issue eller en pull request. Ett fel i en guide är ett fel på plats.
 
 ## Mer hjälp

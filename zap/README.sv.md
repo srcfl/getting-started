@@ -1,8 +1,9 @@
 # Zap P1: kom igång
 
-> **Gäller:** Zap P1 (för mätare med RJ12 P1-port), aktuell firmware (2.3.x), Sourceful Energy-appen 2.7.9 på mainnet
-> **Senast verifierad:** 2026-10-15, mot källorna längst ner
-> **För:** installatören på plats, och den som sätter upp sin egen Zap
+> **Gäller:** Zap P1 (för mätare med RJ12 P1-port), aktuell firmware (2.3.x), Sourceful Energy-appen 2.7.9 på mainnet  
+> **Senast verifierad:** 2026-10-15, mot källorna längst ner  
+> **För:** installatören på plats, och den som sätter upp sin egen Zap  
+> **Fälttest:** inte gjort än. Checklista: [CHECKLIST.md](CHECKLIST.md)
 
 Zap P1 sitter i elmätarens P1-port (RJ12). Den läser mätaren och skickar mätardata över wifi till Sourceful Energy-appen. Den kan också läsa, och för vissa modeller styra, en växelriktare på samma nät.
 

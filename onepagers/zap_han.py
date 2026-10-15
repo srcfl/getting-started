@@ -16,9 +16,12 @@ Sources:
 - The app 2.7.9: same onboarding as the Zap P1; meter added as "P1 / HAN meter".
 """
 from zap import zap_top
-from common import (crop, BLUE, BOLT, CREAM, GREEN, IC_METER, IC_PHONE, IC_PLUG, IC_WIFI, INK,
+from common import (crop, rail, BLUE, BOLT, CREAM, GREEN, IC_METER, IC_PHONE, IC_PLUG, IC_WIFI, INK,
                     LOGO_LIGHT, MONO, MUTED, PLASTIC, SIGNAL, TICK, fill, jack_g, marker, page,
                     pattern, pattern_svg)
+
+# Set to True when CHECKLIST.md is ticked off on real hardware.
+FIELD_TESTED = False
 
 T = {
     "sv": {
@@ -311,6 +314,7 @@ def build(lang):
         for i, (a, b) in enumerate(t["app_steps"], 1))
     arrow = '&nbsp;<span class="arr">&rarr;</span> '
     values = {k: v for k, v in t.items() if isinstance(v, str)}
+    values["rail"] = rail(lang, t["rail"], FIELD_TESTED)
     values.update({
         "LOGO": LOGO_LIGHT, "IC_METER": IC_METER, "IC_WIFI": IC_WIFI, "IC_PHONE": IC_PHONE,
         "IC_PLUG": IC_PLUG, "HERO": hero(t), "APP_TRACK": track, "TICK": TICK,

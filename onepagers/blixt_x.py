@@ -14,11 +14,14 @@ Software facts from srcfl/srcful-blixt-x-firmware at d501e798 (2.0.1) and the ap
 - 2.0.1 does not report Ethernet, so the app never offers Skip WiFi setup.
 - The app onboards it with the Zap flow; every screen says "Zap".
 """
-from common import (crop, BLUE, BOLT, CREAM, IC_LIST, IC_PHONE, IC_WIFI, INK, LOGO_LIGHT, MONO,
+from common import (crop, rail, BLUE, BOLT, CREAM, IC_LIST, IC_PHONE, IC_WIFI, INK, LOGO_LIGHT, MONO,
                     MUTED, SIGNAL, TICK, fill, icon, marker, page)
 
 IC_PLUG = icon('<path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v4"/>')
 IC_NET = icon('<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>')
+
+# Set to True when CHECKLIST.md is ticked off on real hardware.
+FIELD_TESTED = False
 
 T = {
     "sv": {
@@ -321,6 +324,7 @@ def build(lang):
         f'<div class="t">{a}</div><div class="d">{b}</div></li>'
         for i, (a, b) in enumerate(t["app_steps"], 1))
     values = {k: v for k, v in t.items() if isinstance(v, str)}
+    values["rail"] = rail(lang, t["rail"], FIELD_TESTED)
     values.update({
         "LOGO": LOGO_LIGHT, "IC_NET": IC_NET, "IC_PHONE": IC_PHONE, "IC_LIST": IC_LIST,
         "IC_PLUG": IC_PLUG, "HERO": hero(t), "APP_TRACK": track, "TICK": TICK,

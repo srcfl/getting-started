@@ -1,8 +1,9 @@
 # Zap HAN: getting started
 
-> **Applies to:** Zap HAN (for meters with an RJ45 HAN port), firmware 2.3.13 or later, the Sourceful Energy app 2.7.9 on mainnet
-> **Last verified:** 2026-10-15, against the sources at the bottom
-> **For:** the installer on site
+> **Applies to:** Zap HAN (for meters with an RJ45 HAN port), firmware 2.3.13 or later, the Sourceful Energy app 2.7.9 on mainnet  
+> **Last verified:** 2026-10-15, against the sources at the bottom  
+> **For:** the installer on site  
+> **Field test:** not done yet. Checklist: [CHECKLIST.md](CHECKLIST.md)
 
 The Zap HAN reads electricity meters that have an RJ45 HAN port (M-Bus). It sends the meter data over Wi-Fi to the Sourceful Energy app, like the [Zap P1](../zap/README.md) does for meters with an RJ12 P1 port.
 

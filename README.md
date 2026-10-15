@@ -27,6 +27,8 @@ Every device drawn in the one-pagers is also in [assets/devices/](assets/devices
 
 The guides must be **correct, concrete and easy to read**. Each guide says at the top what it applies to and when it was last checked against its sources, and lists the sources at the bottom. Where sources disagree, the guide says so under **Open questions** instead of guessing. The rules are in [CONTRIBUTING.md](CONTRIBUTING.md), and CI checks them on every change.
 
+None of the guides has been walked through on real hardware yet. Each product has a `CHECKLIST.md` for that, and the guides and one-pagers say "not field-tested" until it is done.
+
 Found a step that is wrong? Open an issue or a pull request. A mistake in a guide is a mistake on site.
 
 ## Repository layout
