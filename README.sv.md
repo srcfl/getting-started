@@ -9,12 +9,13 @@ English: [README.md](README.md)
 | **Zap P1** | Läser mätarens RJ12 P1-port och skickar mätardata till Sourceful Energy-appen | [zap/](zap/README.sv.md) | [SV](zap/zap-one-pager-sv.pdf) · [EN](zap/zap-one-pager-en.pdf) |
 | **Zap HAN** | Läser mätarens RJ45 HAN-port (M-Bus), drivs med USB-C | [zap-han/](zap-han/README.sv.md) | [SV](zap-han/zap-han-one-pager-sv.pdf) · [EN](zap-han/zap-han-one-pager-en.pdf) |
 | **Zap Ultra Mini** | Läser mätarens RJ12 P1-port, online via Ethernet eller wifi, med RS485-plint | [zap-ultra-mini/](zap-ultra-mini/README.sv.md) | [SV](zap-ultra-mini/zap-ultra-mini-one-pager-sv.pdf) · [EN](zap-ultra-mini/zap-ultra-mini-one-pager-en.pdf) |
+| **Zap ETH** | Läser mätarens RJ12 P1-port, online via Ethernet eller wifi; bara P1 | [zap-eth/](zap-eth/README.sv.md) | [SV](zap-eth/zap-eth-one-pager-sv.pdf) · [EN](zap-eth/zap-eth-one-pager-en.pdf) |
 | **Blixt** | Industri-gateway som styr batterier, växelriktare, mätare och laddboxar på kommersiella och industriella anläggningar | [blixt/](blixt/README.sv.md) | [SV](blixt/blixt-one-pager-sv.pdf) · [EN](blixt/blixt-one-pager-en.pdf) |
 | **Blixt X** | Sourcefuls gateway-programvara på RAK Hotspot V2 (de gamla dual-minrarna), som sätts upp i appen som en Zap | [blixt-x/](blixt-x/README.sv.md) | [SV](blixt-x/blixt-x-one-pager-sv.pdf) · [EN](blixt-x/blixt-x-one-pager-en.pdf) |
 
-| | | | | |
-| --- | --- | --- | --- | --- |
-| [![Zap P1-one-pagern](zap/images/one-pager-sv.png)](zap/zap-one-pager-sv.pdf) | [![Zap HAN-one-pagern](zap-han/images/one-pager-sv.png)](zap-han/zap-han-one-pager-sv.pdf) | [![Zap Ultra Mini-one-pagern](zap-ultra-mini/images/one-pager-sv.png)](zap-ultra-mini/zap-ultra-mini-one-pager-sv.pdf) | [![Blixt-one-pagern](blixt/images/one-pager-sv.png)](blixt/blixt-one-pager-sv.pdf) | [![Blixt X-one-pagern](blixt-x/images/one-pager-sv.png)](blixt-x/blixt-x-one-pager-sv.pdf) |
+| | | | | | |
+| --- | --- | --- | --- | --- | --- |
+| [![Zap P1-one-pagern](zap/images/one-pager-sv.png)](zap/zap-one-pager-sv.pdf) | [![Zap HAN-one-pagern](zap-han/images/one-pager-sv.png)](zap-han/zap-han-one-pager-sv.pdf) | [![Zap Ultra Mini-one-pagern](zap-ultra-mini/images/one-pager-sv.png)](zap-ultra-mini/zap-ultra-mini-one-pager-sv.pdf) | [![Zap ETH-one-pagern](zap-eth/images/one-pager-sv.png)](zap-eth/zap-eth-one-pager-sv.pdf) | [![Blixt-one-pagern](blixt/images/one-pager-sv.png)](blixt/blixt-one-pager-sv.pdf) | [![Blixt X-one-pagern](blixt-x/images/one-pager-sv.png)](blixt-x/blixt-x-one-pager-sv.pdf) |
 
 Enheterna ritade som SVG finns i [assets/devices/](assets/devices/).
 

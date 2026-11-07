@@ -70,6 +70,8 @@ def zap_top(o, t, layout, zx, zy):
     o.append(f'<text x="{X(layout["eth"]):.2f}" y="{zb - 6.2:.2f}" {lab}>{t["eth"]}</text>')
     tick(X(layout["eth"]), zb - 1, zb - 5.3)
     o.append(f'<text x="{X(layout["usbc"]):.2f}" y="{zb - 3.2:.2f}" {lab}>{t["usbc"]}</text>')
+    if "power" in layout:   # the green power light
+        o.append(f'<circle cx="{X(layout["power"]):.2f}" cy="{zb - 2.6:.2f}" r="0.7" fill="{GREEN}"/>')
     term = layout.get("rs485")
     if term:
         f, w, pins = term
@@ -134,12 +136,13 @@ def hero(t, layout, export=False):
     lx = 153.5
     lab(lx + 5, 12.6, t["lights"], 2.2)
     y = 18.4
+    step = 9.2 if len(t["rows"]) <= 4 else 8.2
     for kind, name, extra, mean in t["rows"]:
         o.append(light_glyph(kind, lx + 1.6, y - 0.85, 1.0))
         o.append(f'<text x="{lx + 4.6}" y="{y}" font-size="2.6" font-weight="500" fill="{INK}">{name} '
                  f'<tspan {MONO} font-size="1.7" letter-spacing="0.2" fill="{MUTED}">{extra}</tspan></text>')
         o.append(f'<text x="{lx + 4.6}" y="{y + 3.2}" font-size="2.35" fill="#33363C">{mean}</text>')
-        y += 9.2
+        y += step
 
     for n, (cx, cy) in enumerate(((50.6, 9.4), (68, 61.8), (lx + 1.6, 11.9)), 1):
         if not export:

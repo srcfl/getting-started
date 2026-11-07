@@ -9,12 +9,13 @@ Svenska: [README.sv.md](README.sv.md)
 | **Zap P1** | Reads a meter's RJ12 P1 port and sends meter data to the Sourceful Energy app | [zap/](zap/README.md) | [EN](zap/zap-one-pager-en.pdf) · [SV](zap/zap-one-pager-sv.pdf) |
 | **Zap HAN** | Reads a meter's RJ45 HAN port (M-Bus), powered by USB-C | [zap-han/](zap-han/README.md) | [EN](zap-han/zap-han-one-pager-en.pdf) · [SV](zap-han/zap-han-one-pager-sv.pdf) |
 | **Zap Ultra Mini** | Reads a meter's RJ12 P1 port, online over Ethernet or Wi-Fi, with an RS485 terminal | [zap-ultra-mini/](zap-ultra-mini/README.md) | [EN](zap-ultra-mini/zap-ultra-mini-one-pager-en.pdf) · [SV](zap-ultra-mini/zap-ultra-mini-one-pager-sv.pdf) |
+| **Zap ETH** | Reads a meter's RJ12 P1 port, online over Ethernet or Wi-Fi; P1 only | [zap-eth/](zap-eth/README.md) | [EN](zap-eth/zap-eth-one-pager-en.pdf) · [SV](zap-eth/zap-eth-one-pager-sv.pdf) |
 | **Blixt** | Industrial gateway that controls batteries, inverters, meters and EV chargers on commercial and industrial sites | [blixt/](blixt/README.md) | [EN](blixt/blixt-one-pager-en.pdf) · [SV](blixt/blixt-one-pager-sv.pdf) |
 | **Blixt X** | Sourceful's gateway software on the RAK Hotspot V2 (the former dual miners), set up in the app like a Zap | [blixt-x/](blixt-x/README.md) | [EN](blixt-x/blixt-x-one-pager-en.pdf) · [SV](blixt-x/blixt-x-one-pager-sv.pdf) |
 
-| | | | | |
-| --- | --- | --- | --- | --- |
-| [![Zap P1 one-pager](zap/images/one-pager-en.png)](zap/zap-one-pager-en.pdf) | [![Zap HAN one-pager](zap-han/images/one-pager-en.png)](zap-han/zap-han-one-pager-en.pdf) | [![Zap Ultra Mini one-pager](zap-ultra-mini/images/one-pager-en.png)](zap-ultra-mini/zap-ultra-mini-one-pager-en.pdf) | [![Blixt one-pager](blixt/images/one-pager-en.png)](blixt/blixt-one-pager-en.pdf) | [![Blixt X one-pager](blixt-x/images/one-pager-en.png)](blixt-x/blixt-x-one-pager-en.pdf) |
+| | | | | | |
+| --- | --- | --- | --- | --- | --- |
+| [![Zap P1 one-pager](zap/images/one-pager-en.png)](zap/zap-one-pager-en.pdf) | [![Zap HAN one-pager](zap-han/images/one-pager-en.png)](zap-han/zap-han-one-pager-en.pdf) | [![Zap Ultra Mini one-pager](zap-ultra-mini/images/one-pager-en.png)](zap-ultra-mini/zap-ultra-mini-one-pager-en.pdf) | [![Zap ETH one-pager](zap-eth/images/one-pager-en.png)](zap-eth/zap-eth-one-pager-en.pdf) | [![Blixt one-pager](blixt/images/one-pager-en.png)](blixt/blixt-one-pager-en.pdf) | [![Blixt X one-pager](blixt-x/images/one-pager-en.png)](blixt-x/blixt-x-one-pager-en.pdf) |
 
 ## App screenshots
 
@@ -24,9 +25,9 @@ Svenska: [README.sv.md](README.sv.md)
 
 Every device drawn in the one-pagers is also in [assets/devices/](assets/devices/) as an SVG, built from the same code:
 
-| Zap P1 | Zap HAN | Zap Ultra Mini | Blixt IPC3630 | Blixt IPC2210 | Blixt X (RAK Hotspot V2) |
-| --- | --- | --- | --- | --- | --- |
-| ![Zap P1 from above](assets/devices/zap-p1.svg) | ![Zap HAN from above](assets/devices/zap-han.svg) | ![Zap Ultra Mini from above, not to scale](assets/devices/zap-ultra-mini.svg) | ![Blixt on the IPC3630](assets/devices/blixt-ipc3630.svg) | ![Blixt on the IPC2210](assets/devices/blixt-ipc2210.svg) | ![Blixt X on the RAK Hotspot V2](assets/devices/blixt-x-rak-hotspot-v2.svg) |
+| Zap P1 | Zap HAN | Zap Ultra Mini | Zap ETH | Blixt IPC3630 | Blixt IPC2210 | Blixt X (RAK Hotspot V2) |
+| --- | --- | --- | --- | --- | --- | --- |
+| ![Zap P1 from above](assets/devices/zap-p1.svg) | ![Zap HAN from above](assets/devices/zap-han.svg) | ![Zap Ultra Mini from above, not to scale](assets/devices/zap-ultra-mini.svg) | ![Zap ETH from above, not to scale](assets/devices/zap-eth.svg) | ![Blixt on the IPC3630](assets/devices/blixt-ipc3630.svg) | ![Blixt on the IPC2210](assets/devices/blixt-ipc2210.svg) | ![Blixt X on the RAK Hotspot V2](assets/devices/blixt-x-rak-hotspot-v2.svg) |
 
 ## How we keep the guides good
 
