@@ -97,7 +97,7 @@ Plinten på IN-sidan tar en eller flera Modbus RTU-enheter, var och en med eget 
 1. Koppla med strömmen av. Stiften, räknat från USB-C: **A+, B−, GND**. **A+** till enhetens A, **B−** till dess B, **GND** till dess GND.
 2. I appen: **Mer**, anläggningen, **Energienheter → Lägg till energienhet → Lägg till ny enhet**, typen och modellen. Under **Konfigurera anslutning**: välj **Modbus RTU** och fyll i **Baud Rate**, **Unit ID**, **Parity**, **Data Bits** och **Stop Bits** som de är inställda på enheten.
 
-> **Varning:** Ordningen skiljer sig från de andra Zapparna: [Zap P1](../zap/README.sv.md#via-rs485) har GND, A+, B− och [Zap HAN](../zap-han/README.sv.md#en-rs485-enhet) B−, GND, A+.
+> **Varning:** Ordningen skiljer sig från de andra Zapparna: [Zap P1](../zap/README.sv.md#via-rs485) har GND, A+, B−, [Zap HAN](../zap-han/README.sv.md#en-rs485-enhet) B−, GND, A+ och [Zap Ultra X2](../zap-ultra-x2/README.sv.md#rs485) B−, A+, GND.
 
 En växelriktare på nätet (Modbus TCP) läggs till som på Zap P1: [Lägga till en växelriktare](../zap/README.sv.md#lägga-till-en-växelriktare).
 

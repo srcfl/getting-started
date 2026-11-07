@@ -97,7 +97,7 @@ The terminal on the IN side takes one or more Modbus RTU devices, each with its 
 1. Wire with the power off. The pins, counted from USB-C: **A+, B−, GND**. **A+** to the device's A, **B−** to its B, **GND** to its GND.
 2. In the app: **More**, the site, **Energy devices → Add Energy Device → Onboard New Device**, the type and the model. Under **Configure Connection**, pick **Modbus RTU** and enter **Baud Rate**, **Unit ID**, **Parity**, **Data Bits** and **Stop Bits** as set on the device.
 
-> **Warning:** The order differs from the other Zaps: the [Zap P1](../zap/README.md#over-rs485) has GND, A+, B− and the [Zap HAN](../zap-han/README.md#an-rs485-device) B−, GND, A+.
+> **Warning:** The order differs from the other Zaps: the [Zap P1](../zap/README.md#over-rs485) has GND, A+, B−, the [Zap HAN](../zap-han/README.md#an-rs485-device) B−, GND, A+ and the [Zap Ultra X2](../zap-ultra-x2/README.md#rs485) B−, A+, GND.
 
 An inverter on the network (Modbus TCP) is added as on the Zap P1: [Add an inverter](../zap/README.md#add-an-inverter).
 

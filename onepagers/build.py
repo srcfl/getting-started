@@ -17,7 +17,7 @@ import sys
 
 from common import ROOT, render
 
-PRODUCTS = {"zap": "zap", "zap-han": "zap_han", "zap-ultra-mini": "zap_ultra_mini", "zap-eth": "zap_eth", "blixt": "blixt", "blixt-x": "blixt_x"}
+PRODUCTS = {"zap": "zap", "zap-han": "zap_han", "zap-ultra-mini": "zap_ultra_mini", "zap-eth": "zap_eth", "zap-ultra-x2": "zap_ultra_x2", "blixt": "blixt", "blixt-x": "blixt_x"}
 LANGS = ("en", "sv")
 
 

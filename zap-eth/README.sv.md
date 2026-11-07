@@ -7,7 +7,7 @@
 
 Zap ETH läser elmätarens P1-port (RJ12), precis som [Zap P1](../zap/README.sv.md), och skickar mätardata till Sourceful Energy-appen via **Ethernet eller wifi**. Den läser bara mätaren: den har ingen RS485-plint.
 
-Har mätaren bara ett RJ45 HAN-uttag? Då behövs [Zap HAN](../zap-han/README.sv.md). En mätare eller växelriktare på RS485: använd [Zap P1](../zap/README.sv.md#via-rs485) eller [Zap Ultra Mini](../zap-ultra-mini/README.sv.md#rs485).
+Har mätaren bara ett RJ45 HAN-uttag? Då behövs [Zap HAN](../zap-han/README.sv.md). En mätare eller växelriktare på RS485: använd [Zap P1](../zap/README.sv.md#via-rs485), [Zap Ultra Mini](../zap-ultra-mini/README.sv.md#rs485) eller [Zap Ultra X2](../zap-ultra-x2/README.sv.md#rs485) med en RS485-modul.
 
 **Ska du ut på plats?** Skriv ut one-pagern: [Svenska](zap-eth-one-pager-sv.pdf) · [English](zap-eth-one-pager-en.pdf). English: [README.md](README.md).
 

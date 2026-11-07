@@ -7,7 +7,7 @@
 
 The Zap ETH reads the electricity meter's P1 port (RJ12), like the [Zap P1](../zap/README.md), and sends the data to the Sourceful Energy app over **Ethernet or Wi-Fi**. It reads the meter only: it has no RS485 terminal.
 
-Does the meter only have an RJ45 HAN port? Then you need the [Zap HAN](../zap-han/README.md). A meter or inverter on RS485: use the [Zap P1](../zap/README.md#over-rs485) or the [Zap Ultra Mini](../zap-ultra-mini/README.md#rs485).
+Does the meter only have an RJ45 HAN port? Then you need the [Zap HAN](../zap-han/README.md). A meter or inverter on RS485: use the [Zap P1](../zap/README.md#over-rs485), the [Zap Ultra Mini](../zap-ultra-mini/README.md#rs485) or the [Zap Ultra X2](../zap-ultra-x2/README.md#rs485) with an RS485 module.
 
 **Going on site?** Print the one-pager: [English](zap-eth-one-pager-en.pdf) · [Svenska](zap-eth-one-pager-sv.pdf). Svenska: [README.sv.md](README.sv.md).
 
