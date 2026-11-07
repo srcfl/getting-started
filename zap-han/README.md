@@ -20,7 +20,7 @@ The Zap HAN has the same box and the same sockets as the [Zap P1](../zap/README.
 - **No separate blue status light.** The light in the RJ12 socket is an RGB light that does that job: rainbow at start, then blue like the Zap P1's status light.
 - **The cable** that comes with it goes from **RJ12** on the Zap (the **IN** socket, on the long side with USB-C) to **RJ45** in the meter.
 - **USB-C power is always needed.** The HAN port does not power the Zap the way a P1 port does.
-- **The RS485 terminal has another pin order.** From P1 OUT towards the button: **B−, GND, A+**. On the Zap P1 it is GND, A+, B−. Wire by the labels, not by the position.
+- **The RS485 terminal has another pin order.** From P1 OUT towards the button: **B−, GND, A+**. On the Zap P1 it is GND, A+, B−. Wire by this order, not the Zap P1's.
 
 ## Before you go
 
@@ -127,7 +127,7 @@ Wired by the Zap P1's order, the Zap HAN reads nothing from the device.
 | No light at all, the app does not find the Zap | No power | Check the USB-C charger and cable. |
 | The app does not find the Zap | Blue is not solid, or the phone is too far away | Stand close. If the Zap was set up before, hold the button 5–10 s. |
 | Meter added, but no data after a few minutes | Encrypted meter, or a brand that has not been checked | Contact Sourceful. |
-| An RS485 device gives no data | Wired by the Zap P1's pin order | Rewire by the labels: B−, GND, A+ from P1 OUT. |
+| An RS485 device gives no data | Wired by the Zap P1's pin order | Rewire: B−, GND, A+ from P1 OUT. |
 
 ## Differences from the support site
 

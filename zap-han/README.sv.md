@@ -20,7 +20,7 @@ Zap HAN har samma låda och samma uttag som [Zap P1](../zap/README.sv.md). Skill
 - **Ingen separat blå statuslampa.** Lampan i RJ12-uttaget är en RGB-lampa som gör det jobbet: regnbåge vid start, sedan blått som Zap P1:ans statuslampa.
 - **Kabeln** som följer med går från **RJ12** på Zap (uttaget **IN**, på långsidan med USB-C) till **RJ45** i mätaren.
 - **USB-C-ström behövs alltid.** HAN-porten ger inte Zap ström som en P1-port gör.
-- **RS485-plinten har en annan ordning på stiften.** Från P1 UT mot knappen: **B−, GND, A+**. På Zap P1 är det GND, A+, B−. Koppla efter märkningen, inte efter platsen.
+- **RS485-plinten har en annan ordning på stiften.** Från P1 UT mot knappen: **B−, GND, A+**. På Zap P1 är det GND, A+, B−. Koppla efter den här ordningen, inte Zap P1:ans.
 
 ## Innan du åker
 
@@ -127,7 +127,7 @@ Kopplad efter Zap P1:ans ordning läser Zap HAN ingenting från enheten.
 | Ingen lampa alls, appen hittar inte Zap | Ingen ström | Kontrollera USB-C-laddaren och kabeln. |
 | Appen hittar inte Zap | Blå lyser inte fast, eller telefonen är för långt bort | Stå nära. Har Zap varit uppsatt förut: håll knappen 5–10 s. |
 | Mätaren är tillagd men ingen data efter några minuter | Krypterad mätare, eller ett märke som inte är kontrollerat | Kontakta Sourceful. |
-| En RS485-enhet ger ingen data | Kopplad efter Zap P1:ans ordning | Koppla om efter märkningen: B−, GND, A+ från P1 UT. |
+| En RS485-enhet ger ingen data | Kopplad efter Zap P1:ans ordning | Koppla om: B−, GND, A+ från P1 UT. |
 
 ## Skillnader mot supportsajten
 
