@@ -16,7 +16,7 @@ When every line is ticked: set **Field test** at the top of `README.md` and **F�
 ## Ports and power
 
 - [ ] IN side, from the left: P1 IN, Ethernet, USB-C, the 5-pin module terminal. OUT side, from the left: button, status light, P1 OUT.
-- [ ] Which modules are fitted, left and right slot (note them).
+- [ ] Which modules are fitted, in the slot nearest USB-C and in the other (note them).
 - [ ] The P1 cable clicks into **P1 IN** and the meter; the network cable into **Ethernet**.
 - [ ] The meter powers the Zap without USB-C (note the meter and its P1 version).
 - [ ] With something on **P1 OUT**, USB-C is needed.
@@ -44,9 +44,9 @@ When every line is ticked: set **Field test** at the top of `README.md` and **F�
 - [ ] **Energy Meters → P1 / HAN meter → Detect meter** shows **Meter added**.
 - [ ] Meter data shows in the app within two minutes.
 
-## RS485 (with an RS485 module in the left slot)
+## RS485 (with an RS485 module in the slot nearest USB-C)
 
-- [ ] The terminal's pins, counted from USB-C, are **B−, A+** (left slot), **GND**, **B−, A+** (right slot).
+- [ ] The terminal's pins, counted from USB-C, are **B−, A+** (the slot nearest USB-C), **GND**, **B−, A+** (the other slot).
 - [ ] With **A+** to the device's A, **B−** to its B and **GND** to its GND, **Modbus RTU** in the app adds the device and its data shows in the app.
 
 ## The one-pager

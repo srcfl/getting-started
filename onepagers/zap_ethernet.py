@@ -157,6 +157,8 @@ h1{font-size:24pt;}
 .sub.later{margin-top:2.4mm;}
 .list li{padding:1.25mm 0;}
 code{font-family:'JetBrains Mono',monospace;font-size:0.88em;}
+.saj > div.term{width:80mm;align-self:center;}
+.saj > div.term svg{display:block;width:80mm;}
 """
 
 BODY = """
@@ -232,9 +234,7 @@ BODY = """
   <div class="bottom">
     <section class="saj">
       <div><div class="k">{{card_k}}</div><div class="micro">{{card_m}}</div></div>
-      <p>{{card1}}</p>
-      <p>{{card2}}</p>
-      <p>{{card3}}</p>
+      {{CARD}}
     </section>
     <div class="foot">
       <span class="micro">{{foot1}}</span>
@@ -256,8 +256,42 @@ def build(lang, t, layout, field_tested):
         "LOGO": LOGO_LIGHT, "IC_METER": IC_METER, "IC_NET": IC_NET, "IC_PHONE": IC_PHONE,
         "IC_PLUG": IC_PLUG, "HERO": hero(t, layout), "APP_TRACK": track, "TICK": TICK,
         "WIFI_PATH": arrow.join(t["wifi_path"]),
+        "CARD": (f'<div class="term">{terminal_svg(t, layout)}</div><p>{t["card3"]}</p>' if "terminal" in t
+                 else "".join(f"<p>{t[k]}</p>" for k in ("card1", "card2", "card3"))),
     })
     return page(lang, t["title"], fill(BODY, values), EXTRA_CSS)
+
+
+def terminal_svg(t, layout):
+    """The RS485 terminal seen facing the IN side, USB-C on the left, for the dark bottom card.
+    t["terminal"] gives the groups over the pins: (first pin, last pin, label, used)."""
+    _, _, pins = layout["rs485"]
+    W, H, x0, pitch = 98, 16, 15, 13
+    o = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Satoshi">']
+    # USB-C for orientation
+    o.append(f'<rect x="1" y="7" width="9.4" height="3.6" rx="1.8" fill="none" stroke="{CREAM}" stroke-width="0.35"/>')
+    o.append(f'<text x="5.7" y="14.6" text-anchor="middle" {MONO} font-size="1.7" letter-spacing="0.2" fill="#9C9A92">{t["usbc"]}</text>')
+    # the terminal
+    o.append(f'<rect x="{x0 - 1.2}" y="5.2" width="{pitch * len(pins) + 2.4}" height="7.2" rx="0.8" fill="#5E8F66"/>')
+    for i, pin in enumerate(pins):
+        cx = x0 + pitch * (i + 0.5)
+        o.append(f'<rect x="{cx - 2.6:.2f}" y="6.4" width="5.2" height="4.8" rx="0.6" fill="#3F6B48"/>')
+        o.append(f'<circle cx="{cx:.2f}" cy="8.8" r="1.4" fill="#C9D9C6"/>')
+    used_pins = set()
+    for first, last, label, used in t["terminal"]:
+        xa, xb = x0 + pitch * first + 1.2, x0 + pitch * (last + 1) - 1.2
+        color = SIGNAL if used else "#9C9A92"
+        o.append(f'<path d="M{xa:.2f} 3.9 V2.9 H{xb:.2f} V3.9" fill="none" stroke="{color}" stroke-width="0.35"/>')
+        o.append(f'<text x="{(xa + xb) / 2:.2f}" y="2.1" text-anchor="middle" {MONO} font-size="2" letter-spacing="0.2" '
+                 f'font-weight="700" fill="{color}">{label}</text>')
+        if used:
+            used_pins.update(range(first, last + 1))
+    for i, pin in enumerate(pins):
+        cx = x0 + pitch * (i + 0.5)
+        fill = "#F5F2E1" if i in used_pins else "#9C9A92"
+        o.append(f'<text x="{cx:.2f}" y="15.4" text-anchor="middle" {MONO} font-size="2.8" font-weight="700" fill="{fill}">{pin}</text>')
+    o.append("</svg>")
+    return "".join(o)
 
 
 def device_drawing(t, layout):

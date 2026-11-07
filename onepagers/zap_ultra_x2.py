@@ -3,12 +3,12 @@
 Sources:
 - The hardware vendor's documentation (2026-11-07): the IN side has, from left, P1 IN,
   Ethernet, USB-C and a 5-pin module terminal; the OUT side has the button, the RGB status
-  light and P1 OUT. Two module slots share the terminal: from USB-C, B-, A+ (the left slot,
-  IO36/38/39), GND, B-, A+ (the right slot, IO41/43/44) for RS485 modules. Modules are fitted
+  light and P1 OUT. Two module slots share the terminal: from USB-C, B-, A+ (the slot the
+  vendor calls L, IO36/38/39), GND, B-, A+ (R, IO41/43/44) for RS485 modules. Modules are fitted
   with the case open and the power off. A version 5.0 meter powers it; older meters need
   USB-C. No PoE.
 - srcfl/srcful-zap-x-firmware v7.0.5 (346754de): zap-eth-s3.h (ESP32-S3, W5500, WS2812 status
-  light, button GPIO 0, P1 in 12 / out 21, Modbus RTU on UART2 with the left slot's pins
+  light, button GPIO 0, P1 in 12 / out 21, Modbus RTU on UART2 with the L slot's pins
   RX 36 / TX 39 / RTS 38; the module sense pins are not read), main.cpp (rainbow at boot;
   Bluetooth starts without saved Wi-Fi, also with Ethernet), main_loop.cpp (blue while
   Bluetooth waits; Bluetooth stops 60 s after Wi-Fi or Ethernet is up; button 2/5/10 s),
@@ -31,7 +31,7 @@ T = {
     "sv": {
         "title": "Koppla en Zap Ultra X2",
         "rail": "Installationsguide &middot; Zap Ultra X2 &middot; Mainnet",
-        "lede": "För installatören, på plats. Mätare med RJ12 P1-port. Online via Ethernet eller wifi. Två modulplatser, en för RS485.",
+        "lede": "För installatören, på plats. Mätare med RJ12 P1-port. Online via Ethernet eller wifi. RS485 med en modul.",
         "before": "Innan du åker",
         "p1_t": "P1-porten påslagen", "p1_d": "Hos elnätsbolaget, före besöket.",
         "net_t": "Nätverk", "net_d": "Ethernet med DHCP, eller wifi 2,4&nbsp;GHz.",
@@ -79,16 +79,15 @@ T = {
         "wifi_p": "Håll knappen 5–10&nbsp;s (snabb blå blink), släpp. Sedan:<br>",
         "wifi_path": ["<b>Mina Zappar</b>", "Zappen", "<b>Konfigurera om WiFi</b>", "välj&nbsp;den", "<b>Konfigurera Nätverk</b>", "nät, lösenord", "<b>Anslut</b>"],
         "card_k": "RS485", "card_m": "Modbus RTU",
-        "card1": "Kräver en <b>RS485-modul i vänstra platsen</b>, närmast USB-C. Zap använder bara den.",
-        "card2": "Stiften från USB-C: <b>B−, A+</b>, GND. A+ till enhetens A, B− till B, GND till GND.",
-        "card3": "I appen: <b>Lägg till energienhet</b>, modellen, <b>Modbus RTU</b>, sedan enhetens inställningar.",
+        "card3": "Kräver en <b>RS485-modul</b> i platsen närmast USB-C. A+ till enhetens A, B− till B, GND till GND. I appen: <b>Modbus RTU</b>.",
+        "terminal": [(0, 1, "ZAP · RS485", True), (2, 2, "DELAD", True), (3, 4, "OANVÄND", False)],
         "foot1": "firmware 7.0.5 &middot; appen 2.7.9 &middot; 2026-11-07",
         "foot2": "Ritningen ej skalenlig &middot; RJ12: Open Connector Graphics, CC BY 4.0",
     },
     "en": {
         "title": "Connect a Zap Ultra X2",
         "rail": "Installation guide &middot; Zap Ultra X2 &middot; Mainnet",
-        "lede": "For the installer, on site. Meters with an RJ12 P1 port. Online over Ethernet or Wi-Fi. Two module slots, one for RS485.",
+        "lede": "For the installer, on site. Meters with an RJ12 P1 port. Online over Ethernet or Wi-Fi. RS485 with a module.",
         "before": "Before you go",
         "p1_t": "P1 port enabled", "p1_d": "By the grid operator, beforehand.",
         "net_t": "Network", "net_d": "Ethernet with DHCP, or 2.4&nbsp;GHz Wi-Fi.",
@@ -136,9 +135,8 @@ T = {
         "wifi_p": "Hold the button 5–10&nbsp;s (fast blue blink), let go. Then:<br>",
         "wifi_path": ["<b>My Zaps</b>", "the Zap", "<b>Reconfigure WiFi</b>", "pick&nbsp;it", "<b>Configure network</b>", "network, password", "<b>Connect</b>"],
         "card_k": "RS485", "card_m": "Modbus RTU",
-        "card1": "Needs an <b>RS485 module in the left slot</b>, nearest USB-C. The Zap uses only that one.",
-        "card2": "Pins from USB-C: <b>B−, A+</b>, GND. A+ to the device's A, B− to B, GND to GND.",
-        "card3": "In the app: <b>Add Energy Device</b>, the model, <b>Modbus RTU</b>, then the device's settings.",
+        "card3": "Needs an <b>RS485 module</b> in the slot nearest USB-C. A+ to the device's A, B− to B, GND to GND. In the app: <b>Modbus RTU</b>.",
+        "terminal": [(0, 1, "ZAP · RS485", True), (2, 2, "SHARED", True), (3, 4, "NOT USED", False)],
         "foot1": "firmware 7.0.5 &middot; app 2.7.9 &middot; 2026-11-07",
         "foot2": "Drawing not to scale &middot; RJ12: Open Connector Graphics, CC BY 4.0",
     },

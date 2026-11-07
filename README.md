@@ -10,7 +10,7 @@ Svenska: [README.sv.md](README.sv.md)
 | **Zap HAN** | Reads a meter's RJ45 HAN port (M-Bus), powered by USB-C | [zap-han/](zap-han/README.md) | [EN](zap-han/zap-han-one-pager-en.pdf) · [SV](zap-han/zap-han-one-pager-sv.pdf) |
 | **Zap Ultra Mini** | Reads a meter's RJ12 P1 port, online over Ethernet or Wi-Fi, with an RS485 terminal | [zap-ultra-mini/](zap-ultra-mini/README.md) | [EN](zap-ultra-mini/zap-ultra-mini-one-pager-en.pdf) · [SV](zap-ultra-mini/zap-ultra-mini-one-pager-sv.pdf) |
 | **Zap ETH** | Reads a meter's RJ12 P1 port, online over Ethernet or Wi-Fi; P1 only | [zap-eth/](zap-eth/README.md) | [EN](zap-eth/zap-eth-one-pager-en.pdf) · [SV](zap-eth/zap-eth-one-pager-sv.pdf) |
-| **Zap Ultra X2** | Reads a meter's RJ12 P1 port, online over Ethernet or Wi-Fi, with two module slots (RS485 in the left one) | [zap-ultra-x2/](zap-ultra-x2/README.md) | [EN](zap-ultra-x2/zap-ultra-x2-one-pager-en.pdf) · [SV](zap-ultra-x2/zap-ultra-x2-one-pager-sv.pdf) |
+| **Zap Ultra X2** | Reads a meter's RJ12 P1 port, online over Ethernet or Wi-Fi, with two module slots (RS485 in the one nearest USB-C) | [zap-ultra-x2/](zap-ultra-x2/README.md) | [EN](zap-ultra-x2/zap-ultra-x2-one-pager-en.pdf) · [SV](zap-ultra-x2/zap-ultra-x2-one-pager-sv.pdf) |
 | **Blixt** | Industrial gateway that controls batteries, inverters, meters and EV chargers on commercial and industrial sites | [blixt/](blixt/README.md) | [EN](blixt/blixt-one-pager-en.pdf) · [SV](blixt/blixt-one-pager-sv.pdf) |
 | **Blixt X** | Sourceful's gateway software on the RAK Hotspot V2 (the former dual miners), set up in the app like a Zap | [blixt-x/](blixt-x/README.md) | [EN](blixt-x/blixt-x-one-pager-en.pdf) · [SV](blixt-x/blixt-x-one-pager-sv.pdf) |
 

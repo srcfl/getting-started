@@ -5,7 +5,7 @@
 > **För:** installatören på plats  
 > **Fälttest:** inte gjort än. Checklista: [CHECKLIST.md](CHECKLIST.md)
 
-Zap Ultra X2 läser elmätarens P1-port (RJ12), precis som [Zap P1](../zap/README.sv.md), och skickar mätardata till Sourceful Energy-appen via **Ethernet eller wifi**. Den har två modulplatser på en plint; med en RS485-modul i vänstra platsen läser den en mätare eller växelriktare över Modbus RTU.
+Zap Ultra X2 läser elmätarens P1-port (RJ12), precis som [Zap P1](../zap/README.sv.md), och skickar mätardata till Sourceful Energy-appen via **Ethernet eller wifi**. Den har två modulplatser på en plint; med en RS485-modul i platsen närmast USB-C läser den en mätare eller växelriktare över Modbus RTU.
 
 Har mätaren bara ett RJ45 HAN-uttag? Då behövs [Zap HAN](../zap-han/README.sv.md).
 
@@ -24,7 +24,7 @@ Ritningen visar portarnas ordning, inte de verkliga proportionerna.
 | **P1 IN** (RJ12): kabeln till mätaren | **Knappen** |
 | **Ethernet** (RJ45) | **Statuslampan** |
 | **USB-C**: ström, vid behov | **P1 UT** (RJ12) |
-| **Modulplinten** med fem stift: **B−, A+** (vänstra platsen), **GND**, **B−, A+** (högra platsen), räknat från USB-C | |
+| **Modulplinten** med fem stift: **B−, A+** (platsen närmast USB-C), **GND**, **B−, A+** (den andra platsen), räknat från USB-C | |
 
 ## Innan du åker
 
@@ -33,7 +33,7 @@ Ritningen visar portarnas ordning, inte de verkliga proportionerna.
 - [ ] **Sourceful Energy-appen**, inloggad, med en profil och en anläggning. **Bluetooth på** i telefonen.
 - [ ] **En RJ12 P1-kabel** och, för Ethernet, en nätverkskabel.
 - [ ] **En USB-C-laddare** (5 V) om något ska kopplas till P1 UT, eller om mätaren är äldre än P1 version 5.0.
-- [ ] För en RS485-enhet: **en RS485-modul i vänstra platsen**, närmast USB-C. Kontrollera innan du åker.
+- [ ] För en RS485-enhet: **en RS485-modul i platsen närmast USB-C**. Kontrollera innan du åker.
 
 ## 1. Hitta porten på mätaren
 
@@ -92,11 +92,11 @@ På en dator i samma nät visar `http://zap.local/api/network` `"ethConnected": 
 
 ## RS485
 
-Plinten med fem stift på IN-sidan delas av två modulplatser. Zap läser RS485 bara på **vänstra platsen**, närmast USB-C, och bara med en **RS485-modul** där. Moduler sätts i med höljet öppet och strömmen av. Zap kontrollerar inte vilken modul som sitter i.
+Plinten med fem stift på IN-sidan delas av två modulplatser. Zap läser RS485 bara på **platsen närmast USB-C**, och bara med en **RS485-modul** där. Moduler sätts i med höljet öppet och strömmen av. Zap kontrollerar inte vilken modul som sitter i.
 
 Med RS485-modulen på plats tar plinten en eller flera Modbus RTU-enheter, var och en med eget enhets-ID, om appen visar **Modbus RTU** för modellen.
 
-1. Koppla med strömmen av. Stiften, räknat från USB-C: **B−, A+** (vänstra platsen), **GND** (gemensam), sedan **B−, A+** för högra platsen, som Zap inte använder. **A+** till enhetens A, **B−** till dess B, **GND** till dess GND.
+1. Koppla med strömmen av. Stiften, räknat från USB-C: **B−, A+** (platsen närmast USB-C), **GND** (gemensam), sedan **B−, A+** för den andra platsen, som Zap inte använder. **A+** till enhetens A, **B−** till dess B, **GND** till dess GND.
 2. I appen: **Mer**, anläggningen, **Energienheter → Lägg till energienhet → Lägg till ny enhet**, typen och modellen. Under **Konfigurera anslutning**: välj **Modbus RTU** och fyll i **Baud Rate**, **Unit ID**, **Parity**, **Data Bits** och **Stop Bits** som de är inställda på enheten.
 
 > **Varning:** Ordningen skiljer sig från de andra Zapparna: [Zap P1](../zap/README.sv.md#via-rs485) har GND, A+, B−, [Zap HAN](../zap-han/README.sv.md#en-rs485-enhet) B−, GND, A+ och [Zap Ultra Mini](../zap-ultra-mini/README.sv.md#rs485) A+, B−, GND.
@@ -131,12 +131,12 @@ En växelriktare på nätet (Modbus TCP) läggs till som på Zap P1: [Lägga til
 | **Ethernet upptäckt** visas inte | Ingen adress från routern (DHCP), eller kabeln sitter inte i | Kolla kabeln och routerporten. Eller ställ in wifi i stället. |
 | **Mätaren kunde inte identifieras** | P1-porten är inte påslagen, eller kabeln sitter inte i | Tryck in kabeln i båda ändar. Be elnätsbolaget slå på porten. |
 | Ingenting lyser | Ingen ström från mätaren | Sätt i USB-C (5 V). |
-| En RS485-enhet ger ingen data | Ingen RS485-modul i vänstra platsen, kopplad till högra platsen, eller fel seriella inställningar | Använd vänstra platsen: B−, A+ närmast USB-C. Kontrollera baud rate, paritet och enhets-ID mot enheten. |
+| En RS485-enhet ger ingen data | Ingen RS485-modul i platsen närmast USB-C, kopplad till den andra platsen, eller fel seriella inställningar | Använd paret närmast USB-C: B−, A+. Kontrollera baud rate, paritet och enhets-ID mot enheten. |
 
 ## Källor
 
-- Hårdvaruleverantörens dokumentation för kortet, läst 2026-11-07: portarna på båda sidor och deras ordning, modulplinten (från USB-C: B−, A+ för vänstra platsen på IO36/38/39, GND, B−, A+ för högra platsen på IO41/43/44), moduler sätts i med höljet öppet och strömmen av, ström från en mätare med P1 version 5.0 eller USB-C, ingen PoE; för Zap Ultra Mini i samma familj, USB-C när P1 UT används
-- `srcfl/srcful-zap-x-firmware` vid `v7.0.5` (346754de): `components/board/include/boards/zap-eth-s3.h` (RGB-statuslampa, knapp, P1 in och ut, Modbus RTU på vänstra platsens stift RX 36 / TX 39 / RTS 38; modulernas avkänningsstift är definierade men läses inte), `fw_controller/README.md` (avkänningsstiften läses inte), `fw_controller/main/main.cpp` (regnbåge vid start; Bluetooth öppnas utan sparat wifi, även med Ethernet), `fw_controller/main/main_loop.cpp` (blått medan Bluetooth väntar; Bluetooth stänger 60 s efter att wifi eller Ethernet är uppe; knapp 2/5/10 s), `components/p1_data_reader/p1_meter.cpp` (data kopieras till P1 UT), `components/wifi/eth_manager.cpp` (DHCP, ingen fast adress), `fw_controller/API.md` (`ethConnected`, wifi föredras när båda är uppe)
+- Hårdvaruleverantörens dokumentation för kortet, läst 2026-11-07: portarna på båda sidor och deras ordning, modulplinten (från USB-C: B−, A+ för platsen som leverantören kallar L, på IO36/38/39, GND, B−, A+ för plats R på IO41/43/44), moduler sätts i med höljet öppet och strömmen av, ström från en mätare med P1 version 5.0 eller USB-C, ingen PoE; för Zap Ultra Mini i samma familj, USB-C när P1 UT används
+- `srcfl/srcful-zap-x-firmware` vid `v7.0.5` (346754de): `components/board/include/boards/zap-eth-s3.h` (RGB-statuslampa, knapp, P1 in och ut, Modbus RTU på plats L:s stift RX 36 / TX 39 / RTS 38; modulernas avkänningsstift är definierade men läses inte), `fw_controller/README.md` (avkänningsstiften läses inte), `fw_controller/main/main.cpp` (regnbåge vid start; Bluetooth öppnas utan sparat wifi, även med Ethernet), `fw_controller/main/main_loop.cpp` (blått medan Bluetooth väntar; Bluetooth stänger 60 s efter att wifi eller Ethernet är uppe; knapp 2/5/10 s), `components/p1_data_reader/p1_meter.cpp` (data kopieras till P1 UT), `components/wifi/eth_manager.cpp` (DHCP, ingen fast adress), `fw_controller/API.md` (`ethConnected`, wifi föredras när båda är uppe)
 - `srcfl/srcful-flutter-app` vid `v2.7.9`: `lib/screens/zap_wifi_setup_screen.dart` (**Ethernet upptäckt**, **Hoppa över WiFi-konfiguration**, **Ansluten via Ethernet**), `lib/l10n/app_sv.arb`; mätare och enheter läggs till som för [Zap P1](../zap/README.sv.md#källor)
 - Device-support-registryts `connection-types` på mainnet: fälten för **Modbus RTU**, som inte är översatta
 - Sourcefuls testrigg, 2026-11-07: en Zap Ultra X2 på firmware 7.0.5 läser en P1-mätare. RS485 på X2 är inte testat i riggen än.

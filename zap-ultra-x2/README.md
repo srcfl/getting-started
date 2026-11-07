@@ -5,7 +5,7 @@
 > **For:** the installer on site  
 > **Field test:** not done yet. Checklist: [CHECKLIST.md](CHECKLIST.md)
 
-The Zap Ultra X2 reads the electricity meter's P1 port (RJ12), like the [Zap P1](../zap/README.md), and sends the data to the Sourceful Energy app over **Ethernet or Wi-Fi**. It has two module slots on one terminal; with an RS485 module in the left slot it reads a meter or inverter over Modbus RTU.
+The Zap Ultra X2 reads the electricity meter's P1 port (RJ12), like the [Zap P1](../zap/README.md), and sends the data to the Sourceful Energy app over **Ethernet or Wi-Fi**. It has two module slots on one terminal; with an RS485 module in the slot nearest USB-C it reads a meter or inverter over Modbus RTU.
 
 Does the meter only have an RJ45 HAN port? Then you need the [Zap HAN](../zap-han/README.md).
 
@@ -24,7 +24,7 @@ The drawing shows the order of the ports, not the real proportions.
 | **P1 IN** (RJ12): the cable to the meter | The **button** |
 | **Ethernet** (RJ45) | The **status light** |
 | **USB-C**: power, when needed | **P1 OUT** (RJ12) |
-| The 5-pin **module terminal**: **B−, A+** (left slot), **GND**, **B−, A+** (right slot), counted from USB-C | |
+| The 5-pin **module terminal**: **B−, A+** (the slot nearest USB-C), **GND**, **B−, A+** (the other slot), counted from USB-C | |
 
 ## Before you go
 
@@ -33,7 +33,7 @@ The drawing shows the order of the ports, not the real proportions.
 - [ ] **The Sourceful Energy app**, signed in, with a profile and a site. **Bluetooth on** on the phone.
 - [ ] **An RJ12 P1 cable** and, for Ethernet, a network cable.
 - [ ] **A USB-C charger** (5 V) if something will be plugged into P1 OUT, or if the meter is older than P1 version 5.0.
-- [ ] For an RS485 device: **an RS485 module in the left slot**, nearest USB-C. Check before you go.
+- [ ] For an RS485 device: **an RS485 module in the slot nearest USB-C**. Check before you go.
 
 ## 1. Find the port on the meter
 
@@ -92,11 +92,11 @@ On a laptop on the same network, `http://zap.local/api/network` shows `"ethConne
 
 ## RS485
 
-The 5-pin terminal on the IN side is shared by two module slots. The Zap reads RS485 only on the **left slot**, nearest USB-C, and only with an **RS485 module** fitted there. Modules are fitted with the case open and the power off. The Zap does not check which module is fitted.
+The 5-pin terminal on the IN side is shared by two module slots. The Zap reads RS485 only on the **slot nearest USB-C**, and only with an **RS485 module** fitted there. Modules are fitted with the case open and the power off. The Zap does not check which module is fitted.
 
 With the RS485 module in place, the terminal takes one or more Modbus RTU devices, each with its own unit ID, if the app lists **Modbus RTU** for the model.
 
-1. Wire with the power off. The pins, counted from USB-C: **B−, A+** (left slot), **GND** (shared), then **B−, A+** of the right slot, which the Zap does not use. **A+** to the device's A, **B−** to its B, **GND** to its GND.
+1. Wire with the power off. The pins, counted from USB-C: **B−, A+** (the slot nearest USB-C), **GND** (shared), then **B−, A+** of the other slot, which the Zap does not use. **A+** to the device's A, **B−** to its B, **GND** to its GND.
 2. In the app: **More**, the site, **Energy devices → Add Energy Device → Onboard New Device**, the type and the model. Under **Configure Connection**, pick **Modbus RTU** and enter **Baud Rate**, **Unit ID**, **Parity**, **Data Bits** and **Stop Bits** as set on the device.
 
 > **Warning:** The order differs from the other Zaps: the [Zap P1](../zap/README.md#over-rs485) has GND, A+, B−, the [Zap HAN](../zap-han/README.md#an-rs485-device) B−, GND, A+ and the [Zap Ultra Mini](../zap-ultra-mini/README.md#rs485) A+, B−, GND.
@@ -131,12 +131,12 @@ An inverter on the network (Modbus TCP) is added as on the Zap P1: [Add an inver
 | **Ethernet detected** does not appear | No address from the router (DHCP), or the cable is not in | Check the cable and the router port. Or set up Wi-Fi instead. |
 | **The meter was not detected** | The P1 port is not enabled, or the cable is not fully in | Push the cable in at both ends. Ask the grid operator to enable the port. |
 | Nothing lights at all | No power from the meter | Plug in USB-C (5 V). |
-| An RS485 device gives no data | No RS485 module in the left slot, wired to the right slot, or wrong serial settings | Use the left slot: B−, A+ nearest USB-C. Check baud rate, parity and unit ID against the device. |
+| An RS485 device gives no data | No RS485 module in the slot nearest USB-C, wired to the other slot, or wrong serial settings | Use the pair nearest USB-C: B−, A+. Check baud rate, parity and unit ID against the device. |
 
 ## Sources
 
-- The hardware vendor's documentation for this board, read 2026-11-07: the ports on both sides and their order, the module terminal (from USB-C: B−, A+ of the left slot on IO36/38/39, GND, B−, A+ of the right slot on IO41/43/44), modules fitted with the case open and the power off, power from a P1 version 5.0 meter or USB-C, no PoE; for the Zap Ultra Mini of the same family, USB-C when P1 OUT is used
-- `srcfl/srcful-zap-x-firmware` at `v7.0.5` (346754de): `components/board/include/boards/zap-eth-s3.h` (RGB status light, button, P1 in and out, Modbus RTU on the left slot's pins RX 36 / TX 39 / RTS 38; the module sense pins are defined but not read), `fw_controller/README.md` (the sense pins are not read), `fw_controller/main/main.cpp` (rainbow at start; Bluetooth opens without saved Wi-Fi, also with Ethernet), `fw_controller/main/main_loop.cpp` (blue while Bluetooth waits; Bluetooth closes 60 s after Wi-Fi or Ethernet is up; button 2/5/10 s), `components/p1_data_reader/p1_meter.cpp` (data copied to P1 OUT), `components/wifi/eth_manager.cpp` (DHCP, no fixed address), `fw_controller/API.md` (`ethConnected`, Wi-Fi preferred when both are up)
+- The hardware vendor's documentation for this board, read 2026-11-07: the ports on both sides and their order, the module terminal (from USB-C: B−, A+ of the slot the vendor calls L, on IO36/38/39, GND, B−, A+ of slot R on IO41/43/44), modules fitted with the case open and the power off, power from a P1 version 5.0 meter or USB-C, no PoE; for the Zap Ultra Mini of the same family, USB-C when P1 OUT is used
+- `srcfl/srcful-zap-x-firmware` at `v7.0.5` (346754de): `components/board/include/boards/zap-eth-s3.h` (RGB status light, button, P1 in and out, Modbus RTU on slot L's pins RX 36 / TX 39 / RTS 38; the module sense pins are defined but not read), `fw_controller/README.md` (the sense pins are not read), `fw_controller/main/main.cpp` (rainbow at start; Bluetooth opens without saved Wi-Fi, also with Ethernet), `fw_controller/main/main_loop.cpp` (blue while Bluetooth waits; Bluetooth closes 60 s after Wi-Fi or Ethernet is up; button 2/5/10 s), `components/p1_data_reader/p1_meter.cpp` (data copied to P1 OUT), `components/wifi/eth_manager.cpp` (DHCP, no fixed address), `fw_controller/API.md` (`ethConnected`, Wi-Fi preferred when both are up)
 - `srcfl/srcful-flutter-app` at `v2.7.9`: `lib/screens/zap_wifi_setup_screen.dart` (**Ethernet detected**, **Skip WiFi setup**, **Connected via Ethernet**), `lib/l10n/app_en_US.arb`; adding the meter and devices as for the [Zap P1](../zap/README.md#sources)
 - The device-support registry's `connection-types` on mainnet: the **Modbus RTU** fields
 - Sourceful's test rig, 2026-11-07: a Zap Ultra X2 on firmware 7.0.5 reads a P1 meter. RS485 on the X2 is not yet tested on the rig.

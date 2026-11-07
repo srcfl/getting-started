@@ -10,7 +10,7 @@ English: [README.md](README.md)
 | **Zap HAN** | Läser mätarens RJ45 HAN-port (M-Bus), drivs med USB-C | [zap-han/](zap-han/README.sv.md) | [SV](zap-han/zap-han-one-pager-sv.pdf) · [EN](zap-han/zap-han-one-pager-en.pdf) |
 | **Zap Ultra Mini** | Läser mätarens RJ12 P1-port, online via Ethernet eller wifi, med RS485-plint | [zap-ultra-mini/](zap-ultra-mini/README.sv.md) | [SV](zap-ultra-mini/zap-ultra-mini-one-pager-sv.pdf) · [EN](zap-ultra-mini/zap-ultra-mini-one-pager-en.pdf) |
 | **Zap ETH** | Läser mätarens RJ12 P1-port, online via Ethernet eller wifi; bara P1 | [zap-eth/](zap-eth/README.sv.md) | [SV](zap-eth/zap-eth-one-pager-sv.pdf) · [EN](zap-eth/zap-eth-one-pager-en.pdf) |
-| **Zap Ultra X2** | Läser mätarens RJ12 P1-port, online via Ethernet eller wifi, med två modulplatser (RS485 i den vänstra) | [zap-ultra-x2/](zap-ultra-x2/README.sv.md) | [SV](zap-ultra-x2/zap-ultra-x2-one-pager-sv.pdf) · [EN](zap-ultra-x2/zap-ultra-x2-one-pager-en.pdf) |
+| **Zap Ultra X2** | Läser mätarens RJ12 P1-port, online via Ethernet eller wifi, med två modulplatser (RS485 i den närmast USB-C) | [zap-ultra-x2/](zap-ultra-x2/README.sv.md) | [SV](zap-ultra-x2/zap-ultra-x2-one-pager-sv.pdf) · [EN](zap-ultra-x2/zap-ultra-x2-one-pager-en.pdf) |
 | **Blixt** | Industri-gateway som styr batterier, växelriktare, mätare och laddboxar på kommersiella och industriella anläggningar | [blixt/](blixt/README.sv.md) | [SV](blixt/blixt-one-pager-sv.pdf) · [EN](blixt/blixt-one-pager-en.pdf) |
 | **Blixt X** | Sourcefuls gateway-programvara på RAK Hotspot V2 (de gamla dual-minrarna), som sätts upp i appen som en Zap | [blixt-x/](blixt-x/README.sv.md) | [SV](blixt-x/blixt-x-one-pager-sv.pdf) · [EN](blixt-x/blixt-x-one-pager-en.pdf) |
 
