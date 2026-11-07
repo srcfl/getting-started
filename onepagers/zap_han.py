@@ -14,6 +14,10 @@ Sources:
   waiting for the app, off when Bluetooth closes, button 2/5/10 s), fw_controller/API.md
   (detected_type han_uart), decoders (no decryption).
 - The app 2.7.9: same onboarding as the Zap P1; meter added as "P1 / HAN meter".
+- RS485 terminal: B-, GND, A+ from the P1 OUT end, not the Zap P1's order (the hardware
+  vendor's pinout image for the ZAP 2.0 board, 2026-11-07). Modbus RTU on it: zap-han.h
+  (UART0, TX 7, RX 5, RTS 6). A Zap HAN on 7.0.5 wired that way read an SDM630 on Sourceful's
+  test rig, 2026-11-07; wired by the Zap P1's order it read nothing.
 """
 from zap import zap_top
 from common import (crop, rail, BLUE, BOLT, CREAM, GREEN, IC_METER, IC_PHONE, IC_PLUG, IC_WIFI, INK,
@@ -73,11 +77,13 @@ T = {
         "wifi_h": "Byta wifi",
         "wifi_p": "Håll knappen 5–10&nbsp;s (snabb blå blink), släpp. Sedan:<br>",
         "wifi_path": ["<b>Mina Zappar</b>", "Zappen", "<b>Konfigurera om WiFi</b>", "välj&nbsp;den", "<b>Konfigurera Nätverk</b>", "nät, lösenord", "<b>Anslut</b>"],
+        "inv_h": "Sen &middot; RS485",
+        "inv": "<b>Annan ordning än Zap P1:</b> B−, GND, A+ från P1 UT. A+ till A, B− till B, GND till GND. I appen: <b>Modbus RTU</b>.",
         "card_k": "HAN", "card_m": "Mätare som stöds",
         "card1": "<b>Okrypterad HAN</b> (DLMS/COSEM över M-Bus). Krypterade mätare fungerar inte än.",
         "card2": "Testad med <b>Kamstrup</b>. Andra märken: fråga Sourceful innan du installerar.",
         "card3": "Elnätsbolaget måste slå på HAN-porten. Den är ofta av från start.",
-        "foot1": "firmware main &middot; appen 2.7.9 &middot; Aidon HAN v1.6 &middot; 2026-10-15",
+        "foot1": "firmware main &middot; appen 2.7.9 &middot; Aidon HAN v1.6 &middot; 2026-10-15 &middot; RS485 2026-11-07",
         "foot2": "RJ45: Open Connector Graphics, CC BY 4.0",
     },
     "en": {
@@ -129,11 +135,13 @@ T = {
         "wifi_h": "Change Wi-Fi",
         "wifi_p": "Hold the button 5–10&nbsp;s (fast blue blink), let go. Then:<br>",
         "wifi_path": ["<b>My Zaps</b>", "the Zap", "<b>Reconfigure WiFi</b>", "pick&nbsp;it", "<b>Configure network</b>", "network, password", "<b>Connect</b>"],
+        "inv_h": "Then &middot; RS485",
+        "inv": "<b>Not the Zap P1's order:</b> B−, GND, A+ from P1 OUT. A+ to A, B− to B, GND to GND. In the app: <b>Modbus RTU</b>.",
         "card_k": "HAN", "card_m": "Supported meters",
         "card1": "<b>Unencrypted HAN</b> (DLMS/COSEM over M-Bus). Encrypted meters do not work yet.",
         "card2": "Tested with <b>Kamstrup</b>. Other brands: ask Sourceful before you install.",
         "card3": "The grid operator must turn the HAN port on. It is often off at first.",
-        "foot1": "firmware main &middot; app 2.7.9 &middot; Aidon HAN v1.6 &middot; 2026-10-15",
+        "foot1": "firmware main &middot; app 2.7.9 &middot; Aidon HAN v1.6 &middot; 2026-10-15 &middot; RS485 2026-11-07",
         "foot2": "RJ45: Open Connector Graphics, CC BY 4.0",
     },
 }
@@ -141,6 +149,7 @@ T = {
 EXTRA_CSS = """
 h1{font-size:30pt;}
 .path{line-height:1.45;}
+.sub.later{margin-top:2.4mm;}
 .list li{padding:1.25mm 0;}
 code{font-family:'JetBrains Mono',monospace;font-size:0.88em;}
 """
@@ -287,6 +296,8 @@ BODY = """
         <div class="sub">{{wifi_h}}</div>
         <p class="small">{{wifi_p}}</p>
         <div class="path">{{WIFI_PATH}}</div>
+        <div class="sub later">{{inv_h}}</div>
+        <p class="small">{{inv}}</p>
       </div>
     </div>
   </section>

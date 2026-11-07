@@ -7,6 +7,10 @@ and srcful-flutter-app) and the reference manual on support.sourceful.energy:
                               green data LED in P1 OUT
 Button timings come from srcful-zap-x-firmware fw_controller/main/main_loop.cpp:
   >2 s slow blink -> restart, >5 s fast blink -> clear Wi-Fi, >10 s solid -> factory reset.
+RS485 terminal: GND, A+, B- from the P1 OUT end (the hardware vendor's pinout image,
+  2026-11-07). Modbus RTU on it: zap-p1.h (UART0, TX 7, RX 5, RTS 6), fw_controller/API.md;
+  a Zap P1 on 7.0.5 read an SDM630 through it on Sourceful's test rig, 2026-11-07. In the app
+  the connection type is "Modbus RTU" (device-support registry /connection-types, mainnet).
 """
 from common import (crop, rail, BLUE, BOLT, CREAM, GREEN, IC_CABLE, IC_METER, IC_PHONE, IC_WIFI, INK,
                     LOGO_LIGHT, MONO, MUTED, PLASTIC, TICK, fill, jack_g, marker, page,
@@ -14,6 +18,10 @@ from common import (crop, rail, BLUE, BOLT, CREAM, GREEN, IC_CABLE, IC_METER, IC
 
 # Set to True when CHECKLIST.md is ticked off on real hardware.
 FIELD_TESTED = False
+
+# RS485 terminal pins, from the P1 OUT end towards the button. The Zap P1 (ZAP 1.0) and the
+# Zap HAN (ZAP 2.0) boards differ: the hardware vendor's pinout images, 2026-11-07.
+RS485_PINS = {"p1": ("GND", "A+", "B−"), "han": ("B−", "GND", "A+")}
 
 T = {
     "sv": {
@@ -68,7 +76,7 @@ T = {
         "wifi_p": "Håll knappen 5–10&nbsp;s (snabb blå blink), släpp. Sedan:<br>",
         "wifi_path": ["<b>Mina Zappar</b>", "Zappen", "<b>Konfigurera om WiFi</b>", "välj&nbsp;den", "<b>Konfigurera Nätverk</b>", "nät, lösenord", "<b>Anslut</b>"],
         "inv_h": "Sen &middot; växelriktare",
-        "inv": "Modell som stöds, fast IP, samma nät. <b>Mer → Energienheter → Lägg till energienhet</b>: typ, modell, IP, port, enhets-ID.",
+        "inv": "Modell som stöds. <b>Mer → Energienheter → Lägg till energienhet</b>. Nätverk: fast IP. RS485: <b>Modbus RTU</b>; A+ till A, B− till B.",
         "saj_k": "Inte i appen",
         "saj1": "<b>SAJ finns inte i mainnet-appen.</b> Lägg inte till den som en annan växelriktare.",
         "saj2": "Zap ska ha <b>internet</b>, och sitta på <b>samma LAN</b> som SAJ eller vara seriellt kopplad till den.",
@@ -128,7 +136,7 @@ T = {
         "wifi_p": "Hold the button 5–10&nbsp;s (fast blue blink), let go. Then:<br>",
         "wifi_path": ["<b>My Zaps</b>", "the Zap", "<b>Reconfigure WiFi</b>", "pick&nbsp;it", "<b>Configure network</b>", "network, password", "<b>Connect</b>"],
         "inv_h": "Then &middot; inverter",
-        "inv": "Supported model, fixed IP, same network. <b>More → Energy devices → Add Energy Device</b>: type, model, IP, port, unit ID.",
+        "inv": "Supported model. <b>More → Energy devices → Add Energy Device</b>. Network: fixed IP. RS485: <b>Modbus RTU</b>; A+ to A, B− to B.",
         "saj_k": "Not in the app",
         "saj1": "<b>SAJ is not in the mainnet app.</b> Do not add it as another inverter.",
         "saj2": "The Zap needs <b>internet</b>, and must be on the <b>same LAN</b> as the SAJ or connected to it by serial.",
@@ -170,9 +178,12 @@ def zap_top(o, t, zx, zy, han=False):
     edge(0.540, 13.4, zy, "#5E8F66", 0.2)
     o.append(f'<rect x="{X(0.761) - 3:.2f}" y="{zy - 0.8:.2f}" width="6" height="1.6" rx="0.8" '
              f'fill="{INK}" stroke="#8C8A80" stroke-width="0.25"/>')
-    tick(X(0.540), zy + 1, zy + 4.2)
     tick(X(0.761), zy + 1, zy + 4.2)
     o.append(f'<text x="{X(0.286):.2f}" y="{zy + 6.4:.2f}" {lab}>{t["out"]}</text>')
+    # the RS485 terminal's three pins, from the P1 OUT end towards the button
+    for i, pin in enumerate(RS485_PINS["han" if han else "p1"]):
+        o.append(f'<text x="{X(0.540) + (i - 1) * 4.3:.2f}" y="{zy + 3.3:.2f}" {MONO} font-size="1.6" '
+                 f'font-weight="700" fill="#8FC79A" text-anchor="middle">{pin}</text>')
     o.append(f'<text x="{X(0.540):.2f}" y="{zy + 6.4:.2f}" {lab}>{t["rs485"]}</text>')
     o.append(f'<text x="{X(0.761):.2f}" y="{zy + 6.4:.2f}" {lab}>{t["button"]}</text>')
     if not han:

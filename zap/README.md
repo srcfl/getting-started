@@ -1,7 +1,7 @@
 # Zap P1: getting started
 
 > **Applies to:** Zap P1 (for meters with an RJ12 P1 port), current firmware (2.3.x), the Sourceful Energy app 2.7.9 on mainnet  
-> **Last verified:** 2026-10-15, against the sources at the bottom  
+> **Last verified:** 2026-10-15, against the sources at the bottom; the RS485 terminal 2026-11-07  
 > **For:** the installer on site, and anyone setting up their own Zap  
 > **Field test:** not done yet. Checklist: [CHECKLIST.md](CHECKLIST.md)
 
@@ -33,7 +33,7 @@ The ports sit on the two long sides.
 | --- | --- |
 | ![IN side: P1 input with the green power LED, USB-C next to it](images/zap-in-side.jpg) | ![OUT side: blue status LED, button, RS485 terminal, P1 output with the green data LED](images/zap-out-side.jpg) |
 | **P1 IN** (RJ12): the cable to the meter. Green power LED inside the port. | **Blue status LED** and the **button** |
-| **USB-C**: extra power, only when needed | **RS485 terminal** |
+| **USB-C**: extra power, only when needed | **RS485 terminal**: **GND, A+, B−**, counted from P1 OUT towards the button |
 | | **P1 OUT** (RJ12), with the green data LED inside the port |
 
 ## 1. Find the port on the meter
@@ -118,6 +118,15 @@ The app does not scan the network for inverters. You type the IP address.
 - Many inverter dongles allow only one Modbus connection. A Solis inverter stops reporting to Solis Cloud while the Zap is connected.
 - Sungrow needs a direct network connection. WiNet-S and other dongles do not work.
 
+### Over RS485
+
+A device without Modbus TCP can go on the RS485 terminal instead, if the app lists **Modbus RTU** for its model. Several devices can share the terminal, each with its own unit ID.
+
+1. Wire it with the power off: **A+** to the device's A, **B−** to its B, **GND** to its GND. On the Zap P1 the pins are, from P1 OUT towards the button: **GND, A+, B−**.
+2. Add it in the app as above. Under **Configure Connection**, pick **Modbus RTU**, then enter **Baud Rate**, **Unit ID**, **Parity**, **Data Bits** and **Stop Bits** as set on the device.
+
+The [Zap HAN](../zap-han/README.md) has the same terminal with another pin order.
+
 ## Change Wi-Fi
 
 1. Hold the button 5–10 seconds until blue blinks fast, then let go. The Zap forgets the old network.
@@ -187,7 +196,7 @@ The support articles on support.sourceful.energy say otherwise in these places. 
 - The support articles say the green data light blinks as soon as the Zap is on Wi-Fi. On firmware 2.3.x the Zap only reads the meter, and the light only blinks, after the meter is added in the app (step 5).
 - The support articles say blue double-blinks when Wi-Fi is up, and that one blink and then nothing means Wi-Fi failed. Firmware 2.3.x has no double blink: blue blinks once at start, is solid only while waiting for the app, and goes off when Bluetooth closes. Use the app to see whether the Zap is online.
 - The support articles give 5 s and 10 s for a reset. The firmware does both: 5 s clears Wi-Fi, 10 s is a full factory reset.
-- The terminal on the OUT side is called **RS485 Input** in the product images. The reference manual says it is reserved for future sensors and not active, while some brand guides wire inverters to it.
+- The terminal on the OUT side is called **RS485 Input** in the product images. The reference manual says it is reserved for future sensors and not active. It is active: the firmware reads Modbus RTU devices on it.
 - "Zap beyond P1 meters" names firmware 1.2.1 and 1.6.20. The firmware repository has used 2.x since November 2025.
 - The "no data in the app" article points to `http://zap.local/api/data/p1/obis` and an `esp32c3-…` name in the router. On firmware 2.3.13 and 2.3.25 that address returns 404 and the router shows `zap-<serial>`. The local status page at `http://zap.local/` is only in the testnet builds (2.3.24 and later), not in the stable 2.3.17.
 - SAJ is not on the support site. That section comes from Sourceful's internal installation brief.
@@ -202,4 +211,5 @@ The support articles on support.sourceful.energy say otherwise in these places. 
 - App flows and labels: `srcfl/srcful-flutter-app` at 9800165 (app 2.7.9), `lib/screens/zap_onboard_screen.dart`, `zap_wifi_setup_screen.dart`, `zap_detail/zap_detail_screen.dart`, `device_onboard/`, `lib/l10n/app_en_US.arb`
 - Product images: `srcfl/srcful-marketing-website`, `public/assets/images/zap/`
 - SAJ: Sourceful's internal installation brief, 2026-10-14
+- The RS485 terminal: the hardware vendor's pinout images for the Zap P1 (ZAP 1.0) and Zap HAN (ZAP 2.0) boards, 2026-11-07; `components/board/include/boards/zap-p1.h` (Modbus RTU on the terminal) and `fw_controller/API.md` (`modbus_rtu`, several devices on one bus) in `srcfl/srcful-zap-x-firmware`; the **Modbus RTU** labels in the app come from the device-support registry's `connection-types` on mainnet; a Zap P1 on firmware 7.0.5 read an SDM630 meter through the terminal on Sourceful's test rig, 2026-11-07
 - The one-pager is built from [onepagers/zap.py](../onepagers/zap.py)

@@ -44,6 +44,11 @@ When every line is ticked: set **Field test** at the top of `README.md` and **F�
 
 - [ ] Hold 5–10 s, let go → **Reconfigure WiFi** → tap the Zap → **Configure network** → network and password → **Connect** works.
 
+## RS485 (if a device is on the terminal)
+
+- [ ] The terminal's pins, from P1 OUT towards the button, are **B−, GND, A+** (not the Zap P1's GND, A+, B−).
+- [ ] With **A+** to the device's A, **B−** to its B and **GND** to its GND, **Modbus RTU** in the app adds the device and its data shows in the app.
+
 ## The one-pager
 
 - [ ] Printed on A4, both languages: every step matches what you saw.

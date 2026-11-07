@@ -1,7 +1,7 @@
 # Zap HAN: kom igång
 
 > **Gäller:** Zap HAN (för mätare med RJ45 HAN-uttag), firmware 2.3.13 eller senare, Sourceful Energy-appen 2.7.9 på mainnet  
-> **Senast verifierad:** 2026-10-15, mot källorna längst ner  
+> **Senast verifierad:** 2026-10-15, mot källorna längst ner; RS485-plinten 2026-11-07  
 > **För:** installatören på plats  
 > **Fälttest:** inte gjort än. Checklista: [CHECKLIST.md](CHECKLIST.md)
 
@@ -20,6 +20,7 @@ Zap HAN har samma låda och samma uttag som [Zap P1](../zap/README.sv.md). Skill
 - **Ingen separat blå statuslampa.** Lampan i RJ12-uttaget är en RGB-lampa som gör det jobbet: regnbåge vid start, sedan blått som Zap P1:ans statuslampa.
 - **Kabeln** som följer med går från **RJ12** på Zap (uttaget **IN**, på långsidan med USB-C) till **RJ45** i mätaren.
 - **USB-C-ström behövs alltid.** HAN-porten ger inte Zap ström som en P1-port gör.
+- **RS485-plinten har en annan ordning på stiften.** Från P1 UT mot knappen: **B−, GND, A+**. På Zap P1 är det GND, A+, B−. Koppla efter märkningen, inte efter platsen.
 
 ## Innan du åker
 
@@ -109,6 +110,15 @@ Det kan ta upp till två minuter innan mätvärden visas.
 - Krypterade mätare fungerar inte än: det finns ingen inställning för en nyckel.
 - Testad med Kamstrup. För andra märken: fråga Sourceful innan du installerar.
 
+## En RS485-enhet
+
+En växelriktare eller mätare kan kopplas till RS485-plinten på samma sätt som på Zap P1 ([Via RS485](../zap/README.sv.md#via-rs485)), med den här plintens ordning:
+
+1. Koppla med strömmen av: **A+** till enhetens A, **B−** till dess B, **GND** till dess GND. Stiften, från P1 UT mot knappen: **B−, GND, A+**.
+2. I appen, under **Konfigurera anslutning**: välj **Modbus RTU** och fyll i enhetens seriella inställningar.
+
+Kopplad efter Zap P1:ans ordning läser Zap HAN ingenting från enheten.
+
 ## Felsökning
 
 | Det du ser | Troligen | Gör så här |
@@ -117,6 +127,7 @@ Det kan ta upp till två minuter innan mätvärden visas.
 | Ingen lampa alls, appen hittar inte Zap | Ingen ström | Kontrollera USB-C-laddaren och kabeln. |
 | Appen hittar inte Zap | Blå lyser inte fast, eller telefonen är för långt bort | Stå nära. Har Zap varit uppsatt förut: håll knappen 5–10 s. |
 | Mätaren är tillagd men ingen data efter några minuter | Krypterad mätare, eller ett märke som inte är kontrollerat | Kontakta Sourceful. |
+| En RS485-enhet ger ingen data | Kopplad efter Zap P1:ans ordning | Koppla om efter märkningen: B−, GND, A+ från P1 UT. |
 
 ## Skillnader mot supportsajten
 
@@ -131,4 +142,5 @@ Stegen ovan följer firmware och appen. Supportsajten bör rättas här:
 - `srcfl/srcful-zap-x-firmware` på `main` (6da453f): `components/board/include/boards/zap-han.h` (HAN-ingång 2400 8N1, en RGB-lampa, knapp), `fw_controller/main/main.cpp` (regnbåge vid start), `fw_controller/main/main_loop.cpp` (blå lampa och knapptider), `fw_controller/API.md` (`detected_type: han_uart`, Zap HAN provar båda ingångarna), `components/p1_data_reader/decoding/` (HDLC, DLMS/COSEM, M-Bus; ingen dekryptering), `fw_simulator/README.md` (RJ12-HAN-kontakten)
 - `srcfl/srcful-flutter-app` vid 9800165 (appen 2.7.9): onboardingen är densamma som för Zap P1; mätaren läggs till som **P1 / HAN-mätare** med **Identifiera mätare** på firmware 2.3.13 eller senare
 - Läsande kontroll av Sourcefuls referens-Zap HAN (firmware 2.3.13), 2026-10-15
+- RS485-plinten: hårdvaruleverantörens pinout-bilder för Zap P1-kortet (ZAP 1.0) och Zap HAN-kortet (ZAP 2.0), 2026-11-07; `components/board/include/boards/zap-han.h` i `srcfl/srcful-zap-x-firmware` (Modbus RTU på plinten); i Sourcefuls testrigg 2026-11-07 läste en Zap HAN på firmware 7.0.5 en SDM630-mätare med trådarna på B−, GND, A+, och ingenting med dem i Zap P1:ans ordning
 - One-pagern byggs från [onepagers/zap_han.py](../onepagers/zap_han.py); RJ45-uttaget följer Open Connector Graphics (Wikke Andeweg, CC BY 4.0)

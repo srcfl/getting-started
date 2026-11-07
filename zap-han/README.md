@@ -1,7 +1,7 @@
 # Zap HAN: getting started
 
 > **Applies to:** Zap HAN (for meters with an RJ45 HAN port), firmware 2.3.13 or later, the Sourceful Energy app 2.7.9 on mainnet  
-> **Last verified:** 2026-10-15, against the sources at the bottom  
+> **Last verified:** 2026-10-15, against the sources at the bottom; the RS485 terminal 2026-11-07  
 > **For:** the installer on site  
 > **Field test:** not done yet. Checklist: [CHECKLIST.md](CHECKLIST.md)
 
@@ -20,6 +20,7 @@ The Zap HAN has the same box and the same sockets as the [Zap P1](../zap/README.
 - **No separate blue status light.** The light in the RJ12 socket is an RGB light that does that job: rainbow at start, then blue like the Zap P1's status light.
 - **The cable** that comes with it goes from **RJ12** on the Zap (the **IN** socket, on the long side with USB-C) to **RJ45** in the meter.
 - **USB-C power is always needed.** The HAN port does not power the Zap the way a P1 port does.
+- **The RS485 terminal has another pin order.** From P1 OUT towards the button: **B−, GND, A+**. On the Zap P1 it is GND, A+, B−. Wire by the labels, not by the position.
 
 ## Before you go
 
@@ -109,6 +110,15 @@ Meter data can take up to two minutes to appear.
 - Encrypted meters do not work yet: there is no setting for a key.
 - Tested with Kamstrup. For other brands, ask Sourceful before you install.
 
+## An RS485 device
+
+An inverter or meter can go on the RS485 terminal the same way as on the Zap P1 ([Over RS485](../zap/README.md#over-rs485)), with this terminal's pin order:
+
+1. Wire it with the power off: **A+** to the device's A, **B−** to its B, **GND** to its GND. The pins, from P1 OUT towards the button: **B−, GND, A+**.
+2. In the app, under **Configure Connection**, pick **Modbus RTU** and enter the device's serial settings.
+
+Wired by the Zap P1's order, the Zap HAN reads nothing from the device.
+
 ## Troubleshooting
 
 | What you see | Probably | Do this |
@@ -117,6 +127,7 @@ Meter data can take up to two minutes to appear.
 | No light at all, the app does not find the Zap | No power | Check the USB-C charger and cable. |
 | The app does not find the Zap | Blue is not solid, or the phone is too far away | Stand close. If the Zap was set up before, hold the button 5–10 s. |
 | Meter added, but no data after a few minutes | Encrypted meter, or a brand that has not been checked | Contact Sourceful. |
+| An RS485 device gives no data | Wired by the Zap P1's pin order | Rewire by the labels: B−, GND, A+ from P1 OUT. |
 
 ## Differences from the support site
 
@@ -131,4 +142,5 @@ The steps above follow the firmware and the app. The support site should be corr
 - `srcfl/srcful-zap-x-firmware` on `main` (6da453f): `components/board/include/boards/zap-han.h` (HAN input 2400 8N1, one RGB light, button), `fw_controller/main/main.cpp` (rainbow at start), `fw_controller/main/main_loop.cpp` (blue light and button timings), `fw_controller/API.md` (`detected_type: han_uart`, the Zap HAN probes both inputs), `components/p1_data_reader/decoding/` (HDLC, DLMS/COSEM, M-Bus; no decryption), `fw_simulator/README.md` (the RJ12 HAN connector)
 - `srcfl/srcful-flutter-app` at 9800165 (app 2.7.9): the onboarding is the same as for the Zap P1; the meter is added as **P1 / HAN meter** with **Detect meter** on firmware 2.3.13 or later
 - A read-only check of Sourceful's reference Zap HAN (firmware 2.3.13), 2026-10-15
+- The RS485 terminal: the hardware vendor's pinout images for the Zap P1 (ZAP 1.0) and Zap HAN (ZAP 2.0) boards, 2026-11-07; `components/board/include/boards/zap-han.h` in `srcfl/srcful-zap-x-firmware` (Modbus RTU on the terminal); on Sourceful's test rig, 2026-11-07, a Zap HAN on firmware 7.0.5 read an SDM630 meter with the wires on B−, GND, A+, and nothing with them in the Zap P1's order
 - The one-pager is built from [onepagers/zap_han.py](../onepagers/zap_han.py); the RJ45 jack follows Open Connector Graphics (Wikke Andeweg, CC BY 4.0)

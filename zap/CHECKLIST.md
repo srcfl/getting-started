@@ -59,6 +59,11 @@ When every line is ticked: set **Field test** at the top of `README.md` and **F�
 - [ ] **More** → site → **Energy devices → Add Energy Device → Inverters** → model → **Host Address**, **Port**, **Unit ID** → **Continue** → **Connect Device** → **Enable Resources** → **Done**.
 - [ ] The inverter's data shows in the app.
 
+## RS485 (if a device is on the terminal)
+
+- [ ] The terminal's pins, from P1 OUT towards the button, are **GND, A+, B−**.
+- [ ] With **A+** to the device's A, **B−** to its B and **GND** to its GND, **Modbus RTU** in the app adds the device and its data shows in the app.
+
 ## The one-pager
 
 - [ ] Printed on A4, both languages: every step matches what you saw.

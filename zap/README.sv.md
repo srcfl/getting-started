@@ -1,7 +1,7 @@
 # Zap P1: kom igång
 
 > **Gäller:** Zap P1 (för mätare med RJ12 P1-port), aktuell firmware (2.3.x), Sourceful Energy-appen 2.7.9 på mainnet  
-> **Senast verifierad:** 2026-10-15, mot källorna längst ner  
+> **Senast verifierad:** 2026-10-15, mot källorna längst ner; RS485-plinten 2026-11-07  
 > **För:** installatören på plats, och den som sätter upp sin egen Zap  
 > **Fälttest:** inte gjort än. Checklista: [CHECKLIST.md](CHECKLIST.md)
 
@@ -35,7 +35,7 @@ Portarna sitter på de två långsidorna.
 | --- | --- |
 | ![IN-sidan: P1-ingång med grön ström-LED, USB-C bredvid](images/zap-in-side.jpg) | ![UT-sidan: blå status-LED, knapp, RS485-plint, P1-utgång med grön data-LED](images/zap-out-side-sv.jpg) |
 | **P1 IN** (RJ12): kabeln till mätaren. Grön ström-LED i porten. | **Blå status-LED** och **knappen** |
-| **USB-C**: extra ström, bara vid behov | **RS485-plint** |
+| **USB-C**: extra ström, bara vid behov | **RS485-plint**: **GND, A+, B−**, räknat från P1 UT mot knappen |
 | | **P1 UT** (RJ12), med grön data-LED i porten |
 
 ## 1. Hitta porten på mätaren
@@ -120,6 +120,15 @@ Appen söker inte efter växelriktare på nätet. Du skriver in IP-adressen.
 - Många växelriktardonglar tillåter bara en Modbus-anslutning. En Solis slutar rapportera till Solis Cloud medan Zap är ansluten.
 - Sungrow behöver en direkt nätverksanslutning. WiNet-S och andra donglar fungerar inte.
 
+### Via RS485
+
+En enhet utan Modbus TCP kan i stället kopplas till RS485-plinten, om appen visar **Modbus RTU** för modellen. Flera enheter kan dela plinten, var och en med sitt eget enhets-ID.
+
+1. Koppla med strömmen av: **A+** till enhetens A, **B−** till dess B, **GND** till dess GND. På Zap P1 sitter stiften, från P1 UT mot knappen: **GND, A+, B−**.
+2. Lägg till enheten i appen som ovan. Under **Konfigurera anslutning**: välj **Modbus RTU** och fyll i **Baud Rate**, **Unit ID**, **Parity**, **Data Bits** och **Stop Bits** som de är inställda på enheten.
+
+[Zap HAN](../zap-han/README.sv.md) har samma plint men en annan ordning på stiften.
+
 ## Byta wifi
 
 1. Håll knappen 5–10 sekunder tills den blå blinkar snabbt, släpp. Zap glömmer det gamla nätet.
@@ -189,7 +198,7 @@ Supportartiklarna på support.sourceful.energy säger något annat på de här p
 - Supportartiklarna säger att den gröna datalampan blinkar så fort Zap är på wifi. På firmware 2.3.x läser Zap mätaren, och lampan blinkar, först när mätaren är tillagd i appen (steg 5).
 - Supportartiklarna säger att blått dubbelblinkar när wifi är uppe, och att en blink och sedan inget betyder att wifi misslyckades. Firmware 2.3.x har ingen dubbelblink: blått blinkar en gång vid start, lyser fast bara när den väntar på appen, och släcks när Bluetooth stängs. Se i appen om Zap är uppkopplad.
 - Supportartiklarna anger både 5 s och 10 s för återställning. Firmware gör båda: 5 s rensar wifi, 10 s är en fullständig fabriksåterställning.
-- Plinten på UT-sidan heter **RS485 Input** på produktbilderna. Referensmanualen säger att den är reserverad för framtida sensorer och inte aktiv, medan vissa märkesguider kopplar växelriktare till den.
+- Plinten på UT-sidan heter **RS485 Input** på produktbilderna. Referensmanualen säger att den är reserverad för framtida sensorer och inte aktiv. Den är aktiv: firmware läser Modbus RTU-enheter på den.
 - "Zap bortom P1-mätare" anger firmware 1.2.1 och 1.6.20. Firmware-repot har använt 2.x sedan november 2025.
 - Artikeln "ingen data i appen" pekar på `http://zap.local/api/data/p1/obis` och ett namn som `esp32c3-…` i routern. På firmware 2.3.13 och 2.3.25 ger den adressen 404, och routern visar `zap-<serienummer>`. Statussidan på `http://zap.local/` finns bara i testnet-versionerna (2.3.24 och senare), inte i stabila 2.3.17.
 - SAJ finns inte på supportsajten. Avsnittet kommer från Sourcefuls interna installationsunderlag.
@@ -204,4 +213,5 @@ Supportartiklarna på support.sourceful.energy säger något annat på de här p
 - Appens flöden och knappnamn: `srcfl/srcful-flutter-app` vid 9800165 (appen 2.7.9), `lib/screens/zap_onboard_screen.dart`, `zap_wifi_setup_screen.dart`, `zap_detail/zap_detail_screen.dart`, `device_onboard/`, `lib/l10n/app_sv.arb`
 - Produktbilder: `srcfl/srcful-marketing-website`, `public/assets/images/zap/`, och `srcfl/srcful-flutter-app`, `assets/images/explanations/zapled-sv.jpg`
 - SAJ: Sourcefuls interna installationsunderlag, 2026-10-14
+- RS485-plinten: hårdvaruleverantörens pinout-bilder för Zap P1-kortet (ZAP 1.0) och Zap HAN-kortet (ZAP 2.0), 2026-11-07; `components/board/include/boards/zap-p1.h` (Modbus RTU på plinten) och `fw_controller/API.md` (`modbus_rtu`, flera enheter på samma buss) i `srcfl/srcful-zap-x-firmware`; etiketterna för **Modbus RTU** i appen kommer från device-support-registryts `connection-types` på mainnet och är inte översatta; en Zap P1 på firmware 7.0.5 läste en SDM630-mätare genom plinten i Sourcefuls testrigg, 2026-11-07
 - One-pagern byggs från [onepagers/zap.py](../onepagers/zap.py)
